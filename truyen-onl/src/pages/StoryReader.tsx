@@ -1,0 +1,30 @@
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, BookOpen, List, LoaderCircle } from "lucide-react";
+import { Link, useRoute } from "wouter";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { loadPublicStory, sanitizeStoryHtml } from "@/lib/githubPublicData";
+
+export default function StoryReader() {
+  const [, params] = useRoute<{ slug: string }>("/truyen/:slug");
+  const slug = params?.slug || "";
+  const [story, setStory] = useState<Awaited<ReturnType<typeof loadPublicStory>>>(null);
+  const [partIndex, setPartIndex] = useState(0);
+  const [status, setStatus] = useState<"loading" | "ready" | "not-found" | "error">("loading");
+
+  useEffect(() => {
+    let mounted = true;
+    setStatus("loading");
+    setPartIndex(0);
+    loadPublicStory(slug).then(value => { if (mounted) { setStory(value); setStatus(value ? "ready" : "not-found"); } }).catch(() => { if (mounted) setStatus("error"); });
+    return () => { mounted = false; };
+  }, [slug]);
+
+  const currentPart = useMemo(() => story?.parts[partIndex], [partIndex, story]);
+  const goToPart = (index: number) => { if (story && index >= 0 && index < story.parts.length) { setPartIndex(index); window.scrollTo({ top: 0, behavior: "smooth" }); } };
+
+  if (status === "loading") return <div className="flex min-h-screen items-center justify-center bg-[#f5f1e9] text-[#b46c45]"><LoaderCircle className="animate-spin" size={28} /></div>;
+  if (status === "not-found") return <div className="min-h-screen bg-[#f5f1e9] text-[#18333a]"><SiteHeader /><main className="container flex min-h-[60vh] flex-col items-center justify-center text-center"><BookOpen className="mb-4 text-[#b46c45]" size={32} /><h1 className="font-display text-4xl font-semibold">Không tìm thấy truyện.</h1><p className="mt-3 text-sm text-[#7b8581]">Tựa truyện có thể chưa được xuất bản hoặc slug không còn tồn tại.</p><Link href="/" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#b46c45]"><ArrowLeft size={16} /> Về thư viện</Link></main><SiteFooter /></div>;
+  if (status === "error" || !story || !currentPart) return <div className="min-h-screen bg-[#f5f1e9] text-[#18333a]"><SiteHeader /><main className="container flex min-h-[60vh] flex-col items-center justify-center text-center"><h1 className="font-display text-4xl font-semibold">Không thể tải chương truyện.</h1><p className="mt-3 max-w-md text-sm leading-6 text-[#7b8581]">Hãy kiểm tra repository GitHub và thử tải lại trang. Nội dung lỗi không được render vào giao diện.</p><Link href="/" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#b46c45]"><ArrowLeft size={16} /> Về thư viện</Link></main><SiteFooter /></div>;
+
+  return <div className="min-h-screen bg-[#f5f1e9] text-[#18333a]"><SiteHeader /><main><section className="border-b border-[#d9d5cc] bg-[#ebe6dc]"><div className="container py-12 sm:py-16"><Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-[#9f6242] hover:text-[#18333a]"><ArrowLeft size={16} /> Về thư viện</Link><div className="max-w-3xl"><div className="mb-4 text-xs font-bold uppercase tracking-[0.17em] text-[#b46c45]">Đang đọc · {story.parts.length} phần</div><h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-7xl">{story.title}</h1><p className="mt-5 max-w-2xl text-base leading-7 text-[#65716f]">{story.summary || "Một câu chuyện được chia thành từng phần để bạn đọc theo nhịp của riêng mình."}</p><p className="mt-4 text-sm font-semibold text-[#8a908d]">{story.author || "Truyện Đọc"}</p></div></div></section><div className="container grid gap-10 py-12 lg:grid-cols-[220px_minmax(0,700px)] lg:py-16"><aside className="lg:sticky lg:top-6 lg:self-start"><div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#b46c45]"><List size={14} /> Mục lục</div><div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:overflow-visible">{story.parts.map((part, index) => <button key={part.partNumber} onClick={() => goToPart(index)} className={`flex min-w-max items-center gap-3 rounded-[10px] px-3 py-2 text-left text-sm transition-colors lg:flex lg:w-full ${index === partIndex ? "bg-[#18333a] font-bold text-[#fffaf1]" : "text-[#687571] hover:bg-[#e9e5dc] hover:text-[#18333a]"}`}><span className={`font-mono text-[10px] ${index === partIndex ? "text-[#f4bd68]" : "text-[#a0a7a1]"}`}>{String(part.partNumber).padStart(2, "0")}</span><span>{part.title}</span></button>)}</div></aside><article className="min-w-0"><div className="mb-7 flex items-center justify-between gap-4 border-b border-[#d9d5cc] pb-5"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-[#b46c45]">Phần {String(currentPart.partNumber).padStart(2, "0")}</div><h2 className="mt-1 font-display text-3xl font-semibold tracking-[-0.04em]">{currentPart.title}</h2></div><span className="text-xs text-[#8a908d]">{partIndex + 1} / {story.parts.length}</span></div><div className="story-content" dangerouslySetInnerHTML={{ __html: sanitizeStoryHtml(currentPart.content) }} /><div className="mt-14 grid gap-3 border-t border-[#d9d5cc] pt-7 sm:grid-cols-2">{partIndex > 0 ? <button onClick={() => goToPart(partIndex - 1)} className="flex items-center gap-3 rounded-[12px] border border-[#d9d5cc] bg-[#fbf9f4] px-4 py-4 text-left text-sm font-bold text-[#526261] hover:border-[#b46c45]"><ArrowLeft size={16} className="text-[#b46c45]" /><span><small className="block text-[10px] uppercase tracking-[0.15em] text-[#8a908d]">Phần trước</small>{story.parts[partIndex - 1].title}</span></button> : <span />}{partIndex < story.parts.length - 1 && <button onClick={() => goToPart(partIndex + 1)} className="flex items-center justify-between gap-3 rounded-[12px] bg-[#18333a] px-4 py-4 text-left text-sm font-bold text-[#fffaf1] hover:bg-[#2b5960]"><span><small className="block text-[10px] uppercase tracking-[0.15em] text-[#f4bd68]">Phần tiếp</small>{story.parts[partIndex + 1].title}</span><ArrowRight size={16} className="text-[#f4bd68]" /></button>}</div></article></div></main><SiteFooter /></div>;
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-01T00:00:00.000Z",
+  "stories": [
+    {
+      "slug": "ben-kia-mua-he",
+      "title": "Bên kia mùa hè",
+      "author": "Truyện Đọc",
+      "summary": "Một câu chuyện ngắn về những điều ta tưởng đã cũ nhưng vẫn âm thầm lớn lên trong ký ức.",
+      "status": "published",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "parts": [
+        { "partNumber": 1, "title": "Mùi mưa trên hiên", "path": "stories/ben-kia-mua-he/parts/001.html" },
+        { "partNumber": 2, "title": "Chiếc hộp màu xanh", "path": "stories/ben-kia-mua-he/parts/002.html" }
+      ]
+    }
+  ]
+}
