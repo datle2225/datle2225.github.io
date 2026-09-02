@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin - Truyện Đọc</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- CKEditor -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.ckeditor.com/ckeditor5/48.4.0/ckeditor5.css"
+    >
+
+
+    <!-- Admin CSS -->
+    <link
+        rel="stylesheet"
+        href="assets/css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     LOGIN
+========================================== -->
+
+<div
+    id="login-screen"
+    class="login-screen"
+>
+
+    <div class="login-box">
+
+        <h1>📚 Truyện Đọc</h1>
+
+        <p>
+            Quản trị nội dung
+        </p>
+
+
+        <input
+            type="password"
+            id="admin-password"
+            class="form-control"
+            placeholder="Mật khẩu admin"
+        >
+
+
+        <button
+            id="btn-login"
+            class="btn btn-primary w-100 mt-3"
+        >
+            Đăng nhập
+        </button>
+
+
+        <div
+            id="login-error"
+            class="error-message"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     ADMIN
+========================================== -->
+
+<div
+    id="admin-app"
+    class="admin-app hidden"
+>
+
+
+    <!-- HEADER -->
+
+    <header class="admin-header">
+
+        <div>
+
+            <h1>📚 Quản trị truyện</h1>
+
+            <small>
+                CMS GitHub Pages
+            </small>
+
+        </div>
+
+
+        <button
+            id="btn-logout"
+            class="btn btn-outline-light"
+        >
+            Đăng xuất
+        </button>
+
+    </header>
+
+
+
+    <main class="container-fluid py-4">
+
+
+        <!-- ==================================
+             GITHUB
+        =================================== -->
+
+        <section class="admin-card">
+
+            <div class="card-title">
+
+                <h2>🔗 GitHub</h2>
+
+                <span
+                    id="github-status"
+                    class="status disconnected"
+                >
+                    ● Chưa kết nối
+                </span>
+
+            </div>
+
+
+            <div class="github-info">
+
+                <div>
+
+                    <span>
+                        Repository
+                    </span>
+
+                    <strong id="github-repository">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Branch
+                    </span>
+
+                    <strong id="github-branch">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="github-token">
+                    Fine-grained GitHub Token
+                </label>
+
+                <input
+                    type="password"
+                    id="github-token"
+                    class="form-control"
+                    placeholder="github_pat_..."
+                    autocomplete="off"
+                >
+
+                <small>
+                    Token chỉ được lưu trong
+                    session của trình duyệt.
+                </small>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    id="btn-github-connect"
+                    class="btn btn-primary"
+                >
+                    🔗 Kết nối GitHub
+                </button>
+
+
+                <button
+                    id="btn-github-disconnect"
+                    class="btn btn-secondary"
+                >
+                    Ngắt kết nối
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================
+             NOVEL
+        =================================== -->
+
+        <section class="admin-card">
+
+            <div class="card-title">
+
+                <h2>📖 Thông tin truyện</h2>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Novel ID
+                        </label>
+
+                        <input
+                            id="novel-id"
+                            class="form-control"
+                            placeholder="vi-du"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-8">
+
+                    <div class="form-group">
+
+                        <label>
+                            Tên truyện
+                        </label>
+
+                        <input
+                            id="novel-title"
+                            class="form-control"
+                            placeholder="Tên truyện"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+
+                        <label>
+                            Tác giả
+                        </label>
+
+                        <input
+                            id="novel-author"
+                            class="form-control"
+                            placeholder="Tên tác giả"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+
+                        <label>
+                            Trạng thái
+                        </label>
+
+                        <select
+                            id="novel-status"
+                            class="form-control"
+                        >
+
+                            <option>
+                                Đang ra
+                            </option>
+
+                            <option>
+                                Hoàn thành
+                            </option>
+
+                            <option>
+                                Tạm dừng
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Ảnh bìa
+                </label>
+
+                <input
+                    id="novel-cover"
+                    class="form-control"
+                    placeholder="images/novels/demo.jpg"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Mô tả
+                </label>
+
+                <textarea
+                    id="novel-description"
+                    class="form-control"
+                    rows="4"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                id="btn-save-novel"
+                class="btn btn-success"
+            >
+                💾 Lưu thông tin truyện
+            </button>
+
+        </section>
+
+
+
+        <!-- ==================================
+             CHAPTER
+        =================================== -->
+
+        <section class="admin-card">
+
+            <div class="card-title">
+
+                <h2>📝 Soạn chương</h2>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-3">
+
+                    <div class="form-group">
+
+                        <label>
+                            Novel ID
+                        </label>
+
+                        <input
+                            id="chapter-novel-id"
+                            class="form-control"
+                            placeholder="demo"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="form-group">
+
+                        <label>
+                            Chapter ID
+                        </label>
+
+                        <input
+                            id="chapter-id"
+                            class="form-control"
+                            placeholder="001"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+
+                        <label>
+                            Tên chương
+                        </label>
+
+                        <input
+                            id="chapter-title"
+                            class="form-control"
+                            placeholder="Chương 1: ..."
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CKEDITOR TOOLBAR -->
+
+            <div
+                id="editor-toolbar"
+                class="editor-toolbar"
+            ></div>
+
+
+            <!-- CKEDITOR -->
+
+            <div
+                id="chapter-editor"
+                class="chapter-editor"
+            >
+
+                <p>
+                    Bắt đầu viết chương...
+                </p>
+
+            </div>
+
+
+            <div class="save-area">
+
+                <button
+                    id="btn-load-chapter"
+                    class="btn btn-secondary"
+                >
+                    📂 Mở chương
+                </button>
+
+
+                <button
+                    id="btn-save-chapter"
+                    class="btn btn-success"
+                >
+                    💾 Lưu chương lên GitHub
+                </button>
+
+            </div>
+
+
+            <div
+                id="editor-status"
+                class="editor-status"
+            ></div>
+
+        </section>
+
+
+
+        <!-- ==================================
+             CHAPTER LIST
+        =================================== -->
+
+        <section class="admin-card">
+
+            <div class="card-title">
+
+                <h2>📚 Danh sách chương</h2>
+
+            </div>
+
+
+            <div
+                id="chapter-list"
+                class="chapter-list"
+            >
+
+                <div class="empty-state">
+                    Chưa tải danh sách chương.
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     TOAST
+========================================== -->
+
+<div
+    id="toast"
+    class="toast-message"
+></div>
+
+
+
+<!-- ==========================================
+     SCRIPTS
+========================================== -->
+
+<script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+></script>
+
+
+<script
+    src="https://cdn.ckeditor.com/ckeditor5/48.4.0/ckeditor5.umd.js"
+></script>
+
+
+<script
+    src="assets/js/config.js"
+></script>
+
+
+<script
+    src="assets/js/github-api.js"
+></script>
+
+
+<script
+    src="assets/js/admin.js"
+></script>
+
+
+</body>
+
+</html>
