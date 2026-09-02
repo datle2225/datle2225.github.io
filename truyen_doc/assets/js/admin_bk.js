@@ -554,7 +554,7 @@
 
             const result =
                 await GitHubAPI.getJson(
-                    `${CONFIG.data.novels_folder}/${novelId}/info.json`
+                    `data/novels/${novelId}/info.json`
                 );
 
 
@@ -791,7 +791,7 @@
 
 
                 const path =
-                    `${CONFIG.data.novels_folder}/${id}/info.json`;
+                    `data/novels/${id}/info.json`;
 
 
                 let sha = null;
@@ -933,7 +933,7 @@
     ) {
 
         const path =
-            CONFIG.data.novels;
+            "data/novels.json";
 
 
         let list = [];
@@ -1083,7 +1083,7 @@
 
 
                 const path =
-                    CONFIG.data.novels;
+                    "data/novels.json";
 
 
                 const result =
@@ -1303,7 +1303,7 @@
             const result =
                 await GitHubAPI
                     .getJson(
-                        `${CONFIG.data.novels_folder}/${novelId}/chapters.json`
+                        `data/novels/${novelId}/chapters.json`
                     );
 
 
@@ -1616,7 +1616,7 @@
             const result =
                 await GitHubAPI.getJson(
 
-                    `${CONFIG.data.novels_folder}/${novelId}/${chapterId}.json`
+                    `data/novels/${novelId}/${chapterId}.json`
 
                 );
 
@@ -1705,7 +1705,7 @@
 
 
             const path =
-                `${CONFIG.data.novels_folder}/${novelId}/${chapterId}.json`;
+                `data/novels/${novelId}/${chapterId}.json`;
 
 
             const file =
@@ -1884,7 +1884,7 @@
                 // --------------------------------
 
                 const path =
-                    `${CONFIG.data.novels_folder}/${novelId}/${chapterId}.json`;
+                    `data/novels/${novelId}/${chapterId}.json`;
 
 
                 let sha = null;
@@ -2065,7 +2065,7 @@
     ) {
 
         const path =
-            `${CONFIG.data.novels_folder}/${novelId}/chapters.json`;
+            `data/novels/${novelId}/chapters.json`;
 
 
         let sha = null;
@@ -2116,7 +2116,7 @@
         try {
 
             await GitHubAPI.getFile(
-                `${CONFIG.data.novels_folder}/${novelId}/chapters.json`
+                `data/novels/${novelId}/chapters.json`
             );
 
         } catch (error) {
