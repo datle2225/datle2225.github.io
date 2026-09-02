@@ -7,7 +7,7 @@ window.TRUYEN_DOC_CONFIG = {
     },
 
     data: {
-        novels: "data/novels.json"
+        novels: "truyen_doc/data/novels.json"
     }
 
 };
