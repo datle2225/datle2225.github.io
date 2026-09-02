@@ -2423,76 +2423,32 @@
 
 
 
-// ==========================================
-// CKEDITOR
-// ==========================================
+    // ==========================================
+    // CKEDITOR
+    // ==========================================
 
-    async function initEditor(content = "") {
-    
-        const editorElement =
-            document.querySelector("#chapter-editor");
-    
-        const toolbarElement =
-            document.querySelector("#editor-toolbar");
-    
-    
-        if (!editorElement) {
-    
-            throw new Error(
-                "Không tìm thấy #chapter-editor."
-            );
-    
-        }
-    
-    
-        // ------------------------------------------
-        // DESTROY EDITOR CŨ
-        // ------------------------------------------
-    
+    async function initEditor(
+        content = ""
+    ) {
+
         if (editor) {
-    
+
             try {
-    
+
                 await editor.destroy();
-    
+
             } catch (error) {
-    
-                console.warn(
-                    "CKEditor destroy warning:",
-                    error
-                );
-    
+
+                console.warn(error);
+
             }
-    
+
+
             editor = null;
-    
+
         }
-    
-    
-        // ------------------------------------------
-        // XÓA DOM CŨ
-        // ------------------------------------------
-    
-        toolbarElement.innerHTML = "";
-    
-        editorElement.innerHTML = "";
-    
-    
-        // ------------------------------------------
-        // CHECK CKEDITOR
-        // ------------------------------------------
-    
-        if (
-            typeof CKEDITOR === "undefined"
-        ) {
-    
-            throw new Error(
-                "CKEditor chưa được tải."
-            );
-    
-        }
-    
-    
+
+
         const {
             DecoupledEditor,
             Essentials,
@@ -2512,235 +2468,140 @@
             HorizontalLine,
             RemoveFormat
         } = CKEDITOR;
-    
-    
-        if (!DecoupledEditor) {
-    
-            throw new Error(
-                "DecoupledEditor không tồn tại."
-            );
-    
-        }
-    
-    
-        // ------------------------------------------
-        // CREATE EDITOR
-        // ------------------------------------------
-    
+
+
         editor =
             await DecoupledEditor.create({
-    
+
                 root: {
-    
+
                     element:
-                        editorElement,
-    
-                    initialData:
-                        content || "",
-    
-                    placeholder:
-                        "Bắt đầu viết nội dung chương..."
-    
+                        document.querySelector(
+                            "#chapter-editor"
+                        )
+
                 },
-    
-    
+
+
                 licenseKey:
                     "GPL",
-    
-    
+
+
                 plugins: [
-    
+
                     Essentials,
-    
+
                     Paragraph,
-    
+
                     Heading,
-    
+
                     Bold,
-    
+
                     Italic,
-    
+
                     Underline,
-    
+
                     Strikethrough,
-    
+
                     Link,
-    
+
                     BlockQuote,
-    
+
                     List,
-    
+
                     Alignment,
-    
+
                     Indent,
-    
+
                     Table,
-    
+
                     TableToolbar,
-    
+
                     HorizontalLine,
-    
+
                     RemoveFormat
-    
+
                 ],
-    
-    
-                toolbar: {
-    
-                    items: [
-    
-                        "undo",
-    
-                        "redo",
-    
-                        "|",
-    
-                        "heading",
-    
-                        "|",
-    
-                        "bold",
-    
-                        "italic",
-    
-                        "underline",
-    
-                        "strikethrough",
-    
-                        "|",
-    
-                        "link",
-    
-                        "blockQuote",
-    
-                        "horizontalLine",
-    
-                        "|",
-    
-                        "bulletedList",
-    
-                        "numberedList",
-    
-                        "|",
-    
-                        "alignment",
-    
-                        "outdent",
-    
-                        "indent",
-    
-                        "|",
-    
-                        "insertTable",
-    
-                        "removeFormat"
-    
-                    ],
-    
-                    shouldNotGroupWhenFull: true
-    
-                },
-    
-    
+
+
+                toolbar: [
+
+                    "undo",
+
+                    "redo",
+
+                    "|",
+
+                    "heading",
+
+                    "|",
+
+                    "bold",
+
+                    "italic",
+
+                    "underline",
+
+                    "|",
+
+                    "link",
+
+                    "blockQuote",
+
+                    "horizontalLine",
+
+                    "|",
+
+                    "bulletedList",
+
+                    "numberedList",
+
+                    "|",
+
+                    "alignment",
+
+                    "outdent",
+
+                    "indent",
+
+                    "|",
+
+                    "insertTable",
+
+                    "removeFormat"
+
+                ],
+
+
                 table: {
-    
+
                     contentToolbar: [
-    
+
                         "tableColumn",
-    
+
                         "tableRow",
-    
+
                         "mergeTableCells"
-    
+
                     ]
-    
+
                 }
-    
+
             });
-    
-    
-        // ------------------------------------------
-        // INSERT TOOLBAR
-        // ------------------------------------------
-    
-        toolbarElement
-            .appendChild(
+
+
+        $("#editor-toolbar")
+            .empty()
+            .append(
                 editor.ui.view.toolbar.element
             );
-    
-    
-        // ------------------------------------------
-        // GET REAL EDITABLE ELEMENT
-        // ------------------------------------------
-    
-        const editable =
-            editor.ui.getEditableElement();
-    
-    
-        if (!editable) {
-    
-            throw new Error(
-                "Không tìm thấy vùng nhập CKEditor."
-            );
-    
-        }
-    
-    
-        // ------------------------------------------
-        // iPHONE / SAFARI
-        // ------------------------------------------
-    
-        editable.setAttribute(
-            "contenteditable",
-            "true"
+
+
+        editor.setData(
+            content || ""
         );
-    
-    
-        editable.setAttribute(
-            "spellcheck",
-            "true"
-        );
-    
-    
-        editable.style.pointerEvents =
-            "auto";
-    
-    
-        editable.style.userSelect =
-            "text";
-    
-    
-        editable.style.webkitUserSelect =
-            "text";
-    
-    
-        // ------------------------------------------
-        // FOCUS KHI CHẠM VÀO EDITOR
-        // ------------------------------------------
-    
-        $(editable).off(
-            "touchstart.adminEditor"
-        );
-    
-    
-        $(editable).on(
-            "touchstart.adminEditor",
-            function () {
-    
-                if (editor) {
-    
-                    editor.editing.view.focus();
-    
-                }
-    
-            }
-        );
-    
-    
-        // ------------------------------------------
-        // DRAFT
-        // ------------------------------------------
-    
+
+
         editor.model.document.on(
             "change:data",
             debounce(
@@ -2748,32 +2609,10 @@
                 500
             )
         );
-    
-    
-        // ------------------------------------------
-        // DEBUG
-        // ------------------------------------------
-    
-        console.log(
-            "CKEditor ready:",
-            editor
-        );
-    
-        console.log(
-            "Editable:",
-            editable
-        );
-    
-        console.log(
-            "contenteditable:",
-            editable.getAttribute(
-                "contenteditable"
-            )
-        );
-    
-    
+
+
         return editor;
-    
+
     }
 
 
