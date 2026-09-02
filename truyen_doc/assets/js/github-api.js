@@ -45,10 +45,10 @@
 
 
     // ==========================================
-    // API URL
+    // URL
     // ==========================================
 
-    function apiUrl(path) {
+    function apiUrl(path = "") {
 
         return (
             "https://api.github.com/repos/" +
@@ -68,8 +68,6 @@
 
     function getHeaders() {
 
-        const token = getToken();
-
         const headers = {
 
             "Accept":
@@ -80,12 +78,17 @@
 
         };
 
+
+        const token = getToken();
+
+
         if (token) {
 
             headers.Authorization =
                 "Bearer " + token;
 
         }
+
 
         return headers;
 
@@ -101,24 +104,27 @@
         options = {}
     ) {
 
-        const response = await fetch(
-            url,
-            {
-                ...options,
+        const response =
+            await fetch(
+                url,
+                {
+                    ...options,
 
-                headers: {
-                    ...getHeaders(),
-                    ...(options.headers || {})
+                    headers: {
+                        ...getHeaders(),
+                        ...(options.headers || {})
+                    }
                 }
-            }
-        );
+            );
 
 
         let data = null;
 
+
         try {
 
-            data = await response.json();
+            data =
+                await response.json();
 
         } catch (error) {
 
@@ -129,18 +135,20 @@
 
         if (!response.ok) {
 
-            const message =
-                data?.message ||
-                `HTTP ${response.status}`;
-
             const error =
-                new Error(message);
+                new Error(
+                    data?.message ||
+                    `GitHub HTTP ${response.status}`
+                );
+
 
             error.status =
                 response.status;
 
+
             error.github =
                 data;
+
 
             throw error;
 
@@ -156,12 +164,54 @@
     // BASE64
     // ==========================================
 
+    function encodeBase64(text) {
+
+        const bytes =
+            new TextEncoder()
+                .encode(text);
+
+
+        let binary = "";
+
+        const chunkSize = 0x8000;
+
+
+        for (
+            let i = 0;
+            i < bytes.length;
+            i += chunkSize
+        ) {
+
+            const chunk =
+                bytes.subarray(
+                    i,
+                    Math.min(
+                        i + chunkSize,
+                        bytes.length
+                    )
+                );
+
+
+            binary +=
+                String.fromCharCode(
+                    ...chunk
+                );
+
+        }
+
+
+        return btoa(binary);
+
+    }
+
+
     function decodeBase64(base64) {
 
         const binary =
             atob(
                 base64.replace(/\n/g, "")
             );
+
 
         const bytes =
             new Uint8Array(
@@ -184,44 +234,6 @@
         return new TextDecoder(
             "utf-8"
         ).decode(bytes);
-
-    }
-
-
-    function encodeBase64(text) {
-
-        const bytes =
-            new TextEncoder().encode(text);
-
-        let binary = "";
-
-        const chunkSize = 0x8000;
-
-
-        for (
-            let i = 0;
-            i < bytes.length;
-            i += chunkSize
-        ) {
-
-            const chunk =
-                bytes.subarray(
-                    i,
-                    Math.min(
-                        i + chunkSize,
-                        bytes.length
-                    )
-                );
-
-            binary +=
-                String.fromCharCode(
-                    ...chunk
-                );
-
-        }
-
-
-        return btoa(binary);
 
     }
 
@@ -337,26 +349,27 @@
         sha = null
     ) {
 
-        const content =
+        return await saveFile(
+
+            path,
+
             JSON.stringify(
                 data,
                 null,
                 2
-            );
+            ),
 
-
-        return await saveFile(
-            path,
-            content,
             message,
+
             sha
+
         );
 
     }
 
 
     // ==========================================
-    // DELETE FILE
+    // DELETE
     // ==========================================
 
     async function deleteFile(
@@ -366,7 +379,9 @@
     ) {
 
         return await request(
+
             apiUrl(path),
+
             {
 
                 method: "DELETE",
@@ -382,6 +397,129 @@
                             CONFIG.branch
 
                     })
+
+            }
+
+        );
+
+    }
+
+
+    // ==========================================
+    // UPLOAD BINARY
+    // ==========================================
+
+    async function uploadBinary(
+        path,
+        base64,
+        message,
+        sha = null
+    ) {
+
+        const body = {
+
+            message,
+
+            content:
+                base64,
+
+            branch:
+                CONFIG.branch
+
+        };
+
+
+        if (sha) {
+
+            body.sha = sha;
+
+        }
+
+
+        return await request(
+
+            apiUrl(path),
+
+            {
+
+                method: "PUT",
+
+                body:
+                    JSON.stringify(body)
+
+            }
+
+        );
+
+    }
+
+
+    // ==========================================
+    // UPLOAD IMAGE FILE
+    // ==========================================
+
+    async function uploadImage(
+        path,
+        file,
+        message
+    ) {
+
+        const base64 =
+            await fileToBase64(
+                file
+            );
+
+
+        return await uploadBinary(
+
+            path,
+
+            base64,
+
+            message
+
+        );
+
+    }
+
+
+    // ==========================================
+    // FILE -> BASE64
+    // ==========================================
+
+    function fileToBase64(
+        file
+    ) {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload = () => {
+
+                    const result =
+                        reader.result;
+
+
+                    const base64 =
+                        result.split(",")[1];
+
+
+                    resolve(base64);
+
+                };
+
+
+                reader.onerror =
+                    reject;
+
+
+                reader.readAsDataURL(
+                    file
+                );
 
             }
         );
@@ -406,31 +544,38 @@
             );
 
 
-        return await request(
-            url
-        );
+        return await request(url);
 
     }
 
 
     // ==========================================
-    // PUBLIC API
+    // PUBLIC
     // ==========================================
 
     window.GitHubAPI = {
 
         getToken,
+
         setToken,
+
         clearToken,
+
         isConnected,
 
         getFile,
+
         getJson,
 
         saveFile,
+
         saveJson,
 
         deleteFile,
+
+        uploadBinary,
+
+        uploadImage,
 
         testConnection
 
