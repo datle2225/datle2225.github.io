@@ -136,25 +136,6 @@ $(document).ready(function () {
                BOOK INFORMATION
             ================================================= */
 
-            if (
-                window.ReaderSEO
-            ) {
-            
-                ReaderSEO.setChapterSEO({
-            
-                    novel: novel,
-            
-                    chapter: chapter
-            
-                });
-            
-            } else {
-            
-                document.title =
-                    `${novel.title} - ${chapter.title}`;
-            
-            }
-
 
             $("#bookTitle")
                 .text(novel.title || "Không có tên truyện")
@@ -248,6 +229,7 @@ $(document).ready(function () {
 
 
         currentChapterIndex = index;
+        chapterId = String(id);
 
 
         try {
@@ -278,6 +260,24 @@ $(document).ready(function () {
 
             const chapter =
                 await response.json();
+                
+                        /* =================================================
+               SEO
+            ================================================= */
+            
+            if (window.ReaderSEO) {
+            
+                ReaderSEO.setChapterSEO({
+                    novel: novel,
+                    chapter: chapter
+                });
+            
+            } else {
+            
+                document.title =
+                    `${novel.title} - ${chapter.title}`;
+            
+            }
 
 
             /* =================================================
