@@ -136,24 +136,8 @@ $(document).ready(function () {
                BOOK INFORMATION
             ================================================= */
 
-            if (
-                window.ReaderSEO
-            ) {
-            
-                ReaderSEO.setChapterSEO({
-            
-                    novel: novel,
-            
-                    chapter: chapter
-            
-                });
-            
-            } else {
-            
-                document.title =
-                    `${novel.title} - ${chapter.title}`;
-            
-            }
+            document.title =
+                `${novel.title || "Đọc truyện"} - Thư viện truyện`;
 
 
             $("#bookTitle")
