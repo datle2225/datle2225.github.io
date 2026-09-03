@@ -1,588 +1,870 @@
 /* =========================================================
-   READER 4.2
-   Reader Experience
+   READER.CSS
+   Phase 4.3
+   Mobile-first / iPhone optimized
    ========================================================= */
+
+
 /* =========================================================
    READER CONTAINER
    ========================================================= */
+
 .reader-container {
-    width: min(
-        calc(100% - 32px),
-        900px
-    );
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
-    padding:
-        24px
-        0
-        60px;
+    padding: 0 16px 40px;
 }
+
+
 /* =========================================================
-   BOOK HEADER
+   HEADER
    ========================================================= */
-.reader-book {
-    text-align: center;
-    margin-bottom: 18px;
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: var(--header-bg, #ffffff);
+    border-bottom: 1px solid #e5e7eb;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
-.book-title {
-    display: inline-block;
+
+.header-inner {
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 44px;
+
     color: inherit;
-    font-size: 24px;
+    text-decoration: none;
+
+    font-size: 16px;
     font-weight: 700;
+}
+
+.logo:hover {
     text-decoration: none;
 }
+
+
+/* =========================================================
+   BACK HOME
+   ========================================================= */
+
+.reader-home {
+    padding: 10px 0 4px;
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 36px;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    color: #666;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.back-home:hover {
+    background: #f3f4f6;
+    color: #111;
+}
+
+
+/* =========================================================
+   BOOK INFORMATION
+   ========================================================= */
+
+.reader-book {
+    padding: 8px 0 12px;
+
+    text-align: center;
+}
+
+.book-title {
+    display: block;
+
+    margin: 0;
+
+    color: inherit;
+    text-decoration: none;
+
+    font-size: 20px;
+    line-height: 1.35;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
 .book-title:hover {
     text-decoration: underline;
 }
+
 .chapter-progress {
-    margin-top: 6px;
-    font-size: 14px;
-    opacity: 0.65;
+    margin-top: 5px;
+
+    color: #777;
+
+    font-size: 13px;
+    line-height: 1.4;
 }
+
+
 /* =========================================================
    READER SETTINGS
    ========================================================= */
+
 .reader-settings {
+    width: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 18px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #fff;
+    gap: 6px;
+
+    padding: 8px 0;
+    margin-bottom: 8px;
+
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
 }
+
 .settings-button {
-    min-width: 40px;
-    min-height: 38px;
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
-    color: inherit;
-    cursor: pointer;
+    min-width: 38px;
+    min-height: 36px;
+
+    padding: 5px 9px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #222;
+
     font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
 }
+
 .settings-button:hover {
-    background: #f3f3f3;
+    background: #f5f5f5;
 }
+
 .settings-button:active {
     transform: scale(0.97);
 }
-.settings-button:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-}
+
 .theme-button {
-    font-size: 18px;
+    font-size: 17px;
 }
+
 .font-size-control {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
+
 .font-size-value {
-    min-width: 45px;
+    min-width: 42px;
+
     text-align: center;
+
+    color: #666;
+
     font-size: 13px;
     font-weight: 600;
 }
+
 .settings-control {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
+
 .settings-label {
-    font-size: 13px;
-    opacity: 0.7;
+    color: #666;
+
+    font-size: 12px;
 }
+
 .settings-select {
-    min-height: 38px;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
-    color: inherit;
-    font-size: 14px;
-}
-.settings-select:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-}
-/* =========================================================
-   READER CONTROLS
-   ========================================================= */
-.reader-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 22px;
-}
-.reader-button {
-    flex: 1;
-    min-height: 44px;
-    padding: 10px 14px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #fff;
-    color: inherit;
+    min-height: 36px;
+
+    padding: 5px 7px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #222;
+
+    font-size: 13px;
+
     cursor: pointer;
-    font-size: 14px;
-    transition:
-        background 0.15s ease,
-        transform 0.15s ease;
 }
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.reader-controls {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+
+    gap: 8px;
+
+    margin: 10px 0;
+}
+
+.reader-button {
+    min-height: 42px;
+
+    padding: 8px 10px;
+
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #222;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
 .reader-button:hover {
     background: #f5f5f5;
 }
+
 .reader-button:active {
     transform: scale(0.98);
 }
-.reader-button:disabled {
-    opacity: 0.4;
+
+.reader-button:disabled,
+.reader-button.disabled {
+    opacity: 0.45;
+
     cursor: not-allowed;
 }
-.reader-button:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
+
+.reader-controls-bottom {
+    margin-top: 28px;
+    margin-bottom: 0;
 }
+
+
 /* =========================================================
    CHAPTER LIST
    ========================================================= */
+
 .chapter-list {
-    margin-bottom: 24px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #fff;
+    margin: 10px 0 16px;
+
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+
+    background: #ffffff;
+
     overflow: hidden;
 }
+
 .chapter-list.hidden {
     display: none;
 }
+
 .chapter-list-header {
+    min-height: 44px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 16px;
-    border-bottom: 1px solid #ddd;
+
+    padding: 8px 12px;
+
+    border-bottom: 1px solid #eeeeee;
 }
+
+.chapter-list-header strong {
+    font-size: 15px;
+}
+
 .chapter-list-header button {
     width: 34px;
     height: 34px;
+
     border: 0;
-    border-radius: 8px;
+    border-radius: 7px;
+
     background: transparent;
-    color: inherit;
-    cursor: pointer;
+
     font-size: 24px;
     line-height: 1;
+
+    cursor: pointer;
 }
+
 .chapter-list-header button:hover {
-    background: #f1f1f1;
+    background: #f3f4f6;
 }
+
+
 /* =========================================================
    CHAPTER SEARCH
    ========================================================= */
+
 .chapter-search-wrapper {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
+    padding: 10px;
+
+    border-bottom: 1px solid #eeeeee;
 }
+
 .chapter-search {
     width: 100%;
-    min-height: 42px;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 9px;
-    background: #fff;
-    color: inherit;
-    font-size: 15px;
-    box-sizing: border-box;
+
+    min-height: 40px;
+
+    padding: 8px 11px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #222;
+
+    font-size: 14px;
+
+    outline: none;
 }
+
 .chapter-search:focus {
-    outline: 2px solid currentColor;
-    outline-offset: 1px;
+    border-color: #999;
 }
+
+
 /* =========================================================
    CHAPTER ITEMS
    ========================================================= */
+
 #chapterListContent {
-    max-height: 420px;
+    max-height: 55vh;
+
     overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
 }
+
 .chapter-item {
-    display: block;
     width: 100%;
-    padding: 12px 16px;
+
+    display: block;
+
+    padding: 11px 13px;
+
     border: 0;
-    border-bottom: 1px solid #eee;
-    background: transparent;
-    color: inherit;
+    border-bottom: 1px solid #eeeeee;
+
+    background: #ffffff;
+    color: #333;
+
     text-align: left;
-    text-decoration: none;
+
+    font-size: 14px;
+    line-height: 1.4;
+
     cursor: pointer;
-    box-sizing: border-box;
 }
+
 .chapter-item:last-child {
     border-bottom: 0;
 }
+
 .chapter-item:hover {
-    background: #f5f5f5;
+    background: #f7f7f7;
 }
+
 .chapter-item.active {
+    background: #f0f0f0;
+
     font-weight: 700;
 }
-.chapter-item:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: -2px;
-}
+
+
 /* =========================================================
    READER
    ========================================================= */
+
 .reader {
     --reader-font-size: 18px;
     --reader-line-height: 1.7;
     --reader-width: 760px;
-    width: min(
-        100%,
-        var(--reader-width)
-    );
+
+    width: min(100%, var(--reader-width));
+
     margin: 0 auto;
 }
+
+
 /* =========================================================
    CHAPTER TITLE
    ========================================================= */
+
 .chapter-title {
-    margin:
-        0
-        0
-        30px;
-    font-size: 30px;
+    margin: 22px 0 24px;
+
+    font-size: 26px;
     line-height: 1.35;
+    font-weight: 700;
+
     text-align: center;
+
+    overflow-wrap: anywhere;
 }
+
+
 /* =========================================================
    CHAPTER CONTENT
+
+   IMPORTANT:
+   Không ép font-family / color / text-align / font-weight.
+
+   CKEditor là nguồn định dạng nội dung.
    ========================================================= */
-/*
- * QUAN TRỌNG:
- *
- * Không đặt font-family ở đây.
- *
- * Không ép màu chữ.
- *
- * Không dùng !important.
- *
- * Không ghi đè text-align.
- *
- * CKEditor vẫn được quyền quyết định
- * formatting của nội dung.
- */
+
 .chapter-content {
     font-size: var(--reader-font-size);
     line-height: var(--reader-line-height);
+
     word-break: break-word;
     overflow-wrap: anywhere;
 }
-/*
- * Chỉ đặt khoảng cách mặc định.
- */
-.chapter-content p {
-    margin:
-        0
-        0
-        1.2em;
-}
-/*
- * Heading do CKEditor tạo.
- */
-.chapter-content h2 {
-    margin:
-        1.8em
-        0
-        0.8em;
-    line-height: 1.4;
-}
-.chapter-content h3 {
-    margin:
-        1.6em
-        0
-        0.7em;
-    line-height: 1.4;
-}
-/*
- * Ảnh
- */
+
 .chapter-content img {
-    display: block;
     max-width: 100%;
     height: auto;
-    margin:
-        24px
-        auto;
-    border-radius: 8px;
+
+    display: block;
+
+    margin: 16px auto;
 }
-/*
- * Figure
- */
-.chapter-content figure {
+
+.chapter-content iframe,
+.chapter-content video {
     max-width: 100%;
-    margin:
-        24px
-        0;
 }
-.chapter-content figcaption {
-    margin-top: 8px;
-    text-align: center;
-    font-size: 0.8em;
-    opacity: 0.65;
+
+.chapter-content table {
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
 }
-/*
- * Quote
- */
-.chapter-content blockquote {
-    margin:
-        24px
-        0;
-    padding:
-        12px
-        18px;
-    border-left: 4px solid currentColor;
-    opacity: 0.85;
+
+.chapter-content pre {
+    max-width: 100%;
+    overflow-x: auto;
 }
-/*
- * List
- */
-.chapter-content ul,
-.chapter-content ol {
-    margin:
-        0
-        0
-        1.2em;
-    padding-left: 1.5em;
-}
-.chapter-content li {
-    margin-bottom: 0.4em;
-}
-/*
- * Link
- */
-.chapter-content a {
-    color: inherit;
-    text-decoration: underline;
-}
+
+
 /* =========================================================
-   BOTTOM CONTROLS
+   LOADING / EMPTY
    ========================================================= */
-.reader-controls-bottom {
-    margin-top: 40px;
-    margin-bottom: 0;
-}
-/* =========================================================
-   LOADING / ERROR
-   ========================================================= */
+
 .loading {
     padding: 30px 10px;
+
     text-align: center;
-    opacity: 0.65;
+
+    color: #777;
+
+    font-size: 14px;
 }
-.reader-error {
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+
+.empty {
+    padding: 30px 15px;
+
     text-align: center;
+
+    color: #777;
 }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+    margin-top: 40px;
+    padding: 20px 16px;
+
+    border-top: 1px solid #eeeeee;
+
+    color: #777;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
 /* =========================================================
    DARK MODE
    ========================================================= */
+
 body.reader-dark {
-    background: #121212;
-    color: #e8e8e8;
+    background: #111111;
+    color: #eeeeee;
 }
-body.reader-dark .reader-settings,
-body.reader-dark .chapter-list,
-body.reader-dark .reader-button,
+
+body.reader-dark .site-header {
+    --header-bg: rgba(17, 17, 17, 0.92);
+
+    background: rgba(17, 17, 17, 0.92);
+
+    border-bottom-color: #2b2b2b;
+}
+
+body.reader-dark .back-home {
+    color: #aaaaaa;
+}
+
+body.reader-dark .back-home:hover {
+    background: #222222;
+    color: #ffffff;
+}
+
+body.reader-dark .chapter-progress {
+    color: #999999;
+}
+
+body.reader-dark .reader-settings {
+    border-color: #2b2b2b;
+}
+
 body.reader-dark .settings-button,
-body.reader-dark .settings-select,
-body.reader-dark .chapter-search {
-    background: #1e1e1e;
-    color: #e8e8e8;
+body.reader-dark .settings-select {
     border-color: #3a3a3a;
+
+    background: #1c1c1c;
+    color: #eeeeee;
 }
-body.reader-dark .reader-button:hover,
-body.reader-dark .settings-button:hover,
-body.reader-dark .chapter-item:hover {
+
+body.reader-dark .settings-button:hover {
     background: #292929;
 }
-body.reader-dark .chapter-list-header,
-body.reader-dark .chapter-item,
+
+body.reader-dark .settings-label,
+body.reader-dark .font-size-value {
+    color: #999999;
+}
+
+body.reader-dark .reader-button {
+    border-color: #3a3a3a;
+
+    background: #1c1c1c;
+    color: #eeeeee;
+}
+
+body.reader-dark .reader-button:hover {
+    background: #292929;
+}
+
+body.reader-dark .chapter-list {
+    border-color: #333333;
+
+    background: #181818;
+}
+
+body.reader-dark .chapter-list-header {
+    border-bottom-color: #333333;
+}
+
+body.reader-dark .chapter-list-header button:hover {
+    background: #292929;
+}
+
 body.reader-dark .chapter-search-wrapper {
-    border-color: #333;
+    border-bottom-color: #333333;
 }
-body.reader-dark .chapter-list-header button {
-    color: #e8e8e8;
+
+body.reader-dark .chapter-search {
+    border-color: #3a3a3a;
+
+    background: #1c1c1c;
+    color: #eeeeee;
 }
-/*
- * Một số nội dung CKEditor có màu chữ riêng.
- *
- * Ta KHÔNG dùng !important để ép chúng.
- *
- * Vì vậy màu do tác giả đặt trong CKEditor
- * vẫn được giữ nguyên.
- */
+
+body.reader-dark .chapter-item {
+    border-bottom-color: #303030;
+
+    background: #181818;
+    color: #eeeeee;
+}
+
+body.reader-dark .chapter-item:hover {
+    background: #242424;
+}
+
+body.reader-dark .chapter-item.active {
+    background: #303030;
+}
+
+body.reader-dark .site-footer {
+    border-top-color: #2b2b2b;
+    color: #888888;
+}
+
+
 /* =========================================================
-   RESPONSIVE — TABLET
+   TABLET
    ========================================================= */
-@media (max-width: 700px) {
+
+@media (min-width: 700px) {
+
     .reader-container {
-        width: min(
-            calc(100% - 24px),
-            760px
-        );
-        padding-top: 18px;
+        padding-left: 24px;
+        padding-right: 24px;
     }
-    .reader-settings {
-        gap: 8px;
-    }
-    .reader-controls {
-        gap: 7px;
-    }
-    .reader-button {
-        min-height: 42px;
-        padding:
-            9px
-            8px;
-        font-size: 13px;
-    }
-    .chapter-title {
-        font-size: 25px;
-        margin-bottom: 24px;
-    }
-}
-/* =========================================================
-   RESPONSIVE — IPHONE
-   ========================================================= */
-@media (max-width: 480px) {
-    .reader-container {
-        width: calc(100% - 20px);
+
+    .reader-home {
         padding-top: 14px;
-        padding-bottom: 40px;
     }
+
     .book-title {
-        font-size: 21px;
+        font-size: 22px;
     }
-    .chapter-progress {
+
+    .chapter-title {
+        font-size: 30px;
+        margin-top: 28px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .reader-container {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 30px;
+    }
+
+    .header-inner {
+        min-height: 48px;
+
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .logo {
+        font-size: 15px;
+    }
+
+    .reader-home {
+        padding-top: 7px;
+    }
+
+    .back-home {
+        min-height: 34px;
+
+        padding-left: 7px;
+        padding-right: 7px;
+
         font-size: 13px;
     }
-    /*
-     * Settings
-     */
+
+    .reader-book {
+        padding-top: 5px;
+        padding-bottom: 8px;
+    }
+
+    .book-title {
+        font-size: 19px;
+    }
+
+    .chapter-progress {
+        font-size: 12px;
+    }
+
+
+    /* Settings */
+
     .reader-settings {
-        display: grid;
-        grid-template-columns:
-            auto
-            1fr
-            auto;
-        align-items: center;
-        gap: 6px;
-        padding: 8px;
-        border-radius: 10px;
+        gap: 5px;
+
+        padding: 7px 0;
     }
-    .font-size-control {
-        justify-content: center;
+
+    .settings-button {
+        min-width: 36px;
+        min-height: 34px;
+
+        padding: 4px 7px;
+
+        font-size: 14px;
     }
+
+    .settings-select {
+        min-height: 34px;
+
+        padding: 4px 5px;
+
+        font-size: 12px;
+    }
+
     .settings-label {
         display: none;
     }
-    .settings-select {
-        min-height: 40px;
-    }
-    .settings-button {
-        min-width: 40px;
-        min-height: 40px;
-    }
-    /*
-     * Navigation
-     */
-    .reader-controls {
-        gap: 6px;
-    }
-    .reader-button {
-        min-height: 44px;
-        padding:
-            8px
-            5px;
+
+    .font-size-value {
+        min-width: 38px;
+
         font-size: 12px;
     }
-    /*
-     * Reader
-     */
-    .reader {
-        width: 100%;
+
+
+    /* Navigation */
+
+    .reader-controls {
+        gap: 5px;
+
+        margin: 8px 0;
     }
+
+    .reader-button {
+        min-height: 40px;
+
+        padding: 7px 5px;
+
+        font-size: 12px;
+    }
+
+
+    /* Chapter */
+
     .chapter-title {
+        margin-top: 20px;
+        margin-bottom: 20px;
+
         font-size: 23px;
         line-height: 1.35;
-        margin-bottom: 22px;
     }
+
     .chapter-content {
-        /*
-         * Giữ cỡ chữ người đọc chọn.
-         */
         font-size: var(--reader-font-size);
-        line-height: var(--reader-line-height);
     }
-    .chapter-content p {
-        margin-bottom: 1.15em;
-    }
-    .chapter-content img {
-        max-width: 100%;
-        height: auto;
-        margin:
-            20px
-            auto;
-    }
-    /*
-     * Chapter list
-     */
-    #chapterListContent {
-        max-height: 55vh;
-    }
-    /*
-     * Bottom navigation
-     */
+
+
+    /* Bottom navigation */
+
     .reader-controls-bottom {
-        margin-top: 30px;
+        margin-top: 24px;
     }
+
 }
+
+
 /* =========================================================
-   RESPONSIVE — SMALL IPHONE
+   VERY SMALL IPHONE
    ========================================================= */
+
 @media (max-width: 360px) {
+
     .reader-container {
-        width: calc(100% - 16px);
+        padding-left: 9px;
+        padding-right: 9px;
     }
+
+    .logo {
+        font-size: 14px;
+    }
+
+    .book-title {
+        font-size: 18px;
+    }
+
     .reader-settings {
-        grid-template-columns:
-            1fr
-            1fr;
+        gap: 3px;
     }
-    .theme-button {
-        justify-self: center;
+
+    .settings-button {
+        min-width: 34px;
+
+        padding-left: 5px;
+        padding-right: 5px;
     }
-    .font-size-control {
-        width: 100%;
-        justify-content: center;
-    }
-    .settings-control {
-        width: 100%;
-    }
+
     .settings-select {
-        width: 100%;
+        max-width: 66px;
     }
+
     .reader-controls {
-        flex-direction: column;
+        grid-template-columns: 1fr 1fr;
     }
-    .reader-button {
-        width: 100%;
+
+    /*
+     * Danh sách chương nằm riêng một hàng
+     */
+
+    #chapterListButton {
+        grid-column: 1 / -1;
+        grid-row: 1;
     }
+
+    #prevChapter {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    #nextChapter {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .reader-controls-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .chapter-title {
+        font-size: 21px;
+    }
+
 }
