@@ -1,26 +1,25 @@
 $(document).ready(function () {
 
-    let novelId = null;
-    let chapterId = null;
+    /* =========================================================
+       CONFIG
+    ========================================================= */
+
+    const params = new URLSearchParams(window.location.search);
+
+    const novelId = params.get("novel");
+    let chapterId = params.get("chapter");
 
     let novel = null;
     let chapters = [];
-
     let currentChapterIndex = -1;
 
-
-    // ==============================
-    // Đọc URL
-    // ==============================
-
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    let restoringScroll = false;
+    let scrollSaveTimer = null;
 
 
-    novelId = params.get("novel");
-    chapterId = params.get("chapter");
-
+    /* =========================================================
+       CHECK NOVEL ID
+    ========================================================= */
 
     if (!novelId) {
 
@@ -30,519 +29,866 @@ $(document).ready(function () {
     }
 
 
-    // ==============================
-    // Load dữ liệu
-    // ==============================
+    /* =========================================================
+       HELPERS
+    ========================================================= */
 
-    loadNovel();
+    function normalizeText(text) {
 
-
-    // ==============================
-    // Load thông tin truyện
-    // ==============================
-
-    function loadNovel() {
-
-        $.getJSON(
-            `data/novels/${encodeURIComponent(novelId)}/info.json`
-        )
-
-        .done(function (data) {
-
-            novel = data;
-
-            $("#bookTitle")
-                .text(novel.title)
-                .attr(
-                    "href",
-                    `reader.html?novel=${encodeURIComponent(novelId)}`
-                );
-
-
-            document.title =
-                novel.title + " - Đọc truyện";
-
-
-            loadChapters();
-
-        })
-
-        .fail(function () {
-
-            showError(
-                "Không tìm thấy truyện."
-            );
-
-        });
-
+        return String(text || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
     }
 
 
-    // ==============================
-    // Load danh sách chương
-    // ==============================
+    function getNovelBasePath() {
 
-    function loadChapters() {
-
-        $.getJSON(
-            `data/novels/${encodeURIComponent(novelId)}/chapters.json`
-        )
-
-        .done(function (data) {
-
-            chapters = data || [];
+        return `data/novels/${encodeURIComponent(novelId)}`;
+    }
 
 
-            if (chapters.length === 0) {
+    function getChapterUrl(id) {
 
-                showError(
-                    "Truyện chưa có chương nào."
-                );
+        return `${getNovelBasePath()}/${encodeURIComponent(id)}.json`;
+    }
 
-                return;
+
+    function updateUrl(id) {
+
+        const url =
+            `reader.html?novel=${encodeURIComponent(novelId)}&chapter=${encodeURIComponent(id)}`;
+
+        window.history.replaceState({}, "", url);
+    }
+
+
+    function showError(message) {
+
+        $("#chapterContent").html(`
+            <div class="empty">
+                ${escapeHtml(message)}
+            </div>
+        `);
+    }
+
+
+    function escapeHtml(text) {
+
+        return String(text || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =========================================================
+       LOAD NOVEL
+    ========================================================= */
+
+    async function loadNovel() {
+
+        try {
+
+            const basePath = getNovelBasePath();
+
+            const [infoResponse, chaptersResponse] =
+                await Promise.all([
+
+                    fetch(`${basePath}/info.json`, {
+                        cache: "default"
+                    }),
+
+                    fetch(`${basePath}/chapters.json`, {
+                        cache: "default"
+                    })
+
+                ]);
+
+
+            if (!infoResponse.ok) {
+                throw new Error("Không thể tải thông tin truyện.");
             }
 
 
-            renderChapterList();
+            if (!chaptersResponse.ok) {
+                throw new Error("Không thể tải danh sách chương.");
+            }
 
 
-            // Nếu không truyền chapter
-            // → mở chương đầu tiên
+            novel = await infoResponse.json();
+
+            chapters = await chaptersResponse.json();
+
+
+            if (!Array.isArray(chapters)) {
+
+                throw new Error(
+                    "Dữ liệu danh sách chương không hợp lệ."
+                );
+            }
+
+
+            /* =================================================
+               BOOK INFORMATION
+            ================================================= */
+
+            document.title =
+                `${novel.title || "Đọc truyện"} - Thư viện truyện`;
+
+
+            $("#bookTitle")
+                .text(novel.title || "Không có tên truyện")
+                .attr(
+                    "href",
+                    `index.html`
+                );
+
+
+            /*
+             * Nếu URL không có chapter:
+             *
+             * 1. Lấy chương đang đọc dở
+             * 2. Nếu không có -> mở chương mới nhất
+             * 3. Nếu vẫn không có -> chương đầu
+             */
 
             if (!chapterId) {
 
-                const saved =
-                    getSavedChapter();
+                const progress =
+                    window.ReaderStorage
+                        ? ReaderStorage.getNovelProgress(novelId)
+                        : null;
 
 
-                if (saved) {
+                if (
+                    progress &&
+                    progress.chapterId &&
+                    chapters.some(
+                        c => String(c.id) === String(progress.chapterId)
+                    )
+                ) {
 
-                    chapterId = saved;
+                    chapterId = String(progress.chapterId);
 
-                } else {
+                } else if (chapters.length > 0) {
 
                     chapterId =
-                        chapters[0].id;
+                        String(chapters[chapters.length - 1].id);
 
                 }
 
             }
 
 
-            currentChapterIndex =
-                chapters.findIndex(function (chapter) {
+            if (!chapterId) {
 
-                    return chapter.id === chapterId;
+                showError("Truyện chưa có chương.");
 
-                });
-
-
-            // Không tìm thấy chương
-            // → mở chương đầu tiên
-
-            if (currentChapterIndex === -1) {
-
-                currentChapterIndex = 0;
-
-                chapterId =
-                    chapters[0].id;
-
+                return;
             }
 
 
-            loadChapter();
+            await loadChapter(chapterId);
 
-        })
 
-        .fail(function () {
+        } catch (error) {
+
+            console.error(error);
 
             showError(
-                "Không thể tải danh sách chương."
+                error.message ||
+                "Không thể tải truyện."
             );
-
-        });
-
+        }
     }
 
 
-    // ==============================
-    // Load chương
-    // ==============================
+    /* =========================================================
+       LOAD CHAPTER
+    ========================================================= */
 
-    function loadChapter() {
+    async function loadChapter(id, options = {}) {
 
-        const chapter =
-            chapters[currentChapterIndex];
+        const shouldRestore =
+            options.restoreScroll !== false;
 
 
-        if (!chapter) {
+        const index = chapters.findIndex(
+            chapter =>
+                String(chapter.id) === String(id)
+        );
 
-            showError(
-                "Không tìm thấy chương."
-            );
+
+        if (index === -1) {
+
+            showError("Không tìm thấy chương.");
 
             return;
         }
 
 
-        chapterId = chapter.id;
+        currentChapterIndex = index;
 
 
-        $("#chapterTitle")
-            .text("Đang tải...");
+        try {
 
-
-        $("#chapterContent")
-            .html(`
+            $("#chapterContent").html(`
                 <div class="loading">
                     Đang tải chương...
                 </div>
             `);
 
 
-        $.getJSON(
+            const response =
+                await fetch(
+                    getChapterUrl(id),
+                    {
+                        cache: "default"
+                    }
+                );
 
-            `data/novels/${encodeURIComponent(novelId)}/${encodeURIComponent(chapterId)}.json`
 
-        )
+            if (!response.ok) {
 
-        .done(function (data) {
+                throw new Error(
+                    "Không thể tải nội dung chương."
+                );
+            }
 
-            renderChapter(data);
 
-        })
+            const chapter =
+                await response.json();
 
-        .fail(function () {
+
+            /* =================================================
+               TITLE
+            ================================================= */
+
+            $("#chapterTitle")
+                .text(
+                    chapter.title ||
+                    chapters[index].title ||
+                    `Chương ${id}`
+                );
+
+
+            /* =================================================
+               CONTENT
+            ================================================= */
+
+            $("#chapterContent")
+                .html(
+                    chapter.content || "<p>Chương này chưa có nội dung.</p>"
+                );
+
+
+            /* =================================================
+               PROGRESS
+            ================================================= */
+
+            $("#chapterProgress")
+                .text(
+                    `Chương ${index + 1} / ${chapters.length}`
+                );
+
+
+            /* =================================================
+               URL
+            ================================================= */
+
+            updateUrl(id);
+
+
+            /* =================================================
+               NAVIGATION
+            ================================================= */
+
+            updateNavigation();
+
+
+            /* =================================================
+               CHAPTER LIST
+            ================================================= */
+
+            renderChapterList();
+
+
+            /* =================================================
+               READING HISTORY
+            ================================================= */
+
+            if (window.ReaderStorage) {
+
+                ReaderStorage.addHistory(
+                    novelId,
+                    String(id)
+                );
+            }
+
+
+            /* =================================================
+               RESTORE SCROLL
+            ================================================= */
+
+            if (shouldRestore) {
+
+                restoreScrollPosition(id);
+
+            } else {
+
+                window.scrollTo(0, 0);
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
 
             showError(
-                "Không thể tải nội dung chương."
+                error.message ||
+                "Không thể tải chương."
             );
-
-        });
-
+        }
     }
 
 
-    // ==============================
-    // Render chương
-    // ==============================
-
-    function renderChapter(data) {
-
-        $("#chapterTitle")
-            .text(data.title || "Không có tiêu đề");
-
-
-        $("#chapterContent")
-            .html(data.content || "<p>Chương này chưa có nội dung.</p>");
-
-
-        $("#chapterProgress")
-            .text(
-                `Chương ${currentChapterIndex + 1} / ${chapters.length}`
-            );
-
-
-        updateNavigation();
-
-
-        saveCurrentChapter();
-
-
-        updateUrl();
-
-
-        renderChapterList();
-
-
-        // Cuộn lên đầu
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }
-
-
-    // ==============================
-    // Navigation
-    // ==============================
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
 
     function updateNavigation() {
 
-        const isFirst =
-            currentChapterIndex <= 0;
+        const hasPrevious =
+            currentChapterIndex > 0;
 
 
-        const isLast =
-            currentChapterIndex >= chapters.length - 1;
+        const hasNext =
+            currentChapterIndex <
+            chapters.length - 1;
 
 
         $("#prevChapter")
-            .prop("disabled", isFirst);
+            .prop("disabled", !hasPrevious);
 
 
         $("#prevChapterBottom")
-            .prop("disabled", isFirst);
+            .prop("disabled", !hasPrevious);
 
 
         $("#nextChapter")
-            .prop("disabled", isLast);
+            .prop("disabled", !hasNext);
 
 
         $("#nextChapterBottom")
-            .prop("disabled", isLast);
+            .prop("disabled", !hasNext);
 
+
+        /*
+         * Nếu không có chương trước/sau,
+         * vẫn giữ button nhưng disable.
+         */
+
+        if (!hasPrevious) {
+
+            $("#prevChapter")
+                .addClass("disabled");
+
+            $("#prevChapterBottom")
+                .addClass("disabled");
+
+        } else {
+
+            $("#prevChapter")
+                .removeClass("disabled");
+
+            $("#prevChapterBottom")
+                .removeClass("disabled");
+        }
+
+
+        if (!hasNext) {
+
+            $("#nextChapter")
+                .addClass("disabled");
+
+            $("#nextChapterBottom")
+                .addClass("disabled");
+
+        } else {
+
+            $("#nextChapter")
+                .removeClass("disabled");
+
+            $("#nextChapterBottom")
+                .removeClass("disabled");
+        }
     }
 
 
-    function goPrevious() {
+    function goPreviousChapter() {
 
         if (currentChapterIndex <= 0) {
             return;
         }
 
 
-        currentChapterIndex--;
+        saveCurrentScroll();
 
-        loadChapter();
 
+        const previous =
+            chapters[currentChapterIndex - 1];
+
+
+        loadChapter(
+            String(previous.id),
+            {
+                restoreScroll: false
+            }
+        );
     }
 
 
-    function goNext() {
+    function goNextChapter() {
 
         if (
-            currentChapterIndex >=
-            chapters.length - 1
+            currentChapterIndex === -1 ||
+            currentChapterIndex >= chapters.length - 1
         ) {
+
             return;
         }
 
 
-        currentChapterIndex++;
+        saveCurrentScroll();
 
-        loadChapter();
 
+        const next =
+            chapters[currentChapterIndex + 1];
+
+
+        loadChapter(
+            String(next.id),
+            {
+                restoreScroll: false
+            }
+        );
     }
 
 
-    $("#prevChapter").on(
-        "click",
-        goPrevious
-    );
+    /* =========================================================
+       CHAPTER LIST
+    ========================================================= */
+
+    function renderChapterList(filter = "") {
+
+        const keyword =
+            normalizeText(filter);
 
 
-    $("#prevChapterBottom").on(
-        "click",
-        goPrevious
-    );
+        const filtered =
+            chapters.filter(chapter => {
+
+                if (!keyword) {
+                    return true;
+                }
 
 
-    $("#nextChapter").on(
-        "click",
-        goNext
-    );
+                const title =
+                    normalizeText(
+                        chapter.title
+                    );
 
 
-    $("#nextChapterBottom").on(
-        "click",
-        goNext
-    );
+                const id =
+                    normalizeText(
+                        chapter.id
+                    );
 
 
-    // ==============================
-    // Chapter list
-    // ==============================
+                return (
+                    title.includes(keyword) ||
+                    id.includes(keyword)
+                );
+            });
 
-    $("#chapterListButton").on(
-        "click",
-        function () {
 
-            $("#chapterList")
-                .toggleClass("hidden");
+        if (!filtered.length) {
 
+            $("#chapterListContent").html(`
+                <div class="empty">
+                    Không tìm thấy chương.
+                </div>
+            `);
+
+            return;
         }
-    );
 
-
-    $("#closeChapterList").on(
-        "click",
-        function () {
-
-            $("#chapterList")
-                .addClass("hidden");
-
-        }
-    );
-
-
-    function renderChapterList() {
 
         let html = "";
 
 
-        chapters.forEach(
-            function (chapter, index) {
+        filtered.forEach(chapter => {
 
-                const active =
-                    index === currentChapterIndex
-                        ? "active"
-                        : "";
+            const id =
+                String(chapter.id);
 
 
-                html += `
+            const active =
+                id === String(chapterId);
 
-                    <a
-                        href="reader.html?novel=${encodeURIComponent(novelId)}&chapter=${encodeURIComponent(chapter.id)}"
-                        class="chapter-item ${active}"
-                    >
 
-                        <span>
-                            ${index + 1}.
-                            ${escapeHtml(chapter.title)}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }
-        );
+            html += `
+                <button
+                    type="button"
+                    class="chapter-item ${active ? "active" : ""}"
+                    data-chapter-id="${escapeHtml(id)}"
+                >
+                    ${escapeHtml(
+                        chapter.title ||
+                        `Chương ${id}`
+                    )}
+                </button>
+            `;
+        });
 
 
         $("#chapterListContent")
             .html(html);
-
     }
 
 
-    // ==============================
-    // URL
-    // ==============================
+    /* =========================================================
+       OPEN / CLOSE CHAPTER LIST
+    ========================================================= */
 
-    function updateUrl() {
+    $("#chapterListButton").on("click", function () {
 
-        const url =
-            `reader.html?novel=${encodeURIComponent(novelId)}&chapter=${encodeURIComponent(chapterId)}`;
+        $("#chapterList")
+            .toggleClass("hidden");
 
 
-        window.history.replaceState(
-            {},
-            "",
-            url
+        renderChapterList();
+    });
+
+
+    $("#closeChapterList").on("click", function () {
+
+        $("#chapterList")
+            .addClass("hidden");
+    });
+
+
+    $(document).on(
+        "click",
+        ".chapter-item",
+        function () {
+
+            const id =
+                String(
+                    $(this).data("chapter-id")
+                );
+
+
+            $("#chapterList")
+                .addClass("hidden");
+
+
+            saveCurrentScroll();
+
+
+            loadChapter(
+                id,
+                {
+                    restoreScroll: false
+                }
+            );
+        }
+    );
+
+
+    /* =========================================================
+       CHAPTER SEARCH
+       
+       Tạo search box nếu reader.html chưa có.
+    ========================================================= */
+
+    function ensureChapterSearch() {
+
+        if ($("#chapterSearch").length) {
+            return;
+        }
+
+
+        $("#chapterListContent").before(`
+            <div class="chapter-search-wrapper">
+
+                <input
+                    type="search"
+                    id="chapterSearch"
+                    class="chapter-search"
+                    placeholder="Tìm chương..."
+                    autocomplete="off"
+                >
+
+            </div>
+        `);
+    }
+
+
+    ensureChapterSearch();
+
+
+    $(document).on(
+        "input",
+        "#chapterSearch",
+        function () {
+
+            renderChapterList(
+                $(this).val()
+            );
+        }
+    );
+
+
+    /* =========================================================
+       SCROLL PROGRESS
+    ========================================================= */
+
+    function getScrollPosition() {
+
+        return Math.max(
+            window.scrollY ||
+            window.pageYOffset ||
+            0,
+            0
         );
-
     }
 
 
-    // ==============================
-    // LocalStorage
-    // ==============================
+    function saveCurrentScroll() {
 
-    function storageKey() {
-
-        return `reading_${novelId}`;
-
-    }
+        if (!window.ReaderStorage) {
+            return;
+        }
 
 
-    function saveCurrentChapter() {
+        if (!chapterId) {
+            return;
+        }
 
-        localStorage.setItem(
-            storageKey(),
-            chapterId
+
+        ReaderStorage.saveProgress(
+            novelId,
+            String(chapterId),
+            getScrollPosition()
         );
-
     }
 
 
-    function getSavedChapter() {
+    function restoreScrollPosition(id) {
 
-        return localStorage.getItem(
-            storageKey()
-        );
+        if (!window.ReaderStorage) {
+            return;
+        }
 
+
+        const progress =
+            ReaderStorage.getNovelProgress(
+                novelId
+            );
+
+
+        if (
+            !progress ||
+            String(progress.chapterId) !== String(id)
+        ) {
+
+            window.scrollTo(0, 0);
+
+            return;
+        }
+
+
+        const scroll =
+            Number(progress.scroll || 0);
+
+
+        if (scroll <= 0) {
+
+            window.scrollTo(0, 0);
+
+            return;
+        }
+
+
+        restoringScroll = true;
+
+
+        /*
+         * Chờ DOM render hoàn toàn.
+         */
+
+        setTimeout(function () {
+
+            window.scrollTo(
+                0,
+                scroll
+            );
+
+
+            setTimeout(function () {
+
+                restoringScroll = false;
+
+            }, 100);
+
+        }, 100);
     }
 
 
-    // ==============================
-    // Keyboard
-    // ==============================
+    $(window).on("scroll", function () {
+
+        if (restoringScroll) {
+            return;
+        }
+
+
+        clearTimeout(scrollSaveTimer);
+
+
+        scrollSaveTimer =
+            setTimeout(function () {
+
+                saveCurrentScroll();
+
+            }, 500);
+    });
+
+
+    $(window).on(
+        "beforeunload",
+        function () {
+
+            saveCurrentScroll();
+        }
+    );
+
+
+    /* =========================================================
+       KEYBOARD NAVIGATION
+    ========================================================= */
 
     $(document).on(
         "keydown",
         function (event) {
 
-            // ←
+            /*
+             * Không bắt phím nếu đang nhập text.
+             */
+
+            const tag =
+                document.activeElement
+                    ? document.activeElement.tagName
+                    : "";
+
+
             if (
-                event.key === "ArrowLeft" &&
-                !isTypingTarget(event.target)
+                tag === "INPUT" ||
+                tag === "TEXTAREA" ||
+                tag === "SELECT"
             ) {
 
-                goPrevious();
-
+                return;
             }
 
 
-            // →
-            if (
-                event.key === "ArrowRight" &&
-                !isTypingTarget(event.target)
-            ) {
+            if (event.key === "ArrowLeft") {
 
-                goNext();
-
+                goPreviousChapter();
             }
 
+
+            if (event.key === "ArrowRight") {
+
+                goNextChapter();
+            }
         }
     );
 
 
-    function isTypingTarget(target) {
+    /* =========================================================
+       BUTTON EVENTS
+    ========================================================= */
 
-        const tag =
-            target.tagName.toLowerCase();
-
-
-        return (
-            tag === "input" ||
-            tag === "textarea" ||
-            target.isContentEditable
+    $("#prevChapter")
+        .on(
+            "click",
+            goPreviousChapter
         );
 
-    }
+
+    $("#prevChapterBottom")
+        .on(
+            "click",
+            goPreviousChapter
+        );
 
 
-    // ==============================
-    // Error
-    // ==============================
-
-    function showError(message) {
-
-        $("#chapterContent").html(`
-            <div class="error">
-                ${escapeHtml(message)}
-            </div>
-        `);
-
-    }
+    $("#nextChapter")
+        .on(
+            "click",
+            goNextChapter
+        );
 
 
-    // ==============================
-    // Escape
-    // ==============================
+    $("#nextChapterBottom")
+        .on(
+            "click",
+            goNextChapter
+        );
 
-    function escapeHtml(value) {
 
-        return String(value)
+    /* =========================================================
+       CLOSE CHAPTER LIST WHEN CLICKING OUTSIDE
+    ========================================================= */
 
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+    $(document).on(
+        "click",
+        function (event) {
 
-    }
+            const list =
+                $("#chapterList")[0];
+
+
+            const button =
+                $("#chapterListButton")[0];
+
+
+            if (!list || !button) {
+                return;
+            }
+
+
+            if (
+                !list.contains(event.target) &&
+                !button.contains(event.target)
+            ) {
+
+                $("#chapterList")
+                    .addClass("hidden");
+            }
+        }
+    );
+
+
+    /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
+
+    loadNovel();
 
 });
