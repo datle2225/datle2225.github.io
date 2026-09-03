@@ -52,7 +52,7 @@
             return novel.cover;
         }
 
-        return "images/default-cover.jpg";
+        return "images/default.jpg";
     }
 
     function getStatusClass(status) {
