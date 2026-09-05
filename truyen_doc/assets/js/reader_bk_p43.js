@@ -278,18 +278,6 @@ $(document).ready(function () {
                     `${novel.title} - ${chapter.title}`;
             
             }
-            
-                        /* =================================================
-               MONETIZATION
-            ================================================= */
-            
-            if (window.ReaderMonetization) {
-            
-               ReaderMonetization.render(
-                    chapter.monetization || {}
-                );
-            
-            }
 
 
             /* =================================================
