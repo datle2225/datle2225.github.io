@@ -287,6 +287,18 @@ $(document).ready(function () {
             
             }
             
+                        /* =================================================
+               MONETIZATION
+            ================================================= */
+            
+            if (window.ReaderMonetization) {
+            
+               ReaderMonetization.render(
+                    chapter.monetization || {}
+                );
+            
+            }
+
 
             /* =================================================
                TITLE
@@ -308,19 +320,7 @@ $(document).ready(function () {
                 .html(
                     chapter.content || "<p>Chương này chưa có nội dung.</p>"
                 );
-                
-            
-                        /* =================================================
-               MONETIZATION
-            ================================================= */
-            
-            if (window.ReaderMonetization) {
-            
-               ReaderMonetization.render(
-                    chapter.monetization || {}
-                );
-            
-            }
+
 
             /* =================================================
                PROGRESS
