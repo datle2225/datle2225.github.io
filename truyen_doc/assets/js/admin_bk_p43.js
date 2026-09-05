@@ -1511,161 +1511,6 @@
 
         }
     );
-    
-        // ==========================================
-    // MONETIZATION
-    // ==========================================
-    
-    function getMonetizationFromForm() {
-    
-        const affiliateEnabled =
-            $("#affiliate-enabled")
-                .prop("checked");
-    
-    
-        const affiliateUrl =
-            $("#affiliate-url")
-                .val()
-                .trim();
-    
-    
-        const adsEnabled =
-            $("#ads-enabled")
-                .prop("checked");
-    
-    
-        if (
-            affiliateEnabled &&
-            !isValidAffiliateUrl(affiliateUrl)
-        ) {
-    
-            throw new Error(
-                "Affiliate đang bật nhưng Link Affiliate không hợp lệ."
-            );
-    
-        }
-    
-    
-        return {
-    
-            affiliate: {
-    
-                enabled:
-                    affiliateEnabled,
-    
-                url:
-                    affiliateUrl
-    
-            },
-    
-            ads: {
-    
-                enabled:
-                    adsEnabled
-    
-            }
-    
-        };
-    
-    }
-    
-    
-    function fillMonetizationForm(
-        monetization
-    ) {
-    
-        const data =
-            monetization || {};
-    
-    
-        const affiliate =
-            data.affiliate || {};
-    
-    
-        const ads =
-            data.ads || {};
-    
-    
-        $("#affiliate-enabled")
-            .prop(
-                "checked",
-                affiliate.enabled === true
-            );
-    
-    
-        $("#affiliate-url")
-            .val(
-                affiliate.url || ""
-            );
-    
-    
-        $("#ads-enabled")
-            .prop(
-                "checked",
-                ads.enabled === true
-            );
-    
-    
-        updateAffiliateSettingsVisibility();
-    
-    }
-    
-    
-    function clearMonetizationForm() {
-    
-        $("#affiliate-enabled")
-            .prop(
-                "checked",
-                false
-            );
-    
-    
-        $("#affiliate-url")
-            .val("");
-    
-    
-        $("#ads-enabled")
-            .prop(
-                "checked",
-                false
-            );
-    
-    
-        updateAffiliateSettingsVisibility();
-    
-    }
-    
-    
-    function updateAffiliateSettingsVisibility() {
-    
-        const enabled =
-            $("#affiliate-enabled")
-                .prop("checked");
-    
-    
-        if (enabled) {
-    
-            $("#affiliate-settings")
-                .removeClass("hidden");
-    
-        } else {
-    
-            $("#affiliate-settings")
-                .addClass("hidden");
-    
-        }
-    
-    }
-    
-    
-    $("#affiliate-enabled").on(
-        "change",
-        function () {
-    
-            updateAffiliateSettingsVisibility();
-    
-        }
-    );
 
 
 
@@ -1721,7 +1566,6 @@
 
 
             await initEditor("");
-            clearMonetizationForm();
 
 
             clearDraft();
@@ -1843,10 +1687,6 @@
 
             await initEditor(
                 chapter.content || ""
-            );
-            
-            fillMonetizationForm(
-                chapter.monetization || {}
             );
 
 
@@ -2045,9 +1885,6 @@
 
                 const content =
                     editor.getData();
-                
-                const monetization =
-            getMonetizationFromForm();
 
 
                 if (
@@ -2116,13 +1953,11 @@
 
                     id:
                         chapterId,
-                
+
                     title,
-                
-                    content,
-                
-                    monetization
-                
+
+                    content
+
                 };
 
 
@@ -2805,47 +2640,22 @@
 
             novelId:
                 selectedNovelId,
-        
+
             chapterId:
                 $("#chapter-id")
                     .val(),
-        
+
             title:
                 $("#chapter-title")
                     .val(),
-        
+
             content:
                 editor.getData(),
-        
-            monetization:
-                {
-                    affiliate: {
-        
-                        enabled:
-                            $("#affiliate-enabled")
-                                .prop("checked"),
-        
-                        url:
-                            $("#affiliate-url")
-                                .val()
-                                .trim()
-        
-                    },
-        
-                    ads: {
-        
-                        enabled:
-                            $("#ads-enabled")
-                                .prop("checked")
-        
-                    }
-        
-                },
-        
+
             savedAt:
                 new Date()
                     .toISOString()
-        
+
         };
 
 
@@ -2921,10 +2731,6 @@
                 .val(
                     draft.title
                 );
-                
-            fillMonetizationForm(
-                draft.monetization || {}
-            );
 
 
             initEditor(
@@ -3090,34 +2896,6 @@
 
         }
 
-    }
-    
-    function validateAffiliateUrl(
-        url
-    ) {
-    
-        if (!url) {
-            return false;
-        }
-    
-    
-        try {
-    
-            const parsed =
-                new URL(url);
-    
-    
-            return (
-                parsed.protocol === "https:" ||
-                parsed.protocol === "http:"
-            );
-    
-        } catch (error) {
-    
-            return false;
-    
-        }
-    
     }
 
 

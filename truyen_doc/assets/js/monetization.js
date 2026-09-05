@@ -3,18 +3,11 @@
     "use strict";
 
 
-    /* =====================================================
-       CONFIG
-       ===================================================== */
+    // ==========================================
+    // HELPERS
+    // ==========================================
 
-    const DEFAULT_AD_ENABLED = false;
-
-
-    /* =====================================================
-       HELPERS
-       ===================================================== */
-
-    function isValidAffiliateUrl(url) {
+    function isValidUrl(url) {
 
         if (!url) {
             return false;
@@ -35,129 +28,209 @@
         } catch (error) {
 
             return false;
+
         }
+
     }
 
 
-    /* =====================================================
-       AFFILIATE CTA
-       ===================================================== */
+    // ==========================================
+    // AFFILIATE POPUP
+    // ==========================================
 
-    function renderAffiliate(container, affiliate) {
+    function showAffiliatePopup(
+        affiliate
+    ) {
 
-        if (!container) {
+        if (
+            !affiliate ||
+            !affiliate.enabled ||
+            !isValidUrl(affiliate.url)
+        ) {
+
             return;
+
         }
 
 
-        if (!affiliate) {
-            return;
+        const existing =
+            document.getElementById(
+                "affiliatePopup"
+            );
+
+
+        if (existing) {
+
+            existing.remove();
+
         }
 
 
-        if (!affiliate.enabled) {
-            return;
-        }
-
-
-        if (!isValidAffiliateUrl(affiliate.url)) {
-            return;
-        }
-
-
-        container.innerHTML = "";
-
-
-        const card =
+        const overlay =
             document.createElement("div");
 
-        card.className =
-            "affiliate-card";
+
+        overlay.id =
+            "affiliatePopup";
+
+        overlay.className =
+            "affiliate-popup";
+
+
+        const box =
+            document.createElement("div");
+
+
+        box.className =
+            "affiliate-popup-box";
 
 
         const icon =
             document.createElement("div");
 
+
         icon.className =
-            "affiliate-icon";
+            "affiliate-popup-icon";
 
-        icon.textContent = "🛍️";
-
-
-        const content =
-            document.createElement("div");
-
-        content.className =
-            "affiliate-content";
+        icon.textContent =
+            "🛍️";
 
 
         const title =
-            document.createElement("div");
+            document.createElement("h2");
+
 
         title.className =
-            "affiliate-title";
+            "affiliate-popup-title";
 
         title.textContent =
             "Ủng hộ chúng mình";
 
 
         const description =
-            document.createElement("div");
+            document.createElement("p");
+
 
         description.className =
-            "affiliate-description";
+            "affiliate-popup-description";
 
         description.textContent =
             "Nếu bạn có nhu cầu mua sắm, bạn có thể tham khảo sản phẩm qua link bên dưới để ủng hộ chúng mình duy trì trang nhé.";
 
 
-        const link =
+        const affiliateButton =
             document.createElement("a");
 
-        link.className =
-            "affiliate-button";
 
-        link.textContent =
-            "🛒 Xem sản phẩm trên Shopee";
+        affiliateButton.className =
+            "affiliate-popup-button";
 
-        link.href =
+
+        affiliateButton.textContent =
+            "🛒 Xem sản phẩm";
+
+
+        affiliateButton.href =
             affiliate.url;
 
-        link.target =
+
+        affiliateButton.target =
             "_blank";
 
-        link.rel =
+
+        affiliateButton.rel =
             "nofollow sponsored noopener";
 
 
-        content.appendChild(title);
-
-        content.appendChild(description);
-
-        content.appendChild(link);
+        const continueButton =
+            document.createElement("button");
 
 
-        card.appendChild(icon);
+        continueButton.type =
+            "button";
 
-        card.appendChild(content);
+
+        continueButton.className =
+            "affiliate-popup-continue";
 
 
-        container.appendChild(card);
+        continueButton.textContent =
+            "Tiếp tục đọc";
+
+
+        continueButton.addEventListener(
+            "click",
+            function () {
+
+                closeAffiliatePopup();
+
+            }
+        );
+
+
+        box.appendChild(icon);
+
+        box.appendChild(title);
+
+        box.appendChild(description);
+
+        box.appendChild(
+            affiliateButton
+        );
+
+        box.appendChild(
+            continueButton
+        );
+
+
+        overlay.appendChild(box);
+
+        document.body.appendChild(
+            overlay
+        );
+
+
+        document.body.classList.add(
+            "affiliate-popup-open"
+        );
+
     }
 
 
-    /* =====================================================
-       AD SLOT
-       ===================================================== */
+    function closeAffiliatePopup() {
 
-    function renderAd(container, position, ads) {
+        const popup =
+            document.getElementById(
+                "affiliatePopup"
+            );
 
-        if (!container) {
+
+        if (!popup) {
             return;
         }
 
 
-        if (!ads || !ads.enabled) {
+        popup.remove();
+
+
+        document.body.classList.remove(
+            "affiliate-popup-open"
+        );
+
+    }
+
+
+    // ==========================================
+    // ADS
+    // ==========================================
+
+    function renderAd(
+        container,
+        position,
+        ads
+    ) {
+
+        if (!container) {
             return;
         }
 
@@ -165,46 +238,76 @@
         container.innerHTML = "";
 
 
-        const ad =
+        if (
+            !ads ||
+            !ads.enabled
+        ) {
+
+            return;
+
+        }
+
+
+        const wrapper =
             document.createElement("div");
 
-        ad.className =
+
+        wrapper.className =
             "ad-slot";
 
-        ad.dataset.adPosition =
+
+        wrapper.dataset.adPosition =
             position;
 
 
         const label =
-            document.createElement("span");
+            document.createElement("div");
+
 
         label.className =
             "ad-label";
+
 
         label.textContent =
             "Quảng cáo";
 
 
-        const placeholder =
+        /*
+         * Đây là vùng dành cho
+         * Google AdSense / ad network.
+         *
+         * Chưa tự giả lập quảng cáo.
+         */
+
+        const adContainer =
             document.createElement("div");
 
-        placeholder.className =
-            "ad-placeholder";
+
+        adContainer.className =
+            "ad-container";
 
 
-        ad.appendChild(label);
+        wrapper.appendChild(label);
 
-        ad.appendChild(placeholder);
+        wrapper.appendChild(
+            adContainer
+        );
 
-        container.appendChild(ad);
+
+        container.appendChild(
+            wrapper
+        );
+
     }
 
 
-    /* =====================================================
-       RENDER MONETIZATION
-       ===================================================== */
+    // ==========================================
+    // RENDER
+    // ==========================================
 
-    function render(monetization = {}) {
+    function render(
+        monetization = {}
+    ) {
 
         const top =
             document.getElementById(
@@ -218,90 +321,97 @@
             );
 
 
-        if (!top || !bottom) {
-            return;
+        if (top) {
+
+            top.innerHTML = "";
+
         }
 
 
-        top.innerHTML = "";
+        if (bottom) {
 
-        bottom.innerHTML = "";
+            bottom.innerHTML = "";
+
+        }
 
 
         const affiliate =
-            monetization.affiliate || null;
+            monetization.affiliate || {
+                enabled: false,
+                url: ""
+            };
 
 
         const ads =
             monetization.ads || {
-                enabled: DEFAULT_AD_ENABLED
+                enabled: false
             };
 
 
-        const hasAffiliate =
-            affiliate &&
+        /*
+         * AFFILIATE
+         *
+         * Affiliate chỉ dùng popup.
+         *
+         * Không render card Affiliate
+         * ở top / bottom nữa.
+         */
+
+        if (
             affiliate.enabled &&
-            isValidAffiliateUrl(
+            isValidUrl(
                 affiliate.url
-            );
+            )
+        ) {
 
-
-        /* =================================================
-           TOP
-           ================================================= */
-
-        if (hasAffiliate) {
-
-            renderAffiliate(
-                top,
+            showAffiliatePopup(
                 affiliate
             );
 
-        } else {
+        }
+
+
+        /*
+         * ADS
+         *
+         * Ads hoạt động độc lập.
+         */
+
+        if (ads.enabled) {
 
             renderAd(
                 top,
                 "top",
                 ads
             );
-        }
 
-
-        /* =================================================
-           BOTTOM
-           ================================================= */
-
-        if (hasAffiliate) {
-
-            renderAffiliate(
-                bottom,
-                affiliate
-            );
-
-        } else {
 
             renderAd(
                 bottom,
                 "bottom",
                 ads
             );
+
         }
 
     }
 
 
-    /* =====================================================
-       PUBLIC API
-       ===================================================== */
+    // ==========================================
+    // PUBLIC API
+    // ==========================================
 
     window.ReaderMonetization = {
 
-        render: render,
+        render,
 
-        renderAffiliate: renderAffiliate,
+        showAffiliatePopup,
 
-        renderAd: renderAd
+        closeAffiliatePopup,
+
+        renderAd
 
     };
+
 
 })();
