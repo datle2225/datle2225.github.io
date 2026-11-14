@@ -1,0 +1,6 @@
+[
+  { "id": "pha_giap", "name": "Phá Giáp", "kind": "debuff", "duration": 3, "defMul": 0.6 },
+  { "id": "chay", "name": "Bỏng", "kind": "dot", "duration": 3, "dotPct": 0.06 },
+  { "id": "choang_vang", "name": "Chậm Chạp", "kind": "debuff", "duration": 3, "spdMul": 0.7 },
+  { "id": "khien", "name": "Khiên", "kind": "buff", "duration": 3, "damageTakenMul": 0.5 }
+]

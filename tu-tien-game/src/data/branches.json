@@ -1,0 +1,10 @@
+[
+  { "id": "kiem_tu", "name": "Kiếm Tu", "role": "Công cao, tốc cao, giòn", "mainStat": "atk", "unlockRealm": "truc_co", "playable": true, "gear": ["phi_kiem", "kiem_y", "kiem_boi"], "resource": "Kiếm Ý", "desc": "Tích Kiếm Ý qua mỗi đòn, xả combo nhanh nhiều đòn." },
+  { "id": "the_tu", "name": "Thể Tu", "role": "Trâu bò, phản đòn", "mainStat": "def", "unlockRealm": "truc_co", "playable": true, "gear": ["quyen_sao", "chien_giap", "ho_uyen"], "resource": "Huyết Khí", "desc": "Càng mất máu càng mạnh, phản đòn và hồi máu theo sát thương." },
+  { "id": "phap_tu", "name": "Pháp Tu", "role": "Sát thương phép diện rộng", "mainStat": "mp", "unlockRealm": "truc_co", "playable": true, "gear": ["phap_truong", "dao_bao", "linh_boi"], "resource": "Linh Lực", "desc": "Ngũ hành tương sinh tương khắc, cộng hưởng nguyên tố." },
+  { "id": "dan_tu", "name": "Đan Tu", "role": "Hỗ trợ, độc, hồi phục", "mainStat": "hp", "unlockRealm": "ket_dan", "playable": false, "gear": ["dan_lo", "duoc_dai"], "resource": "Dược Lực", "desc": "Dùng đan tự chế như chiêu thức." },
+  { "id": "phu_tran_tu", "name": "Phù Trận Tu", "role": "Khống chế chiến trường", "mainStat": "mp", "unlockRealm": "ket_dan", "playable": false, "gear": ["phu_but", "tran_ky"], "resource": "Phù Lực", "desc": "Đặt bẫy trước, kích hoạt sau." },
+  { "id": "ngu_thu_tu", "name": "Ngự Thú Tu", "role": "Triệu hồi, đồng đội", "mainStat": "hp", "unlockRealm": "nguyen_anh", "playable": false, "gear": ["thu_boi", "linh_thu_hoan"], "resource": "Thú Tâm", "desc": "Linh thú là một thành viên thật sự trong đội." },
+  { "id": "ma_tu", "name": "Ma Tu", "role": "Hy sinh máu lấy sức mạnh", "mainStat": "atk", "unlockRealm": "nguyen_anh", "playable": false, "gear": ["ma_dao", "huyet_y"], "resource": "Sát Khí", "desc": "Rủi ro cao, thưởng cao. Có thể ảnh hưởng đạo tâm." },
+  { "id": "am_tu", "name": "Âm Tu", "role": "Buff, debuff, nhịp điệu", "mainStat": "mp", "unlockRealm": "nguyen_anh", "playable": false, "gear": ["co_cam", "tieu_sao"], "resource": "Âm Luật", "desc": "Chiêu thức theo nhịp, khống chế thứ tự hành động." }
+]

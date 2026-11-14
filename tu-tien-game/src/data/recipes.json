@@ -1,0 +1,8 @@
+[
+  { "id": "hoi_huyet_dan", "name": "Hồi Huyết Đan", "branch": "all", "needRealm": "luyen_khi", "ingredients": [{ "id": "linh_thao", "n": 2 }], "effect": { "heal": 0.35 }, "basePrice": 20, "difficulty": 1 },
+  { "id": "hoi_linh_dan", "name": "Hồi Linh Đan", "branch": "all", "needRealm": "luyen_khi", "ingredients": [{ "id": "linh_thao", "n": 3 }], "effect": { "mp": 0.4 }, "basePrice": 28, "difficulty": 1 },
+  { "id": "tu_khi_dan", "name": "Tụ Khí Đan", "branch": "all", "needRealm": "luyen_khi", "ingredients": [{ "id": "linh_thao", "n": 4 }, { "id": "huyet_tham", "n": 1 }], "effect": { "exp": 120 }, "basePrice": 60, "difficulty": 2 },
+  { "id": "truc_co_dan", "name": "Trúc Cơ Đan", "branch": "all", "needRealm": "luyen_khi", "ingredients": [{ "id": "huyet_tham", "n": 3 }, { "id": "linh_thao", "n": 6 }], "effect": { "tribulationShield": 0.15 }, "basePrice": 400, "difficulty": 4 },
+  { "id": "kiem_y_dan", "name": "Kiếm Ý Đan", "branch": "kiem_tu", "needRealm": "truc_co", "ingredients": [{ "id": "huyet_tham", "n": 2 }, { "id": "huyen_thiet", "n": 1 }], "effect": { "exp": 900 }, "basePrice": 260, "difficulty": 3 },
+  { "id": "huyet_khi_dan", "name": "Huyết Khí Đan", "branch": "the_tu", "needRealm": "truc_co", "ingredients": [{ "id": "huyet_tham", "n": 3 }], "effect": { "exp": 900 }, "basePrice": 260, "difficulty": 3 }
+]

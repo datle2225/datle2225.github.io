@@ -1,0 +1,22 @@
+{
+  "name": "tu-tien-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pixel tu tiên thế giới mở – Phế vật nghịch tập",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

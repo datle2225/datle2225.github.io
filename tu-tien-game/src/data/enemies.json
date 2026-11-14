@@ -1,0 +1,6 @@
+[
+  { "id": "soi_hoang", "name": "Sói Hoang", "realm": "luyen_khi", "element": "none", "stats": { "hp": 70, "mp": 10, "atk": 12, "def": 4, "spd": 110, "crit": 0.05 }, "skills": ["kiem_co_ban"], "exp": 14, "drops": [{ "id": "da_soi", "chance": 0.6 }, { "id": "linh_thao", "chance": 0.3 }] },
+  { "id": "yeu_xa", "name": "Xà Yêu Con", "realm": "luyen_khi", "element": "moc", "stats": { "hp": 55, "mp": 15, "atk": 15, "def": 3, "spd": 140, "crit": 0.08 }, "skills": ["kiem_co_ban", "kiem_nhat_thiem"], "exp": 18, "drops": [{ "id": "linh_thao", "chance": 0.5 }] },
+  { "id": "huyet_anh_do_de", "name": "Đệ Tử Huyết Ảnh Môn", "realm": "luyen_khi", "element": "hoa", "stats": { "hp": 120, "mp": 30, "atk": 20, "def": 8, "spd": 100, "crit": 0.1 }, "skills": ["phap_hoa_cau", "kiem_co_ban"], "exp": 40, "drops": [{ "id": "linh_thach_ha", "chance": 1 }] },
+  { "id": "boss_huyet_anh_truong_lao", "name": "Huyết Ảnh Trưởng Lão", "realm": "truc_co", "element": "hoa", "boss": true, "stats": { "hp": 600, "mp": 100, "atk": 42, "def": 20, "spd": 120, "crit": 0.12 }, "skills": ["phap_hoa_cau", "phap_loi_phat", "kiem_phong_cuong"], "exp": 300, "drops": [{ "id": "huyet_anh_lenh", "chance": 1 }] }
+]

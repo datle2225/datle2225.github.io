@@ -1,0 +1,9 @@
+[
+  { "id": "kim", "name": "Kim Linh Căn", "element": "kim", "desc": "Sắc bén, công cao. Hợp Kiếm tu.", "bonus": { "atk": 0.10 } },
+  { "id": "moc", "name": "Mộc Linh Căn", "element": "moc", "desc": "Sinh cơ dồi dào, hồi phục tốt. Hợp Đan tu.", "bonus": { "hp": 0.10 } },
+  { "id": "thuy", "name": "Thủy Linh Căn", "element": "thuy", "desc": "Linh lực dày, khống chế mềm dẻo.", "bonus": { "mp": 0.12 } },
+  { "id": "hoa", "name": "Hỏa Linh Căn", "element": "hoa", "desc": "Bùng nổ, hợp luyện đan và pháp tu.", "bonus": { "atk": 0.08, "crit": 0.03 } },
+  { "id": "tho", "name": "Thổ Linh Căn", "element": "tho", "desc": "Vững chãi, thủ cao. Hợp Thể tu.", "bonus": { "def": 0.12 } },
+  { "id": "tan_can", "name": "Tàn Căn", "element": "none", "desc": "Linh căn bị phong ấn, tu luyện cực chậm. Thực chất là Hỗn Độn Căn bị Cổ Đỉnh che giấu.", "bonus": {}, "expMul": 0.3, "hidden": "hon_don" },
+  { "id": "hon_don", "name": "Hỗn Độn Căn", "element": "none", "desc": "Dung nạp mọi nguyên tố, không bị khắc chế. Tư chất đệ nhất thiên hạ.", "bonus": { "atk": 0.15, "def": 0.15, "hp": 0.15, "mp": 0.15 }, "expMul": 1.6, "hidden": true }
+]

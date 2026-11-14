@@ -1,0 +1,8 @@
+[
+  { "n": 1, "title": "Tro Tàn Thanh Hà", "realm": "luyen_khi", "unlock": ["di_chuyen", "doi_thoai", "chien_dau_co_ban", "tu_luyen"] },
+  { "n": 2, "title": "Nhập Thanh Vân Tông", "realm": "luyen_khi", "unlock": ["cua_hang", "nhiem_vu_phu", "thoi_trang"] },
+  { "n": 3, "title": "Phế Vật Thí Luyện", "realm": "luyen_khi", "unlock": ["doi_hinh", "trang_bi"] },
+  { "n": 4, "title": "Lôi Kiếp Đầu Tiên", "realm": "truc_co", "unlock": ["chon_nhanh", "ngu_kiem", "loi_kiep", "ren_do"] },
+  { "n": 5, "title": "Phường Thị Vân Hải", "realm": "truc_co", "unlock": ["thi_truong", "dau_gia"] },
+  { "n": 6, "title": "Bí Cảnh Huyết Nguyệt", "realm": "ket_dan", "unlock": ["luyen_dan", "combo_day_du", "bi_canh"] }
+]

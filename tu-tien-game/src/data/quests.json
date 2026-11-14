@@ -1,0 +1,7 @@
+[
+  { "id": "m1_1", "type": "main", "chapter": 1, "title": "Tro tàn", "desc": "Tìm manh mối trong đống đổ nát của Diệp gia.", "steps": [{ "kind": "talk", "target": "lao_ngu" }, { "kind": "reach", "target": "diep_gia_tan_tich" }], "reward": { "exp": 30 }, "unlocks": ["m1_2"] },
+  { "id": "m1_2", "type": "main", "chapter": 1, "title": "Cổ Đỉnh", "desc": "Mở phong ấn Cổ Đỉnh dưới giếng cũ.", "steps": [{ "kind": "reach", "target": "gieng_co" }, { "kind": "battle", "target": "soi_hoang", "n": 2 }], "reward": { "exp": 100, "item": "linh_thao", "n": 3 }, "unlocks": ["m1_3"], "unlockSystem": "tu_luyen" },
+  { "id": "m1_3", "type": "main", "chapter": 1, "title": "Nhập môn", "desc": "Đến Thanh Vân Tông, bắt đầu hành trình.", "steps": [{ "kind": "reach", "target": "thanh_van_mon" }], "reward": { "exp": 150 }, "unlocks": [] },
+  { "id": "s1_1", "type": "side", "chapter": 1, "title": "Gà bị sói tha", "desc": "Giúp bà Lý tìm đàn gà bị sói bắt mất.", "steps": [{ "kind": "battle", "target": "soi_hoang", "n": 3 }], "reward": { "linh_thach": 30 }, "choices": ["tha_soi_me", "giet_het"] },
+  { "id": "s1_2", "type": "side", "chapter": 1, "title": "Dược đồng nhà họ Trương", "desc": "Hái 5 Linh Thảo cho tiệm thuốc.", "steps": [{ "kind": "collect", "target": "linh_thao", "n": 5 }], "reward": { "linh_thach": 40, "recipe": "hoi_huyet_dan" } }
+]
