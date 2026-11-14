@@ -28,6 +28,17 @@ export const DIFFICULTIES: DifficultyDef[] = [
 
 export const difficultyOf = (p: Pick<PlayerState, 'difficulty'>): DifficultyDef => DIFFICULTIES.find((d) => d.id === (p.difficulty ?? 'normal')) ?? DIFFICULTIES[0];
 
+/** Mỗi chu kỳ chơi lại (NG+) kẻ địch mạnh thêm 15% HP/Công, 8% Thủ; thưởng thêm 10%. */
+export const NG = { enemy: 0.15, def: 0.08, reward: 0.1, exp: 0.25 } as const;
+
+/** Độ khó hiệu lực = độ khó đã chọn × hệ số NG+. */
+export function effectiveDifficulty(p: Pick<PlayerState, 'difficulty' | 'ngPlus'>): DifficultyDef {
+  const d = difficultyOf(p);
+  const n = p.ngPlus ?? 0;
+  if (!n) return d;
+  return { ...d, enemyHp: d.enemyHp * (1 + NG.enemy * n), enemyAtk: d.enemyAtk * (1 + NG.enemy * n), enemyDef: d.enemyDef * (1 + NG.def * n), reward: d.reward * (1 + NG.reward * n) };
+}
+
 /** Kẻ địch tinh anh (★): mạnh hơn, thưởng gấp đôi. */
 export const ELITE = { hp: 1.4, atk: 1.25, def: 1.15, reward: 2, chance: 0.12 } as const;
 

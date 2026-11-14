@@ -10,7 +10,7 @@ export function expNeeded(p: PlayerState): number {
 
 export function gainExp(p: PlayerState, amount: number): { gained: number; breakthroughReady: boolean } {
   const root = rootMap.get(p.rootId) as any;
-  const gained = Math.round(amount * (root?.expMul ?? 1) * factionPerks(p).expMul);
+  const gained = Math.round(amount * (root?.expMul ?? 1) * factionPerks(p).expMul * (1 + 0.25 * (p.ngPlus ?? 0)));
   p.exp += gained;
   return { gained, breakthroughReady: atStageCap(p) };
 }

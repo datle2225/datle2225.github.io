@@ -1,0 +1,348 @@
+[
+ {
+  "id": "first_blood",
+  "name": "Máu đầu tiên",
+  "desc": "Hạ 1 kẻ địch.",
+  "cond": {
+   "counter": "kills",
+   "min": 1
+  },
+  "reward": {
+   "gold": 30
+  }
+ },
+ {
+  "id": "hunter",
+  "name": "Thợ săn",
+  "desc": "Hạ 100 kẻ địch.",
+  "cond": {
+   "counter": "kills",
+   "min": 100
+  },
+  "reward": {
+   "gold": 300
+  }
+ },
+ {
+  "id": "slayer",
+  "name": "Sát tinh",
+  "desc": "Hạ 1000 kẻ địch.",
+  "cond": {
+   "counter": "kills",
+   "min": 1000
+  },
+  "reward": {
+   "gold": 5000
+  }
+ },
+ {
+  "id": "boss_1",
+  "name": "Kẻ phá boss",
+  "desc": "Hạ 1 boss.",
+  "cond": {
+   "counter": "boss_kills",
+   "min": 1
+  },
+  "reward": {
+   "gold": 200
+  }
+ },
+ {
+  "id": "boss_9",
+  "name": "Săn boss",
+  "desc": "Hạ 9 boss.",
+  "cond": {
+   "counter": "boss_kills",
+   "min": 9
+  },
+  "reward": {
+   "gold": 20000
+  }
+ },
+ {
+  "id": "crafter",
+  "name": "Thợ thủ công",
+  "desc": "Rèn hoặc luyện thành công 10 lần (tự làm hoặc thuê).",
+  "cond": {
+   "counter": "crafted",
+   "min": 10
+  },
+  "reward": {
+   "gold": 400
+  }
+ },
+ {
+  "id": "master_crafter",
+  "name": "Đại sư",
+  "desc": "Rèn hoặc luyện thành công 100 lần.",
+  "cond": {
+   "counter": "crafted",
+   "min": 100
+  },
+  "reward": {
+   "gold": 6000
+  }
+ },
+ {
+  "id": "quester",
+  "name": "Người giúp đời",
+  "desc": "Hoàn thành 10 nhiệm vụ.",
+  "cond": {
+   "counter": "quests_done",
+   "min": 10
+  },
+  "reward": {
+   "gold": 500
+  }
+ },
+ {
+  "id": "quest_master",
+  "name": "Bậc thầy nhiệm vụ",
+  "desc": "Hoàn thành 50 nhiệm vụ.",
+  "cond": {
+   "counter": "quests_done",
+   "min": 50
+  },
+  "reward": {
+   "gold": 10000
+  }
+ },
+ {
+  "id": "phe_nhan",
+  "name": "Thà chết còn hơn",
+  "desc": "Thua trận 5 lần.",
+  "cond": {
+   "counter": "deaths",
+   "min": 5
+  },
+  "reward": {
+   "gold": 100
+  }
+ },
+ {
+  "id": "tru_co",
+  "name": "Trúc Cơ",
+  "desc": "Đạt cảnh giới Trúc Cơ.",
+  "cond": {
+   "realm": 1
+  },
+  "reward": {
+   "gold": 300
+  }
+ },
+ {
+  "id": "ket_dan",
+  "name": "Kết Đan",
+  "desc": "Đạt cảnh giới Kết Đan.",
+  "cond": {
+   "realm": 2
+  },
+  "reward": {
+   "gold": 1000
+  }
+ },
+ {
+  "id": "nguyen_anh",
+  "name": "Nguyên Anh",
+  "desc": "Đạt cảnh giới Nguyên Anh.",
+  "cond": {
+   "realm": 3
+  },
+  "reward": {
+   "gold": 3000
+  }
+ },
+ {
+  "id": "hoa_than",
+  "name": "Hóa Thần",
+  "desc": "Đạt cảnh giới Hóa Thần.",
+  "cond": {
+   "realm": 4
+  },
+  "reward": {
+   "gold": 8000
+  }
+ },
+ {
+  "id": "dai_thua",
+  "name": "Đại Thừa",
+  "desc": "Đạt cảnh giới Đại Thừa.",
+  "cond": {
+   "realm": 7
+  },
+  "reward": {
+   "gold": 50000
+  }
+ },
+ {
+  "id": "unsealed",
+  "name": "Hỗn Độn thức tỉnh",
+  "desc": "Gỡ phong ấn Hỗn Độn Căn.",
+  "cond": {
+   "flag": "unsealed"
+  },
+  "reward": {
+   "gold": 1500
+  }
+ },
+ {
+  "id": "revenge_3",
+  "name": "Ba mối thù",
+  "desc": "Báo thù 3 kẻ trong Huyết Thư.",
+  "cond": {
+   "flags": [
+    "enemy1_dead",
+    "enemy2_dead",
+    "enemy3_dead"
+   ]
+  },
+  "reward": {
+   "gold": 2000
+  }
+ },
+ {
+  "id": "revenge_all",
+  "name": "Huyết Thư khép lại",
+  "desc": "Báo thù cả 5 kẻ trong Huyết Thư (đánh hoặc vạch trần).",
+  "cond": {
+   "flags": [
+    "enemy1_dead",
+    "enemy2_dead",
+    "enemy3_dead",
+    "enemy4_dead",
+    "enemy5_dead"
+   ]
+  },
+  "reward": {
+   "gold": 6000
+  }
+ },
+ {
+  "id": "part1",
+  "name": "Hết phần 1",
+  "desc": "Hoàn thành Phần 1.",
+  "cond": {
+   "flag": "game_complete"
+  },
+  "reward": {
+   "gold": 3000
+  }
+ },
+ {
+  "id": "ascended",
+  "name": "Phi thăng",
+  "desc": "Hoàn thành Phi Thăng Thiên Kiếp.",
+  "cond": {
+   "flag": "game_won"
+  },
+  "reward": {
+   "gold": 100000
+  }
+ },
+ {
+  "id": "rich",
+  "name": "Giàu có",
+  "desc": "Có 100.000 linh thạch.",
+  "cond": {
+   "gold": 100000
+  },
+  "reward": {
+   "gold": 5000
+  }
+ },
+ {
+  "id": "faction_elder",
+  "name": "Bậc trưởng lão",
+  "desc": "Đạt bậc cao nhất trong một thế lực.",
+  "cond": {
+   "factionRank": 3
+  },
+  "reward": {
+   "gold": 8000
+  }
+ },
+ {
+  "id": "formation_3",
+  "name": "Trận pháp sư",
+  "desc": "Học 3 trận pháp.",
+  "cond": {
+   "formations": 3
+  },
+  "reward": {
+   "gold": 2000
+  }
+ },
+ {
+  "id": "law_master",
+  "name": "Lĩnh ngộ pháp tắc",
+  "desc": "Chọn một pháp tắc.",
+  "cond": {
+   "law": true
+  },
+  "reward": {
+   "gold": 4000
+  }
+ },
+ {
+  "id": "hard_win",
+  "name": "Không sợ khó",
+  "desc": "Phi thăng ở độ khó Khó hoặc Ác mộng.",
+  "cond": {
+   "flag": "game_won",
+   "difficulty": [
+    "hard",
+    "nightmare"
+   ]
+  },
+  "reward": {
+   "gold": 30000
+  }
+ },
+ {
+  "id": "nightmare",
+  "name": "Ác mộng đã qua",
+  "desc": "Phi thăng ở độ khó Ác mộng.",
+  "cond": {
+   "flag": "game_won",
+   "difficulty": [
+    "nightmare"
+   ]
+  },
+  "reward": {
+   "gold": 100000
+  }
+ },
+ {
+  "id": "tower_10",
+  "name": "Tháp chủ",
+  "desc": "Đạt tầng 10 Vô Tận Tháp.",
+  "cond": {
+   "tower": 10
+  },
+  "reward": {
+   "gold": 2000
+  }
+ },
+ {
+  "id": "tower_30",
+  "name": "Vượt tháp",
+  "desc": "Đạt tầng 30 Vô Tận Tháp.",
+  "cond": {
+   "tower": 30
+  },
+  "reward": {
+   "gold": 30000
+  }
+ },
+ {
+  "id": "ng_plus",
+  "name": "Vòng lặp mới",
+  "desc": "Bắt đầu chơi lại (NG+).",
+  "cond": {
+   "ngPlus": 1
+  },
+  "reward": {
+   "gold": 2000
+  }
+ }
+]

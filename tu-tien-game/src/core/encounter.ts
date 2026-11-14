@@ -5,11 +5,11 @@ import { availableSkills, companionStats } from './session';
 import { computeStats } from './stats';
 import { tamMaFactor } from './progression';
 import { formationFx, lawPerks } from './advanced';
-import { difficultyOf, scaleEnemyStats } from './difficulty';
+import { effectiveDifficulty, scaleEnemyStats } from './difficulty';
 import type { PlayerState } from './types';
 
 /** Dựng trận đấu từ trạng thái người chơi (dùng chung cho game và mô phỏng cân bằng). */
-export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true, opts: { elite?: boolean } = {}): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
+export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true, opts: { elite?: boolean; mult?: number } = {}): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
   const stats = computeStats(p);
   const player = makeUnit('player', p.name, 'player', stats, availableSkills(p).map((s) => s.id), 'none');
   if (p.unlockedSystems.includes('thoat_xac')) player.reviveFrac = 0.3; // Nguyên Anh: thoát xác, mạng thứ hai
@@ -33,7 +33,8 @@ export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withPa
       units.push(makeUnit(id, 'Tâm Ma', 'enemy', ms, availableSkills(p).map((s) => s.id), 'none'));
     } else {
       const elite = !!opts.elite && !e.boss;
-      const st = scaleEnemyStats(e.stats, difficultyOf(p), elite);
+      let st = scaleEnemyStats(e.stats, effectiveDifficulty(p), elite);
+      if (opts.mult && opts.mult !== 1) st = { ...st, hp: Math.round(st.hp * opts.mult), atk: Math.round(st.atk * opts.mult) }; // Vô Tận Tháp
       units.push(makeUnit(id, elite ? `★ ${e.name}` : e.name, 'enemy', st, e.skills, e.element, e.phases, e.tempoResist));
     }
   });

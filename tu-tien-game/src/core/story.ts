@@ -20,6 +20,7 @@ export interface Cond {
   map?: string;
   hasItem?: { id: string; n: number };
   bottleneck?: boolean;
+  towerMin?: number; // tầng cao nhất Vô Tận Tháp tối thiểu
 }
 
 export type Effect =
@@ -42,7 +43,8 @@ export type Effect =
   | { openShop: string; tab?: string }
   | { battle: string[] }
   | { breakthrough: true }
-  | { root: string };
+  | { root: string }
+  | { tower: number }; // bắt đầu leo Vô Tận Tháp từ tầng này
 
 export interface Choice { text: string; goto?: string | null; if?: Cond; do?: Effect[] }
 export interface Node { who?: string; text: string; next?: string | null; choices?: Choice[]; do?: Effect[] }
@@ -70,12 +72,13 @@ export function check(p: PlayerState, c?: Cond): boolean {
   if (c.hour && !inHours(gameHour(p), c.hour[0], c.hour[1])) return false;
   if (c.notHour && inHours(gameHour(p), c.notHour[0], c.notHour[1])) return false;
   if (c.map && p.mapId !== c.map) return false;
+  if (c.towerMin !== undefined && p.towerBest < c.towerMin) return false;
   if (c.bottleneck !== undefined && isBottlenecked(p) !== c.bottleneck) return false;
   if (c.hasItem && (p.inventory[c.hasItem.id] ?? 0) < c.hasItem.n) return false;
   return true;
 }
 
-export interface EffectOutput { toasts: string[]; openShop?: { vendor: string; tab?: string }; completed: string[]; battle?: string[] }
+export interface EffectOutput { toasts: string[]; openShop?: { vendor: string; tab?: string }; completed: string[]; battle?: string[]; tower?: number }
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
@@ -99,6 +102,7 @@ export function applyEffects(p: PlayerState, effects: Effect[] | undefined, out:
     else if ('toast' in e) out.toasts.push(e.toast);
     else if ('openShop' in e) out.openShop = { vendor: e.openShop, tab: e.tab };
     else if ('battle' in e) out.battle = e.battle;
+    else if ('tower' in e) out.tower = e.tower;
     else if ('root' in e) { p.rootId = e.root; out.toasts.push(`Linh căn: ${(rootMap.get(e.root) as any)?.name ?? e.root}`); }
     else if ('breakthrough' in e) { const u = clearBottleneck(p); out.toasts.push(u ? 'Ngộ đạo! Bình cảnh đã phá, lên tầng mới.' : 'Ngộ đạo, nhưng chưa có bình cảnh để phá.'); }
   }

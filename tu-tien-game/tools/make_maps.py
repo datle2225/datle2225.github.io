@@ -85,11 +85,14 @@ def portal(O, name, x, y, w, h, target, arrive, cond=None, deny=None):
     O.add('portals', name, x, y, pr, w, h)
 
 SIDE = json.load(open(os.path.join(os.path.dirname(__file__), 'side_npcs.json'), encoding='utf8')) if os.path.exists(os.path.join(os.path.dirname(__file__), 'side_npcs.json')) else {}
+TOWER = {'phuong_thi': (22, 16), 'thien_phong': (26, 33)}
 BOARD = {'thanh_ha': (18, 14), 'thanh_van_tong': (26, 24), 'phuong_thi': (24, 16), 'thien_phong': (30, 32), 'bang_nguyen': (33, 29), 'hoang_mac': (6, 20)}
 
 def write(id, grid, O, props):
     for n in SIDE.get(id, []):   # NPC giao nhiệm vụ phụ (tools/side_quests.py)
         npc(O, n['id'], n['label'], n['tex'], n['x'], n['y'], n['talk'])
+    if id in TOWER:               # Vô Tận Tháp
+        npc(O, 'thap_linh_' + id, 'Tháp Linh (Vô Tận Tháp)', 'npc_sage', TOWER[id][0], TOWER[id][1], [{'id': 'thap_linh_1'}])
     if id in BOARD:               # bảng nhiệm vụ lặp lại hằng ngày
         npc(O, 'bang_nv_' + id, 'Bảng Nhiệm Vụ', 'npc_clerk', BOARD[id][0], BOARD[id][1], [{'id': '@board'}])
     solid = {t for t, sol in TILESET if sol}

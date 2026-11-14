@@ -97,6 +97,10 @@ export interface PlayerState {
   chapter: number;
   playtime: number;
   difficulty: 'normal' | 'hard' | 'nightmare'; // độ khó
+  ngPlus: number; // chu kỳ chơi lại (0 = lần đầu)
+  counters: Record<string, number>; // thống kê: kills, boss_kills, deaths, crafted, quests_done, pills_used, tower_floors
+  achievements: string[]; // thành tựu đã mở
+  towerBest: number; // tầng cao nhất ở Vô Tận Tháp
   dynQuests: Record<string, any>; // nhiệm vụ sinh động (bảng nhiệm vụ)
   bountyAccepted: Record<string, boolean>; // id bảng nhiệm vụ đã nhận (chống nhận lại)
   visited: string[]; // bản đồ đã tới (truyền tống)

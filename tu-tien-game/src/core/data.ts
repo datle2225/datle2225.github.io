@@ -16,6 +16,7 @@ import beasts from '../data/beasts.json';
 import formations from '../data/formations.json';
 import factions from '../data/factions.json';
 import laws from '../data/laws.json';
+import achievements from '../data/achievements.json';
 import type { Realm, Skill, StatusDef } from './types';
 
 const byId = <T extends { id: string }>(arr: T[]) => new Map(arr.map((x) => [x.id, x] as const));
@@ -57,3 +58,4 @@ export const LAWS = laws as any[];
 export const formationMap = byId(FORMATIONS);
 export const factionMap = byId(FACTIONS);
 export const lawMap = byId(LAWS);
+export const ACHIEVEMENTS = achievements as any[];

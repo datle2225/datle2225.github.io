@@ -1,6 +1,7 @@
 import { BRANCHES, REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
 import { gainExp, levelUpStages } from './progression';
 import { addContribution } from './advanced';
+import { bump } from './achievements';
 import type { PlayerState, Skill, Stats } from './types';
 
 /** Chiêu người chơi đã mở: nhánh đã chọn (hoặc chiêu cơ bản của mọi nhánh khi chưa chọn) theo cảnh giới/tầng. */
@@ -74,7 +75,9 @@ export function completeQuest(p: PlayerState, id: string) {
   addContribution(p, q.type === 'main' ? 30 : 10); // điểm cống hiến thế lực
   for (const [k, v] of Object.entries(q.rep ?? {})) p.rep[k] = Math.max(-100, Math.min(100, (p.rep[k] ?? 0) + (v as number)));
   p.flags.lastDoneTitle = q.title;
-  if (q.bounty) delete p.dynQuests[id]; // quest bảng: xong là dọn
+  bump(p, 'quests_done');
+  if (q.factionPoints) addContribution(p, q.factionPoints);
+  if (q.bounty || q.factionMission) delete p.dynQuests[id]; // quest bảng / thế lực: xong là dọn
   for (const next of q.unlocks ?? []) if (!p.quests.active.includes(next) && !p.quests.done.includes(next)) p.quests.active.push(next);
 }
 
