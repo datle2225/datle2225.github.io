@@ -3754,5 +3754,164 @@
     "next": null
    }
   }
+ },
+ "tmth_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Thương Hội",
+    "text": "Thương hội của Thanh Vân Tông đây. Hàng chính phái, giá niêm yết. Người trong tông còn được giảm thêm.",
+    "do": [
+     {
+      "flag": "met_tmth"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tong_mon_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tmth_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Thương Hội",
+    "text": "Cần gì cứ nói, sư huynh.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tong_mon_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "mgth_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Mặc Gia",
+    "text": "Mặc Gia Thương Hội, buôn khắp Hoang Mạc. Quặng ở đây rẻ nhất, vì chúng ta là người đào.",
+    "do": [
+     {
+      "flag": "met_mgth"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "mac_gia_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "mgth_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Mặc Gia",
+    "text": "Hàng tươi đây, mua nhiều ta bớt.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "mac_gia_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tsb_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Ở Băng Nguyên không có lò rèn, chỉ có đan và dược liệu. Đủ để đi sâu một chuyến.",
+    "do": [
+     {
+      "flag": "met_tsb"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_san_bang"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tsb_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Trời lạnh, mua nhanh rồi đi.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_san_bang"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
  }
 }

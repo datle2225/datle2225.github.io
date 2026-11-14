@@ -70,7 +70,7 @@ Triển khai: GitHub Pages phục vụ nhánh này, game ở `/tu-tien-game/play
 - Tự lưu mỗi 30 giây, khi thoát menu, sau trận, sau nhiệm vụ.
 - Kế hoạch: xuất/nhập file save (JSON) + đồng bộ cloud.
 
-## Kiểm thử đã có (165 test, `npm test`)
+## Kiểm thử đã có (169 test, `npm test`)
 - **Chiến đấu**: Tốc Độ, giới hạn 3 hành động liền, softcap, khắc hệ, combo tag, đồng đội, **hy sinh máu, bẫy, độc, boss nhiều pha, linh thú (triệu hồi, một con/lần, Thú Tâm, Hiệu Lệnh), đảo nhịp (kháng của boss, chỉ kéo sớm)**.
 - **Rèn / đan / cửa hàng / thuê NPC / mini-game / hội thoại / lôi kiếp**: xem 12.
 - **Thiền**: tốn tâm lực & thời gian, ~8 lần liên tiếp rồi cạn, thời gian thiền không hồi tâm lực, cần yên tĩnh, linh khí nhân hiệu quả, Tàn Căn ×0.3; **bình cảnh** chặn lên tầng và không tích tu vi vượt trần, phá bằng ngộ đạo / Phá Cảnh Đan; **bế quan** (10 phút = 1 đơn vị, 50%, trần 8 giờ, không vượt bình cảnh).

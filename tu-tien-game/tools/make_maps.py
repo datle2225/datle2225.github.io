@@ -179,6 +179,7 @@ def thanh_van_tong():
     g.rect(22, 33, 25, 33, 'p')
     O = Objs()
     npc(O, 'mac_tran', 'Mặc Trần', 'npc_rival', 24, 13, [{'if': {'notFlag': 'mac_tran_met'}, 'id': 'mac_tran_1'}, {'id': 'mac_tran_2'}])
+    npc(O, 'tong_mon_thuong_hoi', 'Quản Sự Thương Hội', 'npc_shop', 28, 19, [{'if': {'notFlag': 'met_tmth'}, 'id': 'tmth_1'}, {'id': 'tmth_menu'}], 'tong_mon_thuong_hoi', DAY(28, 19, 28, 21))
     npc(O, 'quan_su', 'Quản Sự Tạp Dịch', 'npc_clerk', 18, 24, [{'if': {'questDone': 's2_1'}, 'id': 'quan_su_after'}, {'if': {'questActive': 's2_1'}, 'id': 'quan_su_wait'}, {'id': 'quan_su_offer'}])
     npc(O, 'luc_van_sinh', 'Trưởng lão Lục Vân Sinh', 'npc_sage', 27, 8, [{'if': {'notFlag': 'luc_met'}, 'id': 'luc_1'}, {'id': 'luc_2'}])
     npc(O, 'bao_tin', 'Bảng Tin Tông Môn', 'npc_clerk', 30, 24, [{'id': '@rumor'}])
@@ -251,6 +252,7 @@ def bang_nguyen():
     g.rect(29, 3, 30, 34, 'I'); g.rect(30, 17, 57, 18, 'I')     # đường băng
     g.border('Y'); g.rect(28, 34, 31, 35, 'I'); g.rect(28, 0, 31, 2, 'I'); g.rect(58, 16, 59, 19, 'I')
     O = Objs()
+    npc(O, 'tho_san_bang', 'Thợ Săn Băng (Trạm Tiếp Tế)', 'npc_guard', 32, 30, [{'if': {'notFlag': 'met_tsb'}, 'id': 'tsb_1'}, {'id': 'tsb_menu'}], 'tho_san_bang')
     for grp, tex, x, y in [(['bang_lang', 'bang_lang'], 'wolf', 22, 26), (['bang_yeu'], 'snake', 36, 24), (['bang_lang', 'bang_yeu'], 'wolf', 40, 10), (['bang_lang'], 'wolf', 14, 8), (['bang_yeu', 'bang_yeu'], 'snake', 50, 30), (['huyet_ve'], 'cultist', 26, 6), (['huyet_ve', 'bang_lang'], 'cultist', 46, 14)]:
         foe(O, grp, tex, x, y, 3)
     for x, y in [(8, 30), (50, 8), (22, 20), (38, 30)]: O.add('herbs', 'linh_thao', x, y)
@@ -488,6 +490,7 @@ def hoang_mac():
     g.border('C'); g.rect(0, 17, 1, 19, 'p')
     O = Objs()
     npc(O, 'mac_gia_chu', 'Mặc Gia Gia Chủ', 'npc_sage', 46, 26, [{'if': {'questActive': 'm2_3'}, 'id': 'mac_gia_chu_1'}, {'if': {'flag': 'enemy3_dead'}, 'id': 'mac_gia_chu_after'}, {'id': 'mac_gia_chu_idle'}])
+    npc(O, 'mac_gia_thuong_hoi', 'Chưởng Quầy Mặc Gia', 'npc_shop', 43, 25, [{'if': {'notFlag': 'met_mgth'}, 'id': 'mgth_1'}, {'id': 'mgth_menu'}], 'mac_gia_thuong_hoi', DAY(43, 25, 43, 28))
     npc(O, 'mac_ho_ve', 'Hộ Vệ Mặc Gia', 'npc_guard', 42, 25, [{'id': 'mac_ho_ve'}])
     npc(O, 'lu_khach', 'Lữ Khách Hoang Mạc', 'npc_merchant', 16, 23, [{'id': 'lu_khach'}], 'thuong_nhan')
     O.add('signs', 'mg', 44, 24, [P('text', 'Mặc Gia Thương Hội')])

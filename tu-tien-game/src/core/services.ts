@@ -39,8 +39,14 @@ export function relationDiscount(p: PlayerState, vendorId: string): number {
   return rel >= 90 ? 0.85 : rel >= 60 ? 0.9 : rel >= 30 ? 0.95 : 1;
 }
 
+/** Giảm giá riêng của thương hội cho thành viên một thế lực (ví dụ Thanh Vân Tông). */
+export function memberDiscount(p: PlayerState, vendorId: string): number {
+  const fd = (vendorMap.get(vendorId) as any)?.factionDiscount as Record<string, number> | undefined;
+  return (p.faction && fd?.[p.faction.id]) || 0;
+}
+
 export function buyPrice(p: PlayerState, vendorId: string, basePrice: number): number {
-  return Math.max(1, Math.round(basePrice * priceFactor(vendorId, p) * relationDiscount(p, vendorId) * (1 - factionPerks(p).discount)));
+  return Math.max(1, Math.round(basePrice * priceFactor(vendorId, p) * relationDiscount(p, vendorId) * (1 - factionPerks(p).discount) * (1 - memberDiscount(p, vendorId))));
 }
 
 /** Nhập hàng nếu qua ngày mới. Đồ sẵn được "NPC rèn" bằng RNG theo seed (cùng ngày → cùng hàng). */
