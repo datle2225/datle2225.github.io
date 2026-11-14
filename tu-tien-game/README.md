@@ -30,14 +30,19 @@ npm run build    # build ra play/
 - Chiến đấu **timeline (CTB)**; **nhánh chính (Kiếm/Thể/Pháp) + một nhánh phụ** trong 8 nhánh (Kiếm / Thể / Pháp / Đan / Phù Trận / Ma / **Ngự Thú** / **Âm Tu**) với cơ chế riêng (khiên, độc, bẫy, hy sinh máu, **linh thú**, **đảo nhịp**); **boss nhiều pha**; đồng hành Liễu Nguyệt Nhi.
 - **Tu luyện có giới hạn**: thiền tốn thời gian + tâm lực, hiệu quả theo linh khí vùng, cần nơi yên tĩnh, **bình cảnh** cần cơ duyên / Phá Cảnh Đan, **bế quan** tu luyện cả khi rời game.
 - **Lôi kiếp điện ảnh** + **tâm ma kiếp** (đấu bản sao của chính bạn, mạnh yếu theo đạo tâm).
+- **Đường lên Phi Thăng hoàn chỉnh**: Luyện Hư (Hư Không Giới) → Hợp Thể (Cổ Chiến Trường) → Đại Thừa (Thiên Môn), boss Thiên Đạo Sứ Giả, tâm ma, **Phi Thăng Thiên Kiếp 12 đợt**, 5 đoạn kết, **HẾT GAME**.
+- **Nhiều nhiệm vụ phụ**: 15 nhiệm vụ viết tay có lựa chọn đạo đức + **bảng nhiệm vụ lặp lại** hằng ngày ở 9 vùng.
+- **Mỗi vùng một sở trường**: Thương hội Thanh Vân Tông (giảm giá cho thành viên), Mặc Gia Thương Hội ở Hoang Mạc (quặng rẻ nhất), trạm thợ săn Băng Nguyên (chỉ tiếp tế); dungeon không có cửa hàng.
+- **Không dễ ăn**: độ khó **Thường/Khó/Ác mộng**, giới hạn uống đan, **quái tinh anh ★**, phạt mất tu vi khi thua.
+- **Phần 2 (trận pháp, thế lực, pháp tắc)**: **Trận pháp, Thế lực, Pháp tắc** (Menu → Nội tình) và **Thiên Phong Thành & Kiếm Trủng** (boss Thiên Phong Kiếm Chủ) cho người đã Hóa Thần.
 - **Hồi 3 và kết thúc phần 1**: Băng Nguyên, Tổng Đàn (Huyết Ảnh Môn Chủ), Thiên Kiếp Đài (**Lục Vân Sinh**); ba tuyến trận cuối (đánh / vạch trần / hợp tác) và **5 kết cục**; Nguyên Anh có **thoát xác** (hồi sinh một lần mỗi trận).
 - **Hồi 2 trọn vẹn**: bí cảnh Huyết Nguyệt (boss Độc Thủ Tiên Sinh), Hoang Mạc (Mặc Gia Gia Chủ: đánh hoặc vạch trần), **gỡ phong ấn Hỗn Độn Căn**, kết cục theo đạo tâm, Huyết Thư.
 - Rèn đồ, luyện đan, **NPC dịch vụ** (mua · bán · thuê · tự làm bằng mini-game), **Hội Đấu Giá** (với thương nhân NPC), thời trang.
 - Hội thoại có lựa chọn → đạo tâm, danh vọng, quan hệ.
 - Nhạc chiptune theo khu vực, **PWA**, **xuất/nhập save**, joystick ảo.
-- **131 unit test** và **mô phỏng cân bằng** (`npm run sim`).
+- **169 unit test** và **mô phỏng cân bằng** (`npm run sim`).
 
-Trên màn hình chính có các nút thử nhanh: **Trúc Cơ + Kiếm Tu**, **Kết Đan (Hồi 2)**, **Nguyên Anh (Hồi 3)** (đứng ở Phường Thị, đã hạ 3 kẻ thù, nói chuyện với Thiên Cơ Các để mở Băng Nguyên).
+Trên màn hình chính có các nút thử nhanh: **Trúc Cơ + Kiếm Tu**, **Kết Đan (Hồi 2)**, **Nguyên Anh (Hồi 3)**, **Hóa Thần (Phần 2, đứng ở Thiên Kiếp Đài; đi cổng phía đông)**, **Đại Thừa (đứng ở Thiên Môn, sẵn sàng độ kiếp Phi Thăng)**. Có nút chọn **độ khó** cho ván mới (mặc định Khó) (đứng ở Phường Thị, đã hạ 3 kẻ thù, nói chuyện với Thiên Cơ Các để mở Băng Nguyên).
 
 ## Công cụ
 `npm run dev` · `npm test` · `npm run build` · `npm run sim` (cân bằng) · `npm run maps` (sinh map Tiled) · `npm run tileset`. Hướng dẫn thay art và chỉnh bản đồ: [`docs/13-art-guide.md`](docs/13-art-guide.md).

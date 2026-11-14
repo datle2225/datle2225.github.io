@@ -4,8 +4,12 @@ import type { PlayerState } from './core/types';
 /** Trạng thái người chơi dùng chung cho mọi scene. */
 export const game: { p: PlayerState } = { p: newPlayer() };
 
+/** Độ khó chọn ở màn hình chính cho ván mới (mặc định Khó). */
+export const newGame: { difficulty: 'normal' | 'hard' | 'nightmare' } = { difficulty: 'hard' };
+
 export function startNew() {
   game.p = newPlayer();
+  game.p.difficulty = newGame.difficulty;
 }
 export function continueGame(): boolean {
   const p = load();

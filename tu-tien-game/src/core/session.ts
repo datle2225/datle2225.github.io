@@ -1,5 +1,6 @@
 import { BRANCHES, REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
 import { gainExp, levelUpStages } from './progression';
+import { addContribution } from './advanced';
 import type { PlayerState, Skill, Stats } from './types';
 
 /** Chiêu người chơi đã mở: nhánh đã chọn (hoặc chiêu cơ bản của mọi nhánh khi chưa chọn) theo cảnh giới/tầng. */
@@ -8,7 +9,7 @@ export function availableSkills(p: PlayerState): Skill[] {
     const r = REALMS.findIndex((x) => x.id === s.unlockRealm);
     const reached = p.realmIndex > r || (p.realmIndex === r && p.stage >= s.unlockStage);
     if (!reached) return false;
-    if (p.branchId) return s.branch === p.branchId || (!!p.subBranchId && s.branch === p.subBranchId);
+    if (p.branchId) return s.branch === 'all' || s.branch === p.branchId || (!!p.subBranchId && s.branch === p.subBranchId);
     return s.id === 'kiem_co_ban'; // trước khi chọn nhánh chỉ có đòn cơ bản
   });
 }
@@ -31,10 +32,15 @@ export function enterChapter(p: PlayerState, n: number): string[] {
 }
 
 /** Cập nhật tiến độ nhiệm vụ khi có sự kiện (đánh thắng / đến nơi / nói chuyện / nhặt). */
+/** Nhiệm vụ: dữ liệu tĩnh hoặc sinh động (bảng nhiệm vụ). */
+export function getQuest(p: PlayerState, id: string): any {
+  return questMap.get(id) ?? p.dynQuests[id];
+}
+
 export function questEvent(p: PlayerState, kind: string, target: string, n = 1): string[] {
   const done: string[] = [];
   for (const id of [...p.quests.active]) {
-    const q = questMap.get(id);
+    const q = getQuest(p, id);
     if (!q) continue;
     const idx = q.steps.findIndex((_: any, i: number) => (p.quests.progress[`${id}:${i}`] ?? 0) < (q.steps[i].n ?? 1));
     if (idx < 0) continue;
@@ -51,7 +57,7 @@ export function questEvent(p: PlayerState, kind: string, target: string, n = 1):
 }
 
 export function completeQuest(p: PlayerState, id: string) {
-  const q = questMap.get(id);
+  const q = getQuest(p, id);
   if (!q) return;
   p.quests.active = p.quests.active.filter((x) => x !== id);
   if (!p.quests.done.includes(id)) p.quests.done.push(id);
@@ -65,6 +71,10 @@ export function completeQuest(p: PlayerState, id: string) {
   if (r.recipe && !p.knownRecipes.includes(r.recipe)) p.knownRecipes.push(r.recipe);
   if (q.unlockSystem) unlockSystem(p, q.unlockSystem);
   if (q.unlockChapter) enterChapter(p, q.unlockChapter);
+  addContribution(p, q.type === 'main' ? 30 : 10); // điểm cống hiến thế lực
+  for (const [k, v] of Object.entries(q.rep ?? {})) p.rep[k] = Math.max(-100, Math.min(100, (p.rep[k] ?? 0) + (v as number)));
+  p.flags.lastDoneTitle = q.title;
+  if (q.bounty) delete p.dynQuests[id]; // quest bảng: xong là dọn
   for (const next of q.unlocks ?? []) if (!p.quests.active.includes(next) && !p.quests.done.includes(next)) p.quests.active.push(next);
 }
 
@@ -108,4 +118,26 @@ export function learnSubBranch(p: PlayerState, id: string): { ok: boolean; msg: 
   p.gold -= SUB_BRANCH_COST;
   p.subBranchId = id;
   return { ok: true, msg: `Đã học nhánh phụ ${b.name}. Chiêu của nhánh này mở dần theo cảnh giới.` };
+}
+
+/**
+ * Bước "thu thập": nộp vật phẩm trong túi. Gọi sau mọi thay đổi túi đồ (nhặt, rơi, mua).
+ * Khi đủ số lượng thì trừ vật phẩm và hoàn thành bước đó.
+ */
+export function checkCollect(p: PlayerState): string[] {
+  const done: string[] = [];
+  for (const id of [...p.quests.active]) {
+    const q = getQuest(p, id);
+    if (!q) continue;
+    const idx = q.steps.findIndex((_: any, i: number) => (p.quests.progress[`${id}:${i}`] ?? 0) < (q.steps[i].n ?? 1));
+    if (idx < 0) continue;
+    const st = q.steps[idx];
+    if (st.kind !== 'collect') continue;
+    const need = st.n ?? 1;
+    if ((p.inventory[st.target] ?? 0) < need) { p.quests.progress[`${id}:${idx}`] = Math.min(need, p.inventory[st.target] ?? 0); continue; }
+    p.inventory[st.target] -= need; // nộp vật phẩm
+    p.quests.progress[`${id}:${idx}`] = need;
+    if (q.steps.every((s: any, i: number) => (p.quests.progress[`${id}:${i}`] ?? 0) >= (s.n ?? 1))) { completeQuest(p, id); done.push(id); }
+  }
+  return done;
 }

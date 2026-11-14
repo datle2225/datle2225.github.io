@@ -1,0 +1,33 @@
+[
+ {
+  "id": "thoi_gian",
+  "name": "Thời Gian Pháp Tắc",
+  "desc": "Ngưỡng mềm của Tốc Độ nâng từ 150 lên 220: tốc độ cao ít bị cắt giảm.",
+  "softcap": 220
+ },
+ {
+  "id": "sinh_tu",
+  "name": "Sinh Tử Pháp Tắc",
+  "desc": "Mỗi lần hạ gục kẻ địch, hồi 10% HP tối đa.",
+  "healOnKill": 0.1
+ },
+ {
+  "id": "hu_khong",
+  "name": "Hư Không Pháp Tắc",
+  "desc": "12% khả năng né hoàn toàn một đòn tấn công.",
+  "dodge": 0.12
+ },
+ {
+  "id": "ngu_hanh",
+  "name": "Ngũ Hành Pháp Tắc",
+  "desc": "Khắc hệ gây ×1.5 (thay vì ×1.3) và không còn bị phạt khi bị khắc.",
+  "elemBonus": true
+ },
+ {
+  "id": "loi_dinh",
+  "name": "Lôi Đình Pháp Tắc",
+  "desc": "Bạo kích +8% và sát thương bạo kích ×1.8 (thay vì ×1.5).",
+  "critBonus": 0.08,
+  "critDmg": 1.8
+ }
+]

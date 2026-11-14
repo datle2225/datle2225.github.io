@@ -1878,5 +1878,2040 @@
     "next": null
    }
   }
+ },
+ "kiem_su_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Ngươi là người đã hạ Lục Vân Sinh? Tin ngươi truyền đến đây từ lâu rồi. Thiên Phong Đại Lục này khác hẳn nơi ngươi từng ở.",
+    "do": [
+     {
+      "quest": "m4_1"
+     },
+     {
+      "event": {
+       "kind": "talk",
+       "target": "kiem_su"
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Phía bắc có Kiếm Trủng, nơi chôn vạn thanh kiếm của người đi trước. Kiếm Chủ canh giữ nơi đó mấy trăm năm. Muốn lên đường phi thăng, ngươi phải được hắn công nhận.",
+    "next": null
+   }
+  }
+ },
+ "kiem_su_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Kiếm Trủng ở phía bắc thành. Hãy chuẩn bị kỹ, Kiếm Chủ không nương tay.",
+    "next": null
+   }
+  }
+ },
+ "kiem_su_done": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Ngươi đã được Kiếm Chủ công nhận. Con đường phi thăng đã mở. Nhưng đó là câu chuyện cho lần sau.",
+    "next": null
+   }
+  }
+ },
+ "thien_phong_ren_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Kiếm Lô",
+    "text": "Kiếm Lô Thiên Phong chỉ rèn cho người đáng rèn. Ngươi trông cũng đáng đấy.",
+    "do": [
+     {
+      "flag": "met_tp_ren"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thien_phong_ren"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "thien_phong_dan_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Linh Đan Các",
+    "text": "Linh Đan Các mở cửa cho mọi người có tiền. Đan phẩm cao nhất, giá cũng cao nhất.",
+    "do": [
+     {
+      "flag": "met_tp_dan"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thien_phong_dan"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "phan2_demo_end": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Thanh kiếm cuối cùng của Kiếm Chủ rơi xuống. Ông ta cười, lần đầu tiên sau mấy trăm năm.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi đã đi hết con đường Hóa Thần. Phía trước là Luyện Hư, Hợp Thể, Đại Thừa... rồi cổng Phi Thăng. Nhưng đoạn đường đó ta sẽ kể ngươi nghe sau.",
+    "do": [
+     {
+      "flag": "phan2_demo_done"
+     }
+    ],
+    "next": "c"
+   },
+   "c": {
+    "text": "=== HẾT PHẦN 2 (BẢN THỬ): THIÊN PHONG KIẾM TRỦNG ===\nPhi thăng và các cảnh giới từ Luyện Hư trở lên sẽ ở phần tiếp theo.",
+    "next": null
+   }
+  }
+ },
+ "hu_khong_lu_gia_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Hư Không",
+    "text": "Ồ, một người Luyện Hư lạc đến đây. Ở Hư Không Giới này, mặt đất không phải mặt đất, lối đi không phải lối đi.",
+    "do": [
+     {
+      "event": {
+       "kind": "talk",
+       "target": "hu_khong_lu_gia"
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Lữ Giả Hư Không",
+    "text": "Phía trước có Hư Không Thủ Hộ, kẻ canh cổng nơi này từ thuở khai thiên. Muốn đi tiếp phải thắng hắn. Nhớ: càng đánh lâu hắn càng mạnh, đừng kéo dài.",
+    "next": null
+   }
+  }
+ },
+ "hu_khong_lu_gia_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Hư Không",
+    "text": "Hư Không rộng lắm. Đi từ từ, đừng để cầu mây dưới chân tan mất.",
+    "next": null
+   }
+  }
+ },
+ "chien_su_vong_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "Lại có người sống đến đây... Chúng ta đã chết ở đây từ ngàn năm trước, mà vẫn chưa thôi đánh nhau.",
+    "do": [
+     {
+      "event": {
+       "kind": "talk",
+       "target": "chien_su_vong"
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "Chiến Thần của chúng ta đã hóa thành tàn hồn, canh lối lên Thiên Môn. Hắn không còn nhận ra ai nữa. Nếu ngươi thắng, hãy cho hắn được yên nghỉ.",
+    "choices": [
+     {
+      "text": "Ta sẽ cho hắn an nghỉ.",
+      "goto": "ok",
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "flag": "promised_rest"
+       }
+      ]
+     },
+     {
+      "text": "Ta chỉ cần lối đi.",
+      "goto": "cold",
+      "do": [
+       {
+        "dao": -1
+       }
+      ]
+     }
+    ]
+   },
+   "ok": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "Cảm ơn ngươi, người sống.",
+    "next": null
+   },
+   "cold": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "...Vậy hãy mạnh lên. Hắn không nương tay đâu.",
+    "next": null
+   }
+  }
+ },
+ "chien_su_vong_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "Hắn ở trung tâm chiến trường. Đừng nhìn vào mắt hắn quá lâu.",
+    "next": null
+   }
+  }
+ },
+ "chien_su_vong_3": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chiến Sĩ Vong Linh",
+    "text": "Hắn đã yên nghỉ rồi. Cảm ơn ngươi... Giờ ta cũng có thể đi.",
+    "next": null
+   }
+  }
+ },
+ "thien_mon_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Môn Chi Linh",
+    "text": "Ngươi đã đến Thiên Môn. Phía sau cánh cửa này là Tiên Giới, nhưng Thiên Đạo cử Sứ Giả kiểm tra mọi kẻ muốn vượt qua.",
+    "do": [
+     {
+      "event": {
+       "kind": "talk",
+       "target": "thien_mon_chi_linh"
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Thiên Môn Chi Linh",
+    "text": "Hạ Sứ Giả, rồi vượt Phi Thăng Thiên Kiếp: mười hai đợt sét, và trước đó là tâm ma của chính ngươi. Hãy chuẩn bị đan dược, trận pháp và pháp tắc.",
+    "next": null
+   }
+  }
+ },
+ "thien_mon_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Môn Chi Linh",
+    "text": "Sứ Giả đang chờ ở đài cao. Chuẩn bị kỹ trước khi bước tới.",
+    "next": null
+   }
+  }
+ },
+ "thien_mon_3": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Môn Chi Linh",
+    "text": "Sứ Giả đã gục. Giờ mở Menu → Độ kiếp, vượt qua tâm ma và Phi Thăng Thiên Kiếp. Cửa Tiên Giới sẽ mở.",
+    "next": null
+   }
+  }
+ },
+ "ascend_chinh": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "PHI THĂNG: CHÍNH ĐẠO CHÂN TIÊN",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi lên Tiên Giới với danh tiếng sạch sẽ. Người đời sẽ kể tên ngươi mãi như người đã báo thù mà không đánh mất mình.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thiên lôi lắng xuống. Ánh sáng từ Thiên Môn rọi xuống, kéo ngươi bay lên. Phía dưới, Thanh Hà Thôn nhỏ dần, nhỏ dần, rồi chỉ còn là một chấm sáng.",
+    "do": [
+     {
+      "flag": "game_won"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT GAME: TÀN CĂN NGHỊCH THIÊN ===\nTừ phế vật Tàn Căn đến Phi Thăng Tiên Giới. Cảm ơn bạn đã đồng hành suốt hành trình!\n(Bạn vẫn có thể tiếp tục chơi tự do.)",
+    "next": null
+   }
+  }
+ },
+ "ascend_ma": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "PHI THĂNG: MA TIÊN",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi lên Tiên Giới với bóng tối theo sau. Tiên Giới sẽ phải dè chừng một kẻ đã đi con đường như ngươi.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thiên lôi lắng xuống. Ánh sáng từ Thiên Môn rọi xuống, kéo ngươi bay lên. Phía dưới, Thanh Hà Thôn nhỏ dần, nhỏ dần, rồi chỉ còn là một chấm sáng.",
+    "do": [
+     {
+      "flag": "game_won"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT GAME: TÀN CĂN NGHỊCH THIÊN ===\nTừ phế vật Tàn Căn đến Phi Thăng Tiên Giới. Cảm ơn bạn đã đồng hành suốt hành trình!\n(Bạn vẫn có thể tiếp tục chơi tự do.)",
+    "next": null
+   }
+  }
+ },
+ "ascend_tan": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "PHI THĂNG: TIÊU DAO TIÊN",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Không chính, không tà. Ngươi lên Tiên Giới như một cơn gió, và có lẽ đó là cách mạnh nhất để bắt đầu một đời mới.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thiên lôi lắng xuống. Ánh sáng từ Thiên Môn rọi xuống, kéo ngươi bay lên. Phía dưới, Thanh Hà Thôn nhỏ dần, nhỏ dần, rồi chỉ còn là một chấm sáng.",
+    "do": [
+     {
+      "flag": "game_won"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT GAME: TÀN CĂN NGHỊCH THIÊN ===\nTừ phế vật Tàn Căn đến Phi Thăng Tiên Giới. Cảm ơn bạn đã đồng hành suốt hành trình!\n(Bạn vẫn có thể tiếp tục chơi tự do.)",
+    "next": null
+   }
+  }
+ },
+ "ascend_expose": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "PHI THĂNG: NGƯỜI PHÁ MÀN ĐÊM",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi đã phơi bày sự thật của cả một thời đại trước khi phi thăng. Dưới kia, tu giới đang thay đổi, nhờ ngươi.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thiên lôi lắng xuống. Ánh sáng từ Thiên Môn rọi xuống, kéo ngươi bay lên. Phía dưới, Thanh Hà Thôn nhỏ dần, nhỏ dần, rồi chỉ còn là một chấm sáng.",
+    "do": [
+     {
+      "flag": "game_won"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT GAME: TÀN CĂN NGHỊCH THIÊN ===\nTừ phế vật Tàn Căn đến Phi Thăng Tiên Giới. Cảm ơn bạn đã đồng hành suốt hành trình!\n(Bạn vẫn có thể tiếp tục chơi tự do.)",
+    "next": null
+   }
+  }
+ },
+ "ascend_dark": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "PHI THĂNG: KẺ CÙNG KẺ THÙ",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi lên Tiên Giới, và không ai biết Lục Vân Sinh có theo sau hay không. Lão Đỉnh chỉ thở dài. Con đường này còn nhiều bóng tối chưa kể.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thiên lôi lắng xuống. Ánh sáng từ Thiên Môn rọi xuống, kéo ngươi bay lên. Phía dưới, Thanh Hà Thôn nhỏ dần, nhỏ dần, rồi chỉ còn là một chấm sáng.",
+    "do": [
+     {
+      "flag": "game_won"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT GAME: TÀN CĂN NGHỊCH THIÊN ===\nTừ phế vật Tàn Căn đến Phi Thăng Tiên Giới. Cảm ơn bạn đã đồng hành suốt hành trình!\n(Bạn vẫn có thể tiếp tục chơi tự do.)",
+    "next": null
+   }
+  }
+ },
+ "sq_thon_truong_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thôn Trưởng",
+    "text": "Con trai ta bị xà yêu dọa đến mất vía. Cậu giúp ta dẹp bớt đám xà yêu ngoài rừng nhé?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_thon_truong"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Thôn Trưởng",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_thon_truong_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thôn Trưởng",
+    "text": "Xà yêu ở phía đông, đường đất. Nhớ cẩn thận nọc độc.",
+    "next": null
+   }
+  }
+ },
+ "sq_thon_truong_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thôn Trưởng",
+    "text": "Thằng bé dạo này chăm chỉ lắm. Cảm ơn cậu.",
+    "next": null
+   }
+  }
+ },
+ "sq_thon_truong_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thôn Trưởng",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_thon_truong_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thôn Trưởng",
+    "text": "Cảm ơn cậu! ... À, thật ra thằng bé nói nó lẻn đi hái thuốc để bán lấy tiền chơi bài. Ta nên xử nó thế nào?",
+    "choices": [
+     {
+      "text": "Bảo ông răn dạy con trai cho nghiêm.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 1
+       },
+       {
+        "rel": {
+         "thon_truong": 8
+        }
+       },
+       {
+        "flag": "sq_thon_truong_res"
+       }
+      ]
+     },
+     {
+      "text": "Khuyên ông bỏ qua, ai cũng có lúc dại.",
+      "goto": "c1",
+      "do": [
+       {
+        "gold": 30
+       },
+       {
+        "dao": 1
+       },
+       {
+        "flag": "sq_thon_truong_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Thôn Trưởng",
+    "text": "Thôn Trưởng gật gù: Phải, phải. Cảm ơn cậu đã nói thẳng.",
+    "next": null
+   },
+   "c1": {
+    "who": "Thôn Trưởng",
+    "text": "Thôn Trưởng cười: Cậu nhân hậu quá. Thôi, ta tặng cậu chút lộc.",
+    "next": null
+   }
+  }
+ },
+ "sq_ruou_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ông Bạch nấu rượu",
+    "text": "Rượu ta ủ ba năm sắp được rồi, chỉ thiếu mấy miếng da sói để bọc thùng. Cậu kiếm giúp 4 miếng được không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_ruou"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Ông Bạch nấu rượu",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_ruou_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ông Bạch nấu rượu",
+    "text": "Da sói thì sói rừng có sẵn. Có đủ 4 miếng trong túi là ta nhận ngay.",
+    "next": null
+   }
+  }
+ },
+ "sq_ruou_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ông Bạch nấu rượu",
+    "text": "Rượu thành rồi, chưa dám uống. Chờ cậu đến uống cùng.",
+    "next": null
+   }
+  }
+ },
+ "sq_ruou_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ông Bạch nấu rượu",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_ruou_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ông Bạch",
+    "text": "Hay quá! Rượu thành rồi. Cậu muốn thứ gì: tiền công, hay vài viên đan thuốc ta tự luyện?",
+    "choices": [
+     {
+      "text": "Lấy tiền công 60 linh thạch.",
+      "goto": "c0",
+      "do": [
+       {
+        "gold": 60
+       },
+       {
+        "flag": "sq_ruou_res"
+       }
+      ]
+     },
+     {
+      "text": "Nhận 2 viên Hồi Huyết Đan.",
+      "goto": "c1",
+      "do": [
+       {
+        "item": {
+         "id": "hoi_huyet_dan",
+         "n": 2
+        }
+       },
+       {
+        "dao": 1
+       },
+       {
+        "flag": "sq_ruou_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Ông Bạch",
+    "text": "Ông Bạch móc túi: Đây, cầm lấy.",
+    "next": null
+   },
+   "c1": {
+    "who": "Ông Bạch",
+    "text": "Ông Bạch cười lớn: Đan của ta ngon lắm đấy!",
+    "next": null
+   }
+  }
+ },
+ "sq_bia_mo_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Cụ Thủy",
+    "text": "Ba mươi sáu người Diệp gia chưa có nổi một tấm bia. Ta già rồi, chỉ muốn làm điều ấy trước khi nhắm mắt. Cậu giúp ta 3 cây Linh Thảo làm hoa cúng được không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_bia_mo"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Bà Cụ Thủy",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_bia_mo_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Cụ Thủy",
+    "text": "Linh Thảo mọc nhiều ven đường. Có 3 cây trong túi cứ đưa ta.",
+    "next": null
+   }
+  }
+ },
+ "sq_bia_mo_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Cụ Thủy",
+    "text": "Bia mộ đứng đó, lặng lẽ. Ta thấy lòng nhẹ hẳn.",
+    "next": null
+   }
+  }
+ },
+ "sq_bia_mo_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Cụ Thủy",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_bia_mo_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Cụ Thủy",
+    "text": "Bia đã dựng xong. Dưới tro tàn, ta tìm thấy một tín vật của cha cậu... Cậu muốn làm gì?",
+    "choices": [
+     {
+      "text": "Chôn lại tín vật cùng bia mộ.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 4
+       },
+       {
+        "exp": 60
+       },
+       {
+        "flag": "sq_bia_mo_res"
+       }
+      ]
+     },
+     {
+      "text": "Giữ lấy tín vật làm kỷ niệm.",
+      "goto": "c1",
+      "do": [
+       {
+        "exp": 140
+       },
+       {
+        "dao": -1
+       },
+       {
+        "flag": "kept_diep_relic"
+       },
+       {
+        "flag": "sq_bia_mo_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Bà Cụ Thủy",
+    "text": "Bà Cụ Thủy khóc: Cha mẹ cậu sẽ yên lòng.",
+    "next": null
+   },
+   "c1": {
+    "who": "Bà Cụ Thủy",
+    "text": "Bà Cụ Thủy gật đầu: Cũng phải. Cậu mang theo, coi như họ vẫn đi cùng.",
+    "next": null
+   }
+  }
+ },
+ "sq_de_tu_yeu_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Sư huynh... đệ bị mấy tên nội môn đánh. Đệ không có tiền mua đan. Sư huynh có thể cho đệ 2 viên Hồi Huyết Đan được không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_de_tu_yeu"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_de_tu_yeu_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Đệ vẫn đau lắm... Sư huynh có đan không?",
+    "next": null
+   }
+  }
+ },
+ "sq_de_tu_yeu_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Nhờ sư huynh, đệ đã đủ can đảm đứng lên rồi.",
+    "next": null
+   }
+  }
+ },
+ "sq_de_tu_yeu_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_de_tu_yeu_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Đệ khỏi rồi! Sư huynh, đệ muốn học đánh để không bị bắt nạt nữa.",
+    "choices": [
+     {
+      "text": "Dạy cậu vài chiêu cơ bản.",
+      "goto": "c0",
+      "do": [
+       {
+        "exp": 150
+       },
+       {
+        "rep": {
+         "chinh_dao": 2
+        }
+       },
+       {
+        "dao": 2
+       },
+       {
+        "flag": "sq_de_tu_yeu_res"
+       }
+      ]
+     },
+     {
+      "text": "Bảo cậu tự rèn luyện mà tự lo.",
+      "goto": "c1",
+      "do": [
+       {
+        "dao": -1
+       },
+       {
+        "flag": "sq_de_tu_yeu_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Tiểu Sư Đệ mắt sáng rực: Đệ sẽ nhớ ơn sư huynh suốt đời!",
+    "next": null
+   },
+   "c1": {
+    "who": "Tiểu Sư Đệ",
+    "text": "Tiểu Sư Đệ cúi đầu: Vâng... đệ hiểu rồi.",
+    "next": null
+   }
+  }
+ },
+ "sq_duoc_vien_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Dược Đồng Ngoại Môn",
+    "text": "Dược viên của tông môn bị thú rừng phá nát hết! Nếu sư huynh đem giúp 8 cây Linh Thảo, đệ sẽ dạy lại phương Thanh Tâm Đan cho.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_duoc_vien"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Dược Đồng Ngoại Môn",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_duoc_vien_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Dược Đồng Ngoại Môn",
+    "text": "8 cây Linh Thảo nhé, sư huynh.",
+    "next": null
+   }
+  }
+ },
+ "sq_duoc_vien_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Dược Đồng Ngoại Môn",
+    "text": "Dược viên xanh tốt trở lại rồi, đa tạ sư huynh!",
+    "next": null
+   }
+  }
+ },
+ "sq_duoc_vien_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Dược Đồng Ngoại Môn",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_no_tien_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Bọn cướp đường ngoài rìa phố cướp hết tiền hàng của ta. Nhờ ngươi dạy chúng một bài học, ta sẽ có thưởng.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_no_tien"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_no_tien_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Cướp thường lảng vảng phía nam và đông phố.",
+    "next": null
+   }
+  }
+ },
+ "sq_no_tien_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Cảm ơn ngươi đã giúp lúc ta bí nhất.",
+    "next": null
+   }
+  }
+ },
+ "sq_no_tien_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_no_tien_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Ngươi lấy lại được cả túi tiền này! Ta... ta chia thế nào đây?",
+    "choices": [
+     {
+      "text": "Trả lại toàn bộ cho ông.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "rel": {
+         "tap_hoa": 10
+        }
+       },
+       {
+        "rep": {
+         "tan_tu": 1
+        }
+       },
+       {
+        "flag": "sq_no_tien_res"
+       }
+      ]
+     },
+     {
+      "text": "Giữ một nửa làm công.",
+      "goto": "c1",
+      "do": [
+       {
+        "gold": 120
+       },
+       {
+        "dao": -2
+       },
+       {
+        "flag": "sq_no_tien_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Ông ôm túi tiền khóc: Ân nhân! Ta không biết lấy gì đền đáp.",
+    "next": null
+   },
+   "c1": {
+    "who": "Chủ Tiệm Nhỏ",
+    "text": "Ông thở dài: Cũng phải... Cho ngươi đó.",
+    "next": null
+   }
+  }
+ },
+ "sq_bit_mat_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Có một Ma Tu đang truy sát ta. Hạ hắn giúp ta, ta đưa ngươi một lá thư, thứ ngươi sẽ muốn đọc.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_bit_mat"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_bit_mat_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Hắn ở ngoại ô phố, đứng cẩn thận.",
+    "next": null
+   }
+  }
+ },
+ "sq_bit_mat_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Ta đã chạy khỏi đây từ lâu, hẹn gặp lại.",
+    "next": null
+   }
+  }
+ },
+ "sq_bit_mat_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_bit_mat_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Ngươi giỏi thật. Đây là lá thư. Nó nhắc đến một cái tên mà ngươi đang tìm kiếm.",
+    "choices": [
+     {
+      "text": "Mở thư ra đọc.",
+      "goto": "c0",
+      "do": [
+       {
+        "flag": "luc_hint"
+       },
+       {
+        "exp": 300
+       },
+       {
+        "flag": "sq_bit_mat_res"
+       }
+      ]
+     },
+     {
+      "text": "Đốt thư, không muốn dây vào.",
+      "goto": "c1",
+      "do": [
+       {
+        "dao": 1
+       },
+       {
+        "gold": 100
+       },
+       {
+        "flag": "sq_bit_mat_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Trong thư: \"Mọi việc ở Thanh Vân Tông vẫn theo kế hoạch của L.\" Ngươi ghi nhớ chữ L đó.",
+    "next": null
+   },
+   "c1": {
+    "who": "Người Đàn Ông Bịt Mặt",
+    "text": "Ngọn lửa liếm lên giấy. Ngươi không muốn thêm gánh nặng.",
+    "next": null
+   }
+  }
+ },
+ "sq_quang_ren_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Trò Thiết Phong",
+    "text": "Sư phụ ta nhận đơn gấp mà thiếu quặng. Nếu ngươi mang giúp 8 Huyền Thiết, sư phụ sẽ nhớ ơn ngươi.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_quang_ren"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Học Trò Thiết Phong",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_quang_ren_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Trò Thiết Phong",
+    "text": "Huyền Thiết thì rơi từ quái hoặc mua ở lò rèn.",
+    "next": null
+   }
+  }
+ },
+ "sq_quang_ren_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Trò Thiết Phong",
+    "text": "Sư phụ khen ngươi đấy.",
+    "next": null
+   }
+  }
+ },
+ "sq_quang_ren_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Trò Thiết Phong",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_lac_da_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Sa Trùng chặn đường đoàn lạc đà của ta. Giúp ta hạ hai con, ta cảm ơn xứng đáng.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_lac_da"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_lac_da_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Sa Trùng ở vùng cát phía đông bắc.",
+    "next": null
+   }
+  }
+ },
+ "sq_lac_da_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Đường cát đã thông, nhờ ngươi.",
+    "next": null
+   }
+  }
+ },
+ "sq_lac_da_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_lac_da_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Đường thông rồi! Ta có thể đưa ngươi một túi vàng, hoặc cho người của ta đi cùng ngươi vài ngày.",
+    "choices": [
+     {
+      "text": "Lấy túi vàng.",
+      "goto": "c0",
+      "do": [
+       {
+        "gold": 350
+       },
+       {
+        "flag": "sq_lac_da_res"
+       }
+      ]
+     },
+     {
+      "text": "Để đoàn đi cùng, bảo vệ họ.",
+      "goto": "c1",
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "exp": 500
+       },
+       {
+        "flag": "sq_lac_da_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Lữ khách đưa túi vàng nặng trĩu.",
+    "next": null
+   },
+   "c1": {
+    "who": "Lữ Khách Lạc Đoàn",
+    "text": "Đoàn lạc đà thắp lửa cảm ơn ngươi. Ngươi thấy lòng ấm lên.",
+    "next": null
+   }
+  }
+ },
+ "sq_bang_ho_ly_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Hai con Băng Yêu cứ rình đàn trâu băng của làng ta. Giúp ta một tay, ta trả tiền.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_bang_ho_ly"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Thợ Săn Băng",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_bang_ho_ly_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Chúng hay ở hồ băng phía đông nam.",
+    "next": null
+   }
+  }
+ },
+ "sq_bang_ho_ly_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Ngọc thì thầm trong tuyết. Cảm ơn ngươi.",
+    "next": null
+   }
+  }
+ },
+ "sq_bang_ho_ly_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_bang_ho_ly_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Lạ thật, ta thấy sau lưng chúng có một hồ ly băng con, run rẩy, như đang canh giữ ổ trứng. Ngươi định thế nào?",
+    "choices": [
+     {
+      "text": "Để hồ ly con yên.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 4
+       },
+       {
+        "item": {
+         "id": "huyet_tham",
+         "n": 3
+        }
+       },
+       {
+        "flag": "spared_fox"
+       },
+       {
+        "flag": "sq_bang_ho_ly_res"
+       }
+      ]
+     },
+     {
+      "text": "Lấy da hồ ly, bán lấy tiền.",
+      "goto": "c1",
+      "do": [
+       {
+        "gold": 400
+       },
+       {
+        "dao": -3
+       },
+       {
+        "flag": "sq_bang_ho_ly_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Thợ Săn Băng",
+    "text": "Hồ ly con ngước nhìn ngươi, rồi biến mất vào tuyết. Ngươi tìm thấy một viên ngọc nhỏ nơi nó đứng.",
+    "next": null
+   },
+   "c1": {
+    "who": "Thợ Săn Băng",
+    "text": "Tấm da trắng muốt ấm áp... và nặng nề.",
+    "next": null
+   }
+  }
+ },
+ "sq_thu_kiem_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Đồng",
+    "text": "Ai vào Thiên Phong cũng phải thử kiếm. Hạ ba Kiếm Hồn trong Kiếm Trủng đi, ta sẽ báo cho sư phụ.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_thu_kiem"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Kiếm Đồng",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_thu_kiem_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Đồng",
+    "text": "Kiếm Hồn ở phía bắc thành. Đừng khinh địch.",
+    "next": null
+   }
+  }
+ },
+ "sq_thu_kiem_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Đồng",
+    "text": "Kiếm đạo của ngươi đã được công nhận.",
+    "next": null
+   }
+  }
+ },
+ "sq_thu_kiem_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Đồng",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_huyet_tham_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Đồ Linh Đan Các",
+    "text": "Sư phụ cần tám cây Huyết Sâm luyện mẻ đan hộ kiếp gấp. Ngươi có thể đưa giúp không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_huyet_tham"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Học Đồ Linh Đan Các",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_huyet_tham_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Đồ Linh Đan Các",
+    "text": "Huyết Sâm có thể mua ở các tiệm đan hoặc rơi từ boss.",
+    "next": null
+   }
+  }
+ },
+ "sq_huyet_tham_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Đồ Linh Đan Các",
+    "text": "Mẻ đan hộ kiếp thành rồi, cảm ơn ngươi.",
+    "next": null
+   }
+  }
+ },
+ "sq_huyet_tham_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Học Đồ Linh Đan Các",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_hu_anh_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Lũ Hư Ảnh cứ nhái giọng người rồi dụ lữ giả ngã xuống hư không. Ngươi giúp ta diệt bớt được không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_hu_anh"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_hu_anh_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Chúng ở các đảo mây xung quanh.",
+    "next": null
+   }
+  }
+ },
+ "sq_hu_anh_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Hư Không yên tĩnh hơn nhiều rồi.",
+    "next": null
+   }
+  }
+ },
+ "sq_hu_anh_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_hu_anh_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Tiếng nhái cuối cùng đã tắt. ... Ngươi có nghe thấy không? Một Hư Ảnh còn sót lại đang xin tha.",
+    "choices": [
+     {
+      "text": "Diệt tận gốc, không để lại hậu họa.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": -1
+       },
+       {
+        "exp": 40000
+       },
+       {
+        "flag": "sq_hu_anh_res"
+       }
+      ]
+     },
+     {
+      "text": "Tha cho nó đi.",
+      "goto": "c1",
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "exp": 25000
+       },
+       {
+        "flag": "sq_hu_anh_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Tiếng khóc cuối cùng tắt hẳn. Hư Không yên ắng.",
+    "next": null
+   },
+   "c1": {
+    "who": "Lữ Giả Trẻ",
+    "text": "Hư Ảnh biến mất, để lại một tiếng cảm ơn vang vọng.",
+    "next": null
+   }
+  }
+ },
+ "sq_di_vat_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Chúng ta chết ở đây không có bia mộ. Giúp ta 12 Huyền Thiết để rèn một tấm bia cho những người đã ngã xuống.",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_di_vat"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_di_vat_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Huyền Thiết có thể rơi từ Chiến Hồn.",
+    "next": null
+   }
+  }
+ },
+ "sq_di_vat_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Bia mộ đứng đó, chúng ta có thể yên nghỉ.",
+    "next": null
+   }
+  }
+ },
+ "sq_di_vat_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_di_vat_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Bia đã xong. Trong đống quặng còn sót lại một thanh kiếm gãy của một đại năng. Ngươi muốn làm gì với nó?",
+    "choices": [
+     {
+      "text": "Chôn cùng tấm bia.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 4
+       },
+       {
+        "exp": 300000
+       },
+       {
+        "flag": "sq_di_vat_res"
+       }
+      ]
+     },
+     {
+      "text": "Giữ thanh kiếm gãy để nghiên cứu.",
+      "goto": "c1",
+      "do": [
+       {
+        "exp": 800000
+       },
+       {
+        "dao": -2
+       },
+       {
+        "flag": "sq_di_vat_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Hồn Binh quỳ xuống: Cảm ơn ngươi.",
+    "next": null
+   },
+   "c1": {
+    "who": "Hồn Binh Lạc Lối",
+    "text": "Ngươi cảm nhận được một chút kiếm ý còn sót.",
+    "next": null
+   }
+  }
+ },
+ "sq_ke_xin_len_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Ta đã đợi ở đây ba trăm năm mà Thiên Binh không cho qua. Ngươi mạnh hơn ta, giúp ta dọn đường với!",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "sq_ke_xin_len"
+       }
+      ]
+     },
+     {
+      "text": "Để lúc khác.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Cảm ơn ngươi nhiều!",
+    "next": null
+   }
+  }
+ },
+ "sq_ke_xin_len_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Thiên Binh canh các đài quanh Thiên Môn.",
+    "next": null
+   }
+  }
+ },
+ "sq_ke_xin_len_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Cảm ơn ngươi, dù ta chọn thế nào.",
+    "next": null
+   }
+  }
+ },
+ "sq_ke_xin_len_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Ta đang có chút việc... Ngươi quay lại khi mạnh hơn nhé.",
+    "next": null
+   }
+  }
+ },
+ "sq_ke_xin_len_res": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Đường mở rồi! Nhưng ta chợt hiểu, ta chưa sẵn sàng. Ngươi nghĩ ta nên làm gì?",
+    "choices": [
+     {
+      "text": "Ở lại tu thêm, đừng vội.",
+      "goto": "c0",
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "exp": 1000000
+       },
+       {
+        "flag": "sq_ke_xin_len_res"
+       }
+      ]
+     },
+     {
+      "text": "Cứ đi, đường đã mở.",
+      "goto": "c1",
+      "do": [
+       {
+        "exp": 600000
+       },
+       {
+        "gold": 10000
+       },
+       {
+        "flag": "sq_ke_xin_len_res"
+       }
+      ]
+     }
+    ]
+   },
+   "c0": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Tu sĩ gật đầu: Ngươi nói đúng, ta đã vội quá lâu.",
+    "next": null
+   },
+   "c1": {
+    "who": "Tu Sĩ Lạc Lối",
+    "text": "Tu sĩ run rẩy bước lên đài... rồi biến mất trong ánh sáng.",
+    "next": null
+   }
+  }
+ },
+ "tmth_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Thương Hội",
+    "text": "Thương hội của Thanh Vân Tông đây. Hàng chính phái, giá niêm yết. Người trong tông còn được giảm thêm.",
+    "do": [
+     {
+      "flag": "met_tmth"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tong_mon_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tmth_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Thương Hội",
+    "text": "Cần gì cứ nói, sư huynh.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tong_mon_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "mgth_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Mặc Gia",
+    "text": "Mặc Gia Thương Hội, buôn khắp Hoang Mạc. Quặng ở đây rẻ nhất, vì chúng ta là người đào.",
+    "do": [
+     {
+      "flag": "met_mgth"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "mac_gia_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "mgth_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Mặc Gia",
+    "text": "Hàng tươi đây, mua nhiều ta bớt.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "mac_gia_thuong_hoi"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tsb_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Ở Băng Nguyên không có lò rèn, chỉ có đan và dược liệu. Đủ để đi sâu một chuyến.",
+    "do": [
+     {
+      "flag": "met_tsb"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_san_bang"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tsb_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thợ Săn Băng",
+    "text": "Trời lạnh, mua nhanh rồi đi.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_san_bang"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
  }
 }

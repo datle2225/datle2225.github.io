@@ -645,5 +645,459 @@
   "flagOnWin": "enemy5_dead",
   "exp": 12000,
   "drops": []
+ },
+ {
+  "id": "kiem_hon",
+  "name": "Kiếm Hồn",
+  "realm": "hoa_than",
+  "element": "kim",
+  "stats": {
+   "hp": 5200,
+   "mp": 300,
+   "atk": 900,
+   "def": 300,
+   "spd": 112,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_thanh_van_kiem",
+   "yeu_kim_cuong"
+  ],
+  "exp": 20000,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.6
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "thien_phong_kiem_chu",
+  "name": "Thiên Phong Kiếm Chủ",
+  "realm": "hoa_than",
+  "element": "kim",
+  "boss": true,
+  "stats": {
+   "hp": 16500,
+   "mp": 900,
+   "atk": 960,
+   "def": 470,
+   "spd": 125,
+   "crit": 0.12
+  },
+  "skills": [
+   "yeu_thanh_van_kiem",
+   "yeu_kim_cuong",
+   "yeu_ho_the"
+  ],
+  "phases": [
+   {
+    "at": 0.75,
+    "text": "Kiếm Chủ rút kiếm khỏi vỏ, kiếm khí rạch đôi mặt đất!",
+    "skills": [
+     "yeu_thanh_van_kiem",
+     "yeu_kim_cuong",
+     "yeu_thien_loi"
+    ],
+    "atkMul": 1.1
+   },
+   {
+    "at": 0.5,
+    "text": "Vạn kiếm trong Trủng cùng rung lên, đáp lại tiếng gọi của ông ta!",
+    "skills": [
+     "yeu_thien_loi",
+     "yeu_thanh_van_kiem",
+     "yeu_kim_cuong"
+    ],
+    "atkMul": 1.2,
+    "spdMul": 1.1
+   },
+   {
+    "at": 0.25,
+    "text": "Kiếm Chủ hợp nhất với thanh kiếm: ông ta không còn là người nữa!",
+    "skills": [
+     "yeu_thien_loi",
+     "yeu_thanh_van_kiem"
+    ],
+    "atkMul": 1.25,
+    "spdMul": 1.15,
+    "heal": 0.05
+   }
+  ],
+  "tempoResist": 0.3,
+  "flagOnWin": "enemy6_dead",
+  "exp": 60000,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "hu_anh",
+  "name": "Hư Ảnh",
+  "realm": "luyen_hu",
+  "element": "none",
+  "stats": {
+   "hp": 12384,
+   "mp": 600,
+   "atk": 2380,
+   "def": 707,
+   "spd": 120,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_phan_than",
+   "yeu_hu_khong_chan"
+  ],
+  "exp": 22500,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.6
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "hu_khong_thu",
+  "name": "Hư Không Thú",
+  "realm": "luyen_hu",
+  "element": "none",
+  "stats": {
+   "hp": 13622,
+   "mp": 600,
+   "atk": 2450,
+   "def": 795,
+   "spd": 108,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_hu_khong_chan",
+   "yeu_doat_menh"
+  ],
+  "exp": 22500,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 0.5
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "hu_khong_thu_ho",
+  "name": "Hư Không Thủ Hộ",
+  "realm": "luyen_hu",
+  "element": "none",
+  "stats": {
+   "hp": 35219,
+   "mp": 600,
+   "atk": 2367,
+   "def": 1131,
+   "spd": 128,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_phan_than",
+   "yeu_hu_khong_chan",
+   "yeu_ho_the_manh"
+  ],
+  "boss": true,
+  "phases": [
+   {
+    "at": 0.7,
+    "text": "Không gian quanh Thủ Hộ xoắn lại, bóng ảnh tách ra làm đôi!",
+    "skills": [
+     "yeu_phan_than",
+     "yeu_hu_khong_chan",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.1
+   },
+   {
+    "at": 0.4,
+    "text": "Hư Không rạn nứt! Thủ Hộ hút lấy mọi thứ xung quanh để nuôi sức!",
+    "skills": [
+     "yeu_hu_khong_chan",
+     "yeu_doat_menh",
+     "yeu_phan_than"
+    ],
+    "atkMul": 1.2,
+    "spdMul": 1.1,
+    "heal": 0.06
+   },
+   {
+    "at": 0.2,
+    "text": "Thủ Hộ tan vào bóng tối, chỉ còn lại một con mắt khổng lồ!",
+    "skills": [
+     "yeu_hu_khong_chan",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.25,
+    "spdMul": 1.15
+   }
+  ],
+  "tempoResist": 0.3,
+  "flagOnWin": "enemy7_dead",
+  "exp": 90000,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "chien_hon",
+  "name": "Chiến Hồn",
+  "realm": "hop_the",
+  "element": "hoa",
+  "stats": {
+   "hp": 28656,
+   "mp": 600,
+   "atk": 5536,
+   "def": 1647,
+   "spd": 114,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_chien_y",
+   "yeu_kim_cuong"
+  ],
+  "exp": 87500,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.7
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "thi_ma",
+  "name": "Thi Ma Cổ Chiến",
+  "realm": "hop_the",
+  "element": "none",
+  "stats": {
+   "hp": 34387,
+   "mp": 600,
+   "atk": 5374,
+   "def": 2059,
+   "spd": 98,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_doat_menh",
+   "yeu_chan_dia"
+  ],
+  "exp": 87500,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 0.5
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "chien_than_tan_hon",
+  "name": "Chiến Thần Tàn Hồn",
+  "realm": "hop_the",
+  "element": "hoa",
+  "stats": {
+   "hp": 83308,
+   "mp": 600,
+   "atk": 5862,
+   "def": 2636,
+   "spd": 126,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_chien_y",
+   "yeu_than_loi",
+   "yeu_ho_the_manh"
+  ],
+  "boss": true,
+  "phases": [
+   {
+    "at": 0.7,
+    "text": "Tàn Hồn gầm lên, chiến ý ngàn năm tụ lại thành ngọn lửa ma quái!",
+    "skills": [
+     "yeu_chien_y",
+     "yeu_than_loi",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.12
+   },
+   {
+    "at": 0.4,
+    "text": "Mọi chiến sĩ đã chết trong trận xưa cùng đứng dậy sau lưng hắn!",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_chien_y",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.2,
+    "spdMul": 1.1,
+    "heal": 0.06
+   },
+   {
+    "at": 0.2,
+    "text": "Chiến Thần xé bỏ giáp, thân thể chỉ còn ngọn lửa trắng!",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_chien_y"
+    ],
+    "atkMul": 1.28,
+    "spdMul": 1.15
+   }
+  ],
+  "tempoResist": 0.3,
+  "flagOnWin": "enemy8_dead",
+  "exp": 350000,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "thien_binh",
+  "name": "Thiên Binh",
+  "realm": "dai_thua",
+  "element": "kim",
+  "stats": {
+   "hp": 65088,
+   "mp": 600,
+   "atk": 12624,
+   "def": 3761,
+   "spd": 118,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_than_loi",
+   "yeu_ho_the_manh",
+   "yeu_kim_cuong"
+  ],
+  "exp": 375000,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.8
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "thien_dao_su_gia",
+  "name": "Thiên Đạo Sứ Giả",
+  "realm": "dai_thua",
+  "element": "kim",
+  "stats": {
+   "hp": 221299,
+   "mp": 600,
+   "atk": 13923,
+   "def": 6394,
+   "spd": 132,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_than_loi",
+   "yeu_hu_khong_chan",
+   "yeu_doat_menh",
+   "yeu_ho_the_manh"
+  ],
+  "boss": true,
+  "phases": [
+   {
+    "at": 0.75,
+    "text": "Sứ Giả giơ tay, bầu trời mở ra: Thiên Đạo đang nhìn ngươi.",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_hu_khong_chan",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.1
+   },
+   {
+    "at": 0.5,
+    "text": "Thiên lôi giáng xuống không ngừng, mỗi nhát là một lời phán xét!",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_doat_menh",
+     "yeu_hu_khong_chan"
+    ],
+    "atkMul": 1.2,
+    "spdMul": 1.1
+   },
+   {
+    "at": 0.25,
+    "text": "Sứ Giả hợp nhất với Thiên Đạo, mắt rực lên ánh vàng!",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_doat_menh"
+    ],
+    "atkMul": 1.3,
+    "spdMul": 1.15,
+    "heal": 0.05
+   },
+   {
+    "at": 0.1,
+    "text": "Thiên Đạo gầm vang: Không ai được phép vượt qua ta!",
+    "skills": [
+     "yeu_than_loi",
+     "yeu_hu_khong_chan"
+    ],
+    "atkMul": 1.35,
+    "spdMul": 1.2
+   }
+  ],
+  "tempoResist": 0.25,
+  "flagOnWin": "enemy9_dead",
+  "exp": 1500000,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
  }
 ]

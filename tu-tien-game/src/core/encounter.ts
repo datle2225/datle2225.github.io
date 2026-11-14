@@ -4,10 +4,12 @@ import { Rng } from './rng';
 import { availableSkills, companionStats } from './session';
 import { computeStats } from './stats';
 import { tamMaFactor } from './progression';
+import { formationFx, lawPerks } from './advanced';
+import { difficultyOf, scaleEnemyStats } from './difficulty';
 import type { PlayerState } from './types';
 
 /** Dựng trận đấu từ trạng thái người chơi (dùng chung cho game và mô phỏng cân bằng). */
-export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
+export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true, opts: { elite?: boolean } = {}): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
   const stats = computeStats(p);
   const player = makeUnit('player', p.name, 'player', stats, availableSkills(p).map((s) => s.id), 'none');
   if (p.unlockedSystems.includes('thoat_xac')) player.reviveFrac = 0.3; // Nguyên Anh: thoát xác, mạng thứ hai
@@ -29,9 +31,24 @@ export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withPa
       const f = tamMaFactor(p);
       const ms = { hp: Math.round(stats.hp * f), mp: stats.mp, atk: Math.round(stats.atk * f), def: Math.round(stats.def * f), spd: stats.spd, crit: stats.crit };
       units.push(makeUnit(id, 'Tâm Ma', 'enemy', ms, availableSkills(p).map((s) => s.id), 'none'));
-    } else units.push(makeUnit(id, e.name, 'enemy', e.stats, e.skills, e.element, e.phases, e.tempoResist));
+    } else {
+      const elite = !!opts.elite && !e.boss;
+      const st = scaleEnemyStats(e.stats, difficultyOf(p), elite);
+      units.push(makeUnit(id, elite ? `★ ${e.name}` : e.name, 'enemy', st, e.skills, e.element, e.phases, e.tempoResist));
+    }
   });
-  return { battle: new Battle(units, rng), player, enemyUnitIds };
+  // trận pháp (cả đội) và pháp tắc (chỉ bản thân) — chỉ áp dụng cho phe người chơi
+  const fx = formationFx(p);
+  for (const u of units.filter((x) => x.side === 'player')) {
+    u.stats = { ...u.stats, atk: Math.round(u.stats.atk * fx.atkMul), def: Math.round(u.stats.def * fx.defMul), spd: Math.round(u.stats.spd * fx.spdMul) };
+    if (fx.takenMul !== 1) u.takenMul = fx.takenMul;
+    if (fx.hpRegenPct) u.hpRegenPct = fx.hpRegenPct;
+  }
+  const lp = lawPerks(p);
+  if (Object.keys(lp).length) player.perks = { softcap: lp.softcap, healOnKill: lp.healOnKill, dodge: lp.dodge, elemBonus: lp.elemBonus, critDmg: lp.critDmg };
+  const battle = new Battle(units, rng);
+  battle.mpRegen += fx.mpRegen;
+  return { battle, player, enemyUnitIds };
 }
 
 /** Tự đánh cả trận bằng AI (cho cả hai phe). Trả về kết quả và số hành động. */

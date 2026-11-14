@@ -106,6 +106,9 @@ export class BootScene extends Phaser.Scene {
     px('ice', 16, (g) => { R(g, 0xa8d4f0, 0, 0, 16, 16); R(g, 0xc8e8ff, 2, 3, 6, 1); R(g, 0x88b8e0, 8, 9, 6, 1); R(g, 0xffffff, 11, 3, 2, 1); });
     px('pine', 16, (g) => { R(g, 0xe8f0f8, 0, 0, 16, 16); R(g, 0x5a3a1e, 7, 11, 2, 5); R(g, 0x1f5a3a, 3, 7, 10, 5); R(g, 0x2c7a4a, 4, 4, 8, 4); R(g, 0x3a9a5a, 6, 1, 4, 4); R(g, 0xffffff, 5, 6, 3, 1); R(g, 0xffffff, 7, 3, 2, 1); });
     px('snow_rock', 16, (g) => { R(g, 0xe8f0f8, 0, 0, 16, 16); R(g, 0x7a7f8c, 2, 5, 12, 9); R(g, 0x9aa0ae, 4, 6, 5, 3); R(g, 0xffffff, 3, 5, 10, 2); });
+    px('void_floor', 16, (g) => { R(g, 0x1c1038, 0, 0, 16, 16); R(g, 0x2c1a58, 0, 0, 16, 1); R(g, 0x2c1a58, 0, 8, 16, 1); R(g, 0x2c1a58, 8, 0, 1, 8); R(g, 0x6a4ac8, 3, 3, 2, 2); R(g, 0xb090ff, 11, 11, 1, 1); R(g, 0x6a4ac8, 12, 5, 1, 1); });
+    px('cloud', 16, (g) => { R(g, 0xdce8ff, 0, 0, 16, 16); R(g, 0xffffff, 2, 3, 6, 3); R(g, 0xffffff, 9, 9, 5, 3); R(g, 0xc0d0f0, 4, 12, 6, 2); R(g, 0xf4f8ff, 10, 2, 3, 2); });
+    px('void_hole', 16, (g) => { R(g, 0x050210, 0, 0, 16, 16); R(g, 0x2a1060, 2, 2, 12, 12); R(g, 0x0a0420, 4, 4, 8, 8); R(g, 0xb090ff, 7, 7, 2, 2); });
     px('herb', 16, (g) => { R(g, 0x2fb04a, 6, 6, 4, 8); R(g, 0x6aeb7a, 4, 5, 3, 3); R(g, 0x6aeb7a, 9, 4, 3, 3); R(g, 0xffd84a, 7, 3, 2, 2); });
     px('spark', 4, (g) => { R(g, 0xfff3a0, 0, 0, 4, 4); });
 

@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 import { W, H } from '../main';
 import { game, persist } from '../state';
 import { button, label } from '../ui/widgets';
-import { questEvent } from '../core/session';
-import { EVENTS, questMap, REALMS, vendorMap } from '../core/data';
+import { checkCollect, getQuest, questEvent } from '../core/session';
+import { ELITE } from '../core/difficulty';
+import { EVENTS, REALMS, enemyMap, vendorMap } from '../core/data';
 import { expNeeded } from '../core/progression';
 import { DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
 import { loadMap } from '../core/maps';
@@ -22,7 +23,7 @@ const HALF = TS / 2;
 const respawnAt = new Map<string, number>();
 
 interface NpcView { npc: MapNpc; spr: Phaser.GameObjects.Sprite; tag: Phaser.GameObjects.Text; at: string }
-interface FoeView { def: MapFoe; spr: Phaser.GameObjects.Sprite; tag?: Phaser.GameObjects.Text; key: string }
+interface FoeView { def: MapFoe; spr: Phaser.GameObjects.Sprite; tag?: Phaser.GameObjects.Text; key: string; elite: boolean }
 
 export class OverworldScene extends Phaser.Scene {
   private map!: MapDef;
@@ -71,6 +72,7 @@ export class OverworldScene extends Phaser.Scene {
     this.runner = null; this.dialogUi = []; this.busy = false; this.joyPtr = null; this.joyVec.set(0, 0); this.partyKey = ''; this.walked = 0;
     this.map = loadMap(p.mapId);
     p.mapId = this.map.id;
+    if (!p.visited.includes(p.mapId)) p.visited.push(p.mapId);
     this.buildMap();
 
     const arrive = this.initData.arrive;
@@ -90,7 +92,9 @@ export class OverworldScene extends Phaser.Scene {
       const spr = this.add.sprite(f.x * TS + HALF, f.y * TS + HALF, f.tex).setScale(f.scale ?? 2).setDepth(5);
       if (this.anims.exists(`idle_${f.tex}`)) spr.play(`idle_${f.tex}`);
       const tag = f.group.length > 1 ? this.add.text(f.x * TS + HALF, f.y * TS - 6, `×${f.group.length}`, { fontFamily: 'monospace', fontSize: '10px', color: '#ff9a9a', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5).setDepth(6) : undefined;
-      this.foes.push({ def: f, spr, tag, key: `${this.map.id}:${i}` });
+      const elite = this.rollElite(f);
+      this.foes.push({ def: f, spr, tag, key: `${this.map.id}:${i}`, elite });
+      this.markElite(this.foes[this.foes.length - 1]);
     });
     for (const [x, y] of this.map.herbs) this.herbs.push({ spr: this.add.sprite(x * TS + HALF, y * TS + HALF, 'herb').setScale(2).setDepth(2), got: false });
     this.refreshFoeVisibility();
@@ -116,13 +120,16 @@ export class OverworldScene extends Phaser.Scene {
       this.busy = false;
       this.immuneUntil = this.time.now + 3000;
       const f = this.foes[r.foeIndex];
-      if (r.won && f) { respawnAt.set(f.key, game.p.playtime + this.map.respawn); this.refreshFoeVisibility(); }
+      if (r.won && f) { respawnAt.set(f.key, game.p.playtime + this.map.respawn); f.elite = this.rollElite(f.def); this.markElite(f); this.refreshFoeVisibility(); }
       if (r.lost) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
       this.refreshHud();
       audio.music(this.map.music);
       if (r.completed?.length) this.time.delayedCall(300, () => this.progress(r.completed!)); // quest hoàn thành ngay trong trận
     };
-    const onResume = () => { this.refreshHud(); this.refreshFoeVisibility(); audio.music(this.map.music); };
+    const onResume = () => {
+      this.refreshHud(); this.refreshFoeVisibility(); audio.music(this.map.music);
+      if (game.p.flags.ascended && !game.p.flags.ascend_shown) { game.p.flags.ascend_shown = true; this.time.delayedCall(500, () => { const e = pickDialogue(game.p, [{ if: { flag: 'ending_join' }, id: 'ascend_dark' }, { if: { flag: 'route_expose' }, id: 'ascend_expose' }, { if: { minDao: 65 }, id: 'ascend_chinh' }, { if: { maxDao: 35 }, id: 'ascend_ma' }, { id: 'ascend_tan' }]); if (e) this.startDialogue(e); }); }
+    };
     this.events.on('battle-end', onBattleEnd);
     this.events.on('resume', onResume);
     this.events.once('shutdown', () => { this.events.off('battle-end', onBattleEnd); this.events.off('resume', onResume); });
@@ -149,6 +156,17 @@ export class OverworldScene extends Phaser.Scene {
       }
     }
     rt.endDraw();
+  }
+
+  /** 12% quái thường là tinh anh (★): mạnh hơn, thưởng gấp đôi. Boss thì không. */
+  private rollElite(f: MapFoe): boolean {
+    return !f.group.some((id) => enemyMap.get(id)?.boss) && Math.random() < ELITE.chance;
+  }
+
+  private markElite(f: FoeView) {
+    if (f.elite) f.spr.setTint(0xff7070); else f.spr.clearTint();
+    f.tag?.setText(`${f.elite ? '★ ' : ''}${f.def.group.length > 1 ? `×${f.def.group.length}` : ''}`.trim());
+    if (!f.tag && f.elite) f.tag = this.add.text(f.def.x * TS + HALF, f.def.y * TS - 6, '★', { fontFamily: 'monospace', fontSize: '12px', color: '#ffd24a', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5).setDepth(6);
   }
 
   private foeAlive(f: FoeView) {
@@ -181,6 +199,8 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private tick() {
+    const col = checkCollect(game.p);
+    if (col.length) this.progress(col);
     if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
     this.refreshHud();
     this.syncFollowers();
@@ -300,7 +320,7 @@ export class OverworldScene extends Phaser.Scene {
         p.inventory.linh_thao = (p.inventory.linh_thao ?? 0) + 1;
         audio.sfx('coin');
         this.toast('Nhặt được Linh Thảo');
-        this.progress(questEvent(p, 'collect', 'linh_thao', 1));
+        this.progress(checkCollect(p));
         this.time.delayedCall(30000, () => { h.got = false; h.spr.setVisible(true); });
       }
     }
@@ -353,15 +373,17 @@ export class OverworldScene extends Phaser.Scene {
     if (!n) return;
     let id = pickDialogue(game.p, n.talk);
     if (id === '@rumor') id = rumorDialogue(game.p);
+    if (id === '@board') { this.openShop('bang_nv'); return; }
     if (id) this.startDialogue(id);
   }
 
   private progress(done: string[]) {
     for (const id of done) {
-      this.toast(`Hoàn thành: ${questMap.get(id)?.title}`);
+      this.toast(`Hoàn thành: ${getQuest(game.p, id)?.title ?? game.p.flags.lastDoneTitle ?? 'nhiệm vụ'}`);
       audio.sfx('levelup');
       if (id === 'm1_2') this.startDialogue('co_dinh');
       if (id === 'm1_3') this.startDialogue('m1_3_done');
+      if (id === 'm4_2') this.time.delayedCall(400, () => this.startDialogue('phan2_demo_end'));
       if (id === 'm3_3') this.time.delayedCall(400, () => { const e = pickDialogue(game.p, [{ if: { flag: 'ending_join' }, id: 'end_dark' }, { if: { flag: 'route_expose' }, id: 'end_expose' }, { if: { minDao: 65 }, id: 'end_chinh' }, { if: { maxDao: 35 }, id: 'end_ma' }, { id: 'end_tan' }]); if (e) this.startDialogue(e); });
       if (id === 'm2_3') this.startDialogue('unseal', () => { const e = pickDialogue(game.p, [{ if: { minDao: 65 }, id: 'hoi2_end_chinh' }, { if: { maxDao: 35 }, id: 'hoi2_end_ma' }, { id: 'hoi2_end_tan' }]); if (e) this.time.delayedCall(300, () => this.startDialogue(e)); });
     }
@@ -370,15 +392,15 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private startBattle(i: number) {
-    this.launchBattle(this.foes[i].def.group, i);
+    this.launchBattle(this.foes[i].def.group, i, this.foes[i].elite);
   }
 
-  private launchBattle(group: string[], foeIndex: number) {
+  private launchBattle(group: string[], foeIndex: number, elite = false) {
     this.busy = true;
     this.joyPtr = null; this.joyVec.set(0, 0);
     this.savePos();
     this.scene.pause();
-    this.scene.launch('Battle', { enemies: group, foeIndex });
+    this.scene.launch('Battle', { enemies: group, foeIndex, elite });
   }
 
   private openMenu() {
@@ -405,7 +427,7 @@ export class OverworldScene extends Phaser.Scene {
     const p = game.p;
     const r = REALMS[p.realmIndex];
     this.hud.setText(`${p.name} · ${r.name} tầng ${p.stage} · ${p.exp}/${expNeeded(p)} · ${p.gold} LT${p.party.length ? ` · +${p.party.length}` : ''}\n${this.map.name} · ${formatHour(gameHour(p))}`);
-    const mq = p.quests.active.map((id) => questMap.get(id)).filter(Boolean);
+    const mq = p.quests.active.map((id) => getQuest(p, id)).filter(Boolean);
     this.questText.setY(this.hud.y + this.hud.height + 2);
     this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}: ${q.desc}`).join('\n') : '(Hết nhiệm vụ trong chương này)');
   }

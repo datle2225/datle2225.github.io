@@ -16,14 +16,22 @@ export const SCENARIOS: Scenario[] = [
   { name: 'NA3 vs 2 Quái', realm: 3, stage: 3, enemies: ['huyet_ve', 'bang_lang'] },
   { name: 'NA5 vs Môn Chủ', realm: 3, stage: 5, enemies: ['huyet_anh_mon_chu'] },
   { name: 'NA7 vs Lục Vân Sinh', realm: 3, stage: 7, enemies: ['luc_van_sinh'] },
+  { name: 'HT3 vs 2 Kiếm Hồn', realm: 4, stage: 3, enemies: ['kiem_hon', 'kiem_hon'] },
+  { name: 'HT5 vs Kiếm Chủ', realm: 4, stage: 5, enemies: ['thien_phong_kiem_chu'] },
+  { name: 'LH3 vs 2 Quái', realm: 5, stage: 3, enemies: ['hu_anh', 'hu_khong_thu'] },
+  { name: 'LH5 vs Thủ Hộ', realm: 5, stage: 5, enemies: ['hu_khong_thu_ho'] },
+  { name: 'HTh3 vs 2 Quái', realm: 6, stage: 3, enemies: ['chien_hon', 'thi_ma'] },
+  { name: 'HTh5 vs Tàn Hồn', realm: 6, stage: 5, enemies: ['chien_than_tan_hon'] },
+  { name: 'ĐT3 vs 2 Thiên Binh', realm: 7, stage: 3, enemies: ['thien_binh', 'thien_binh'] },
+  { name: 'ĐT7 vs Sứ Giả', realm: 7, stage: 7, enemies: ['thien_dao_su_gia'] },
   { name: 'KĐ6 vs Mặc Gia', realm: 2, stage: 6, enemies: ['mac_gia_chu'] },
 ];
 
-export function winRate(branch: string, sc: Scenario, n = 200): { win: number; hp: number; actions: number } {
+export function winRate(branch: string, sc: Scenario, n = 200, difficulty: 'normal' | 'hard' | 'nightmare' = 'normal'): { win: number; hp: number; actions: number } {
   let w = 0, hp = 0, act = 0;
   for (let i = 0; i < n; i++) {
     const p = newPlayer();
-    p.rootId = 'kim'; p.realmIndex = sc.realm; p.stage = sc.stage; p.branchId = sc.realm === 0 ? null : branch; // trước Trúc Cơ chưa có nhánh
+    p.difficulty = difficulty; p.rootId = 'kim'; p.realmIndex = sc.realm; p.stage = sc.stage; p.branchId = sc.realm === 0 ? null : branch; // trước Trúc Cơ chưa có nhánh
     if (sc.realm >= 3) p.unlockedSystems.push('thoat_xac'); // Nguyên Anh: mạng thứ hai
     const r = autoBattle(p, sc.enemies, new Rng(1000 + i));
     if (r.won) { w++; hp += r.hpLeft; }

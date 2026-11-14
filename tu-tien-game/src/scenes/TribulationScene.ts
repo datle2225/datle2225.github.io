@@ -106,7 +106,12 @@ export class TribulationScene extends Phaser.Scene {
     this.clearBtns();
     audio.music(null);
     let msg: string;
-    if (success) {
+    if (success && p.flags.ascended) {
+      msg = 'PHI THĂNG THÀNH CÔNG!\nThiên môn mở ra phía trên đầu ngươi.';
+      audio.sfx('levelup');
+      this.sky.setFillStyle(0x6a4aa0);
+      this.cameras.main.flash(900, 255, 240, 180);
+    } else if (success) {
       const r2 = REALMS[p.realmIndex];
       const fresh = r2.unlocks.filter((u) => !ownsSystem(p, u));
       p.unlockedSystems.push(...fresh);

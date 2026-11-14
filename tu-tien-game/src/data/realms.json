@@ -167,10 +167,12 @@
   "tribulation": {
    "waves": 9,
    "boltPower": 1300,
-   "recommendedPower": 20000,
+   "recommendedPower": 12000,
    "name": "Luyện Hư Thiên Kiếp"
   },
-  "unlocks": [],
+  "unlocks": [
+   "dich_chuyen"
+  ],
   "bottlenecks": []
  },
  {
@@ -193,7 +195,7 @@
   "tribulation": {
    "waves": 9,
    "boltPower": 2800,
-   "recommendedPower": 65000,
+   "recommendedPower": 28000,
    "name": "Hợp Thể Thiên Kiếp"
   },
   "unlocks": [],
@@ -219,12 +221,18 @@
   "tribulation": {
    "waves": 9,
    "boltPower": 6000,
-   "recommendedPower": 210000,
-   "name": "Phi Thăng Thiên Kiếp"
+   "recommendedPower": 65000,
+   "name": "Đại Thừa Thiên Kiếp"
   },
   "unlocks": [
    "phi_thang"
   ],
-  "bottlenecks": []
+  "bottlenecks": [],
+  "ascension": {
+   "waves": 12,
+   "boltPower": 9000,
+   "recommendedPower": 150000,
+   "name": "Phi Thăng Thiên Kiếp"
+  }
  }
 ]

@@ -3,7 +3,7 @@
 ## Dữ liệu bản đồ
 Bản đồ nằm ở `src/data/maps/*.json` (lưới ký tự + danh sách NPC, quái, thảo dược, vùng kích hoạt nhiệm vụ). Thêm khu mới = thêm một file JSON. *(Chưa nhập trực tiếp được file của Tiled; xem backlog ở 11.)*
 
-## Bản đồ hiện có (8 map nối nhau bằng cổng)
+## Bản đồ hiện có (12 map nối nhau bằng cổng)
 | Map | Nhạc | Nội dung | Cổng |
 |---|---|---|---|
 | **Thanh Hà Thôn & Hắc Lâm** (64×40) | overworld | Khởi đầu, tàn tích, giếng cổ, chợ Thanh Hà Tập (3 NPC dịch vụ + Nguyệt Nhi), quái, boss | → Thanh Vân Tông (sau `m1_3`), → Phường Thị (từ Chương 2) |
@@ -13,6 +13,10 @@ Bản đồ nằm ở `src/data/maps/*.json` (lưới ký tự + danh sách NPC,
 | **Băng Nguyên Cực Bắc** (60×36) | tribulation | Tuyết, thông, hồ băng linh khí ×2.0; quái Băng Lang, Băng Yêu, Huyết Vệ | → Phường Thị, → Tổng Đàn (sau `m3_1`), → Thiên Kiếp Đài (sau khi hạ Môn Chủ) |
 | **Huyết Ảnh Tổng Đàn** (48×34) | boss | Dungeon Nguyên Anh: ba phòng, hầm dung nham, huyết trì linh mạch ×3.0, đại sảnh boss Môn Chủ | → Băng Nguyên |
 | **Thiên Kiếp Đài** (40×30) | sect | Đài cuối: thảm đỏ, cột đá, linh khí ×2.5 (×3.5 ở tâm), Lục Vân Sinh | → Băng Nguyên |
+| **Thiên Phong Thành & Kiếm Trủng** (56×42) | sect | Phần 2: thành phố phía nam (thợ rèn tay nghề 8, đan sư tay nghề 9, Kiếm Sư), Kiếm Trủng phía bắc với quái Kiếm Hồn và boss Kiếm Chủ | → Thiên Kiếp Đài (mở từ đó khi đã hết Phần 1 và đạt Hóa Thần) |
+| **Hư Không Giới** (48×34) | tribulation | Luyện Hư: đảo mây nối bằng cầu mây, hố hư không (không đi được), boss Hư Không Thủ Hộ | → Thiên Phong, → Cổ Chiến Trường |
+| **Cổ Chiến Trường** (60×36) | boss | Hợp Thể: sa mạc xương, pháo đài đổ nát, dung nham, boss Chiến Thần Tàn Hồn | → Hư Không, → Thiên Môn |
+| **Thiên Môn** (44×34) | sect | Đại Thừa: thềm mây, thảm đỏ, boss Thiên Đạo Sứ Giả; **độ kiếp Phi Thăng ở đây** | → Cổ Chiến Trường |
 | **Phường Thị Vân Hải** (56×36) | market | Thiết Phong Lâu (thợ rèn tay nghề 6), Vạn Dược Đường (đan sư tay nghề 7), **Hội Đấu Giá**, Thiên Cơ Các (tin đồn, giao nhiệm vụ Hồi 2), thương gia, vệ binh, quái ngoại ô | → Thanh Hà, Huyết Nguyệt, Hoang Mạc |
 
 ## Ngày – đêm & lịch sinh hoạt NPC (đã làm)

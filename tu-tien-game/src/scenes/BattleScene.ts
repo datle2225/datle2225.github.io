@@ -7,10 +7,11 @@ import { buildBattle } from '../core/encounter';
 import { Rng } from '../core/rng';
 import { availableSkills, questEvent, rollDrops } from '../core/session';
 import { enemyMap, skillMap, materialMap, statusMap } from '../core/data';
+import { ELITE, applyDefeatPenalty, difficultyOf } from '../core/difficulty';
 import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
 
-interface Init { enemies: string[]; foeIndex: number; returnTo?: string }
+interface Init { enemies: string[]; foeIndex: number; returnTo?: string; elite?: boolean }
 const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss', tam_ma: 'player', huyet_quai: 'cultist', doc_trung: 'snake', doc_thu_tien_sinh: 'elder_boss', xich_hoa_thu: 'wolf', sa_trung: 'snake', mac_gia_chu: 'npc_sage', cuop_duong: 'cultist', bang_lang: 'wolf', huyet_ve: 'cultist', bang_yeu: 'snake', huyet_anh_mon_chu: 'elder_boss', luc_van_sinh: 'npc_sage', ma_tu_lang_thang: 'cultist' };
 
 export class BattleScene extends Phaser.Scene {
@@ -29,6 +30,7 @@ export class BattleScene extends Phaser.Scene {
   private player!: Unit;
   private enemyIds: string[] = [];
   private completedQuests: string[] = [];
+  private pillsLeft = 3;
 
   constructor() { super('Battle'); }
 
@@ -40,7 +42,8 @@ export class BattleScene extends Phaser.Scene {
     this.add.rectangle(0, 0, W, H, 0x101a36).setOrigin(0);
     this.add.rectangle(0, 200, W, 160, 0x1b2a4a).setOrigin(0);
 
-    const built = buildBattle(p, this.init0.enemies, new Rng());
+    this.pillsLeft = difficultyOf(p).pills;
+    const built = buildBattle(p, this.init0.enemies, new Rng(), true, { elite: !!this.init0.elite });
     this.b = built.battle;
     this.player = built.player;
     this.enemyIds = built.enemyUnitIds;
@@ -134,9 +137,9 @@ export class BattleScene extends Phaser.Scene {
       add(button(this, 330, 322, 150, 28, sk ? `Combo ▶ ${sk.name}` : 'Combo: thiếu linh lực', () => { if (nx) { this.comboIdx = nx.next; this.playerAct(nx.id); } }, { enabled: !!sk && !this.locked, color: 0x6a3a8c }));
     }
     const pill = p.inventory.hoi_huyet_dan ?? 0;
-    add(button(this, 484, 322, 70, 28, `Đan (${pill})`, () => this.usePill(), { enabled: pill > 0 && !this.locked, color: 0x2a6a4a }));
+    add(button(this, 484, 322, 70, 28, `Đan ${pill}·${this.pillsLeft}/${difficultyOf(p).pills}`, () => this.usePill(), { enabled: pill > 0 && this.pillsLeft > 0 && !this.locked, color: 0x2a6a4a }));
     const boss = enemyMap.get(this.init0.enemies[0])?.boss || this.init0.enemies.includes('tam_ma');
-    add(button(this, 558, 322, 74, 28, 'Bỏ chạy', () => this.end(false, true), { enabled: !boss && !this.locked, color: 0x6a2a2a }));
+    add(button(this, 558, 322, 74, 28, 'Bỏ chạy', () => this.end(false, true), { enabled: !boss && difficultyOf(p).canFlee && !this.locked, color: 0x6a2a2a }));
   }
 
   /** Xem chiêu kế tiếp trong combo (không đổi trạng thái); bỏ qua chiêu thiếu linh lực. */
@@ -150,7 +153,8 @@ export class BattleScene extends Phaser.Scene {
 
   private usePill() {
     const p = game.p;
-    if ((p.inventory.hoi_huyet_dan ?? 0) <= 0) return;
+    if ((p.inventory.hoi_huyet_dan ?? 0) <= 0 || this.pillsLeft <= 0) return;
+    this.pillsLeft--;
     p.inventory.hoi_huyet_dan--;
     this.player.hp = Math.min(this.player.stats.hp, this.player.hp + Math.round(this.player.stats.hp * 0.35));
     this.player.nextAt += 100;
@@ -226,10 +230,11 @@ export class BattleScene extends Phaser.Scene {
     const completed: string[] = [];
     if (won) {
       let exp = 0;
+      const mult = difficultyOf(p).reward * (this.init0.elite ? ELITE.reward : 1);
       for (const eid of this.init0.enemies) {
         const e = enemyMap.get(eid);
-        exp += e.exp;
-        for (const [id, n] of Object.entries(rollDrops(eid, Math.random))) {
+        exp += Math.round(e.exp * mult);
+        for (const [id, n] of Object.entries(rollDrops(eid, () => Math.random() / mult))) {
           if (id === 'linh_thach_ha') p.gold += n * 5; else p.inventory[id] = (p.inventory[id] ?? 0) + n;
           msg += `\n+${n} ${(materialMap.get(id) as any)?.name ?? id}`;
         }
@@ -243,8 +248,9 @@ export class BattleScene extends Phaser.Scene {
     } else if (fled) {
       msg = 'Ngươi chạy thoát.';
     } else {
-      p.gold = Math.floor(p.gold * 0.9);
-      msg = 'Bại trận... Mất 10% linh thạch. Ngươi tỉnh lại ở nơi an toàn.';
+      const mirror = this.init0.enemies.includes('tam_ma');
+      const lost = mirror ? { gold: 0, exp: 0 } : applyDefeatPenalty(p); // tâm ma: chỉ ảnh hưởng đạo tâm
+      msg = mirror ? 'Tâm ma thắng thế...' : `Bại trận... Mất ${lost.gold} linh thạch${lost.exp ? ` và ${lost.exp} tu vi` : ''}. Ngươi tỉnh lại ở nơi an toàn.`;
     }
     this.completedQuests = completed;
     persist();

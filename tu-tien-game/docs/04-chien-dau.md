@@ -60,6 +60,8 @@ dmg    = max(1, base × ngũ_hành × random(0.95–1.05) × combo × (bạo kí
 | **Hồi chiêu** (`cd`) | Chiêu hồi máu phải đợi N lần hành động mới dùng lại | Mọi chiêu hồi máu |
 | **DoT theo Công** (`dotAtk`) | Độc/Bỏng/Bẫy gây sát thương theo **Công của người gây**, không theo % HP mục tiêu (tránh phình theo HP boss) | Đan, Pháp, Phù Trận |
 | **Thoát xác** (`reviveFrac`) | Nguyên Anh trở lên: **hồi sinh một lần mỗi trận** với 30% HP, xóa trạng thái xấu (hiện chữ THOÁT XÁC, flash xanh) | Người chơi từ Nguyên Anh |
+| **Trận pháp** (`takenMul`, `hpRegenPct`, Công/Thủ/Tốc) | Buff-đổi-lấy-debuff cho cả đội, bày trước trận | Người chơi từ Nguyên Anh |
+| **Pháp tắc** (`perks`) | Né, hồi khi hạ gục, ngưỡng mềm Tốc cao hơn, khắc hệ ×1.5, bạo kích ×1.8 | Người chơi từ Hóa Thần |
 | **Chiêu riêng của địch** (`branch: "enemy"`) | Địch dùng bản sao chiêu riêng, **chỉnh cân bằng người chơi không làm boss mạnh lên** | Boss, đệ tử Huyết Ảnh Môn |
 
 ## Cân bằng bằng mô phỏng tự động
@@ -78,6 +80,14 @@ KĐ5 vs Độc Thủ       100% hp56      47% hp9        100% hp40      100% hp5
 NA3 vs 2 Quái        100% hp60      100% hp66      100% hp57      100% hp66      100% hp52      100% hp73      100% hp44      100% hp64     
 NA5 vs Môn Chủ       93% hp24       97% hp21       99% hp20       99% hp36       39% hp12       97% hp24       91% hp11       100% hp24     
 NA7 vs Lục Vân Sinh  94% hp15       69% hp19       99% hp27       51% hp23       74% hp16       43% hp16       99% hp8        73% hp15      
+HT3 vs 2 Kiếm Hồn    100% hp23      100% hp20      100% hp42      100% hp56      100% hp20      98% hp27       100% hp35      100% hp39     
+HT5 vs Kiếm Chủ      91% hp23       59% hp11       95% hp22       35% hp18       65% hp10       35% hp12       99% hp9        79% hp14      
+LH3 vs 2 Quái        100% hp21      77% hp13       91% hp21       97% hp42       79% hp14       78% hp24       34% hp9        100% hp25     
+LH5 vs Thủ Hộ        97% hp18       45% hp9        89% hp19       59% hp23       51% hp7        64% hp16       49% hp10       77% hp11      
+HTh3 vs 2 Quái       100% hp16      100% hp23      98% hp22       100% hp53      100% hp20      100% hp29      91% hp11       100% hp17     
+HTh5 vs Tàn Hồn      37% hp27       45% hp25       82% hp21       89% hp26       59% hp21       77% hp26       38% hp10       97% hp28      
+ĐT3 vs 2 Thiên Binh  100% hp39      100% hp37      100% hp61      100% hp65      100% hp37      100% hp35      100% hp31      100% hp37     
+ĐT7 vs Sứ Giả        97% hp24       21% hp29       77% hp27       95% hp35       23% hp29       54% hp32       97% hp9        15% hp29      
 KĐ6 vs Mặc Gia       84% hp13       64% hp12       100% hp42      96% hp34       62% hp11       51% hp18       98% hp8        82% hp24
 ```
 (Ô: `tỉ lệ thắng` và `HP còn lại trung bình khi thắng`. Trước Trúc Cơ chưa có nhánh nên các cột giống nhau. **8 nhánh**, 150 trận mỗi ô.)
@@ -86,6 +96,7 @@ KĐ6 vs Mặc Gia       84% hp13       64% hp12       100% hp42      96% hp34   
 - Trước Trúc Cơ: thắng quái cùng tầng ≥ 90% nhưng **mất đáng kể HP** (không bao giờ "đi dạo").
 - **Boss Trúc Cơ 5: mọi nhánh thắng 25–95%**, chênh giữa nhánh mạnh nhất và yếu nhất < 50 điểm % → cần chuẩn bị (đan, trang bị, combo, đồng đội), không bất khả thi, không nhánh nào áp đảo.
 - **Hồi 2 (Kết Đan):** quái thường thắng ≥ 85%; hai boss (Độc Thủ, Mặc Gia) mọi nhánh thắng ≥ 25%, trung bình ≤ 95%.
+- **Phần 2 (Hóa Thần):** quái thường ≥ 85%; **Thiên Phong Kiếm Chủ** mọi nhánh ≥ 20%, trung bình ≤ 90%; trận pháp + pháp tắc + thế lực làm trùm dễ hơn rõ rệt.
 - **Hồi 3 (Nguyên Anh, có thoát xác):** quái thường ≥ 85%; Huyết Ảnh Môn Chủ mọi nhánh ≥ 25%; **trùm cuối Lục Vân Sinh** mọi nhánh ≥ 15% và **trung bình ≤ 85%** (khó hơn hẳn các boss trước).
 - Vượt tầng (Trúc Cơ 9) thắng boss **dễ hơn rõ rệt** → cày thật sự có ý nghĩa.
 - Lưu ý: AI mô phỏng thô nên Thể Tu (có khiên) nhỉnh hơn; người chơi dùng combo giỏi sẽ thay đổi bảng này.

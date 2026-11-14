@@ -10,7 +10,7 @@ TILESET = [(t, s == 'true') for t, s in TEXS]
 IDX = {t: i for i, (t, _) in enumerate(TILESET)}
 CH = {'g': 'grass', 'G2': 'grass2', 'p': 'path', 't': 'tree', 'r': 'rock', 'w': 'water', 'R': 'ruin', 'W': 'well', 'D': 'gate', 'h': 'house',
       'f': 'floor', 'k': 'wood', 'S': 'sect_roof', 'M': 'sect_wall', 'P': 'pillar', 'y': 'dummy', 'l': 'lantern', 'x': 'flower', 'n': 'fence',
-      'c': 'carpet', 'b': 'bridge', 's': 'sand', 'C': 'cactus', 'V': 'lava', 'o': 'bones', 'X': 'dungeon_wall', 'd': 'dungeon_floor', 'q': 'sand_rock', 'N': 'snow', 'I': 'ice', 'Y': 'pine', 'K': 'snow_rock'}
+      'c': 'carpet', 'b': 'bridge', 's': 'sand', 'C': 'cactus', 'V': 'lava', 'o': 'bones', 'X': 'dungeon_wall', 'd': 'dungeon_floor', 'q': 'sand_rock', 'N': 'snow', 'I': 'ice', 'Y': 'pine', 'K': 'snow_rock', 'Z': 'void_floor', 'O': 'cloud', 'H': 'void_hole'}
 
 def hrand(x, y, salt=0):
     h = math.sin((x + salt) * 12.9898 + y * 78.233) * 43758.5453
@@ -84,7 +84,14 @@ def portal(O, name, x, y, w, h, target, arrive, cond=None, deny=None):
     if deny: pr.append(P('deny', deny))
     O.add('portals', name, x, y, pr, w, h)
 
+SIDE = json.load(open(os.path.join(os.path.dirname(__file__), 'side_npcs.json'), encoding='utf8')) if os.path.exists(os.path.join(os.path.dirname(__file__), 'side_npcs.json')) else {}
+BOARD = {'thanh_ha': (18, 14), 'thanh_van_tong': (26, 24), 'phuong_thi': (24, 16), 'thien_phong': (30, 32), 'bang_nguyen': (33, 29), 'hoang_mac': (6, 20)}
+
 def write(id, grid, O, props):
+    for n in SIDE.get(id, []):   # NPC giao nhiệm vụ phụ (tools/side_quests.py)
+        npc(O, n['id'], n['label'], n['tex'], n['x'], n['y'], n['talk'])
+    if id in BOARD:               # bảng nhiệm vụ lặp lại hằng ngày
+        npc(O, 'bang_nv_' + id, 'Bảng Nhiệm Vụ', 'npc_clerk', BOARD[id][0], BOARD[id][1], [{'id': '@board'}])
     solid = {t for t, sol in TILESET if sol}
     for (x, y) in O.clear:   # mọi thứ đứng trên ô đi được
         if CH[grid.g[y][x]] in solid: grid.put(x, y, 'g')
@@ -172,6 +179,7 @@ def thanh_van_tong():
     g.rect(22, 33, 25, 33, 'p')
     O = Objs()
     npc(O, 'mac_tran', 'Mặc Trần', 'npc_rival', 24, 13, [{'if': {'notFlag': 'mac_tran_met'}, 'id': 'mac_tran_1'}, {'id': 'mac_tran_2'}])
+    npc(O, 'tong_mon_thuong_hoi', 'Quản Sự Thương Hội', 'npc_shop', 28, 19, [{'if': {'notFlag': 'met_tmth'}, 'id': 'tmth_1'}, {'id': 'tmth_menu'}], 'tong_mon_thuong_hoi', DAY(28, 19, 28, 21))
     npc(O, 'quan_su', 'Quản Sự Tạp Dịch', 'npc_clerk', 18, 24, [{'if': {'questDone': 's2_1'}, 'id': 'quan_su_after'}, {'if': {'questActive': 's2_1'}, 'id': 'quan_su_wait'}, {'id': 'quan_su_offer'}])
     npc(O, 'luc_van_sinh', 'Trưởng lão Lục Vân Sinh', 'npc_sage', 27, 8, [{'if': {'notFlag': 'luc_met'}, 'id': 'luc_1'}, {'id': 'luc_2'}])
     npc(O, 'bao_tin', 'Bảng Tin Tông Môn', 'npc_clerk', 30, 24, [{'id': '@rumor'}])
@@ -244,6 +252,7 @@ def bang_nguyen():
     g.rect(29, 3, 30, 34, 'I'); g.rect(30, 17, 57, 18, 'I')     # đường băng
     g.border('Y'); g.rect(28, 34, 31, 35, 'I'); g.rect(28, 0, 31, 2, 'I'); g.rect(58, 16, 59, 19, 'I')
     O = Objs()
+    npc(O, 'tho_san_bang', 'Thợ Săn Băng (Trạm Tiếp Tế)', 'npc_guard', 32, 30, [{'if': {'notFlag': 'met_tsb'}, 'id': 'tsb_1'}, {'id': 'tsb_menu'}], 'tho_san_bang')
     for grp, tex, x, y in [(['bang_lang', 'bang_lang'], 'wolf', 22, 26), (['bang_yeu'], 'snake', 36, 24), (['bang_lang', 'bang_yeu'], 'wolf', 40, 10), (['bang_lang'], 'wolf', 14, 8), (['bang_yeu', 'bang_yeu'], 'snake', 50, 30), (['huyet_ve'], 'cultist', 26, 6), (['huyet_ve', 'bang_lang'], 'cultist', 46, 14)]:
         foe(O, grp, tex, x, y, 3)
     for x, y in [(8, 30), (50, 8), (22, 20), (38, 30)]: O.add('herbs', 'linh_thao', x, y)
@@ -305,10 +314,134 @@ def thien_kiep_dai():
     O.add('auras', 'linh_mach', 20, 15, [P('r', 6), P('value', 3.5), P('label', 'Thiên Kiếp Đài')])
     portal(O, 'to_bang_nguyen', 18, 29, 4, 1, 'bang_nguyen', 'from_thien_kiep_dai')
     portal(O, 'to_bang_nguyen_w', 0, 14, 1, 3, 'bang_nguyen', 'from_thien_kiep_dai')
+    g.rect(32, 14, 39, 16, 'I')
+    portal(O, 'to_thien_phong', 39, 14, 1, 3, 'thien_phong', 'from_thien_kiep_dai', {'minRealm': 4, 'flag': 'game_complete'}, 'Cổng đến Thiên Phong Đại Lục chỉ mở với người đã hoàn thành Phần 1 và đạt Hóa Thần.')
+    O.add('spawns', 'from_thien_phong', 36, 15)
     O.add('signs', 'tk', 20, 27, [P('text', 'Thiên Kiếp Đài')])
     O.add('spawns', 'spawn', 20, 27)
     O.add('spawns', 'from_bang_nguyen', 20, 27)
     write('thien_kiep_dai', g, O, {'name': 'Thiên Kiếp Đài', 'music': 'sect', 'aura': 2.5})
+
+# ═════════ Thiên Phong Thành & Kiếm Trủng ═════════
+def thien_phong():
+    g = Grid(56, 42, 'N')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 77)
+            if r > 0.94: g.put(x, y, 'Y')
+            elif r > 0.91: g.put(x, y, 'K')
+    # Kiếm Trủng (phía bắc): sân đá dungeon + tượng kiếm
+    g.rect(10, 2, 45, 18, 'd'); g.rect(26, 18, 29, 22, 'd')
+    for (x, y) in [(12, 4), (43, 4), (12, 16), (43, 16), (22, 6), (33, 6), (22, 14), (33, 14)]: g.put(x, y, 'P')
+    for (x, y) in [(16, 8), (39, 8), (16, 12), (39, 12), (27, 3), (28, 3), (20, 10), (35, 10)]: g.put(x, y, 'o')
+    for (x, y) in [(10, 9), (45, 9)]: g.put(x, y, 'l')
+    # thành (phía nam)
+    g.rect(8, 22, 47, 38, 'f'); g.rect(26, 18, 29, 24, 'c')
+    g.house(12, 25, 5, 2); g.house(34, 25, 5, 2); g.house(20, 25, 5, 2, 's')
+    for x in (14, 22, 36): g.put(x, 27, 'p')
+    g.rect(8, 28, 47, 28, 'p')
+    for x in range(10, 46, 5): g.put(x, 23, 'l')
+    g.border('Y'); g.rect(26, 38, 29, 41, 'p')
+    O = Objs()
+    npc(O, 'kiem_su', 'Kiếm Sư Thiên Phong', 'npc_sage', 27, 30, [{'if': {'questDone': 'm4_2'}, 'id': 'kiem_su_done'}, {'if': {'questActive': 'm4_2'}, 'id': 'kiem_su_wait'}, {'if': {'noQuest': 'm4_1'}, 'id': 'kiem_su_1'}, {'id': 'kiem_su_done'}])
+    npc(O, 'thien_phong_ren', 'Chủ Kiếm Lô (Thợ Rèn)', 'npc_smith', 14, 28, [{'if': {'notFlag': 'met_tp_ren'}, 'id': 'thien_phong_ren_1'}, {'id': 'thien_phong_ren_1'}], 'thien_phong_ren', DAY(14, 28, 14, 24))
+    npc(O, 'thien_phong_dan', 'Chủ Linh Đan Các (Đan Sư)', 'npc_alch', 36, 28, [{'if': {'notFlag': 'met_tp_dan'}, 'id': 'thien_phong_dan_1'}, {'id': 'thien_phong_dan_1'}], 'thien_phong_dan', DAY(36, 28, 36, 24))
+    npc(O, 'bao_tin_tp', 'Bảng Tin Thiên Phong', 'npc_clerk', 22, 32, [{'id': '@rumor'}])
+    for grp, x, y in [(['kiem_hon', 'kiem_hon'], 18, 6), (['kiem_hon', 'kiem_hon'], 37, 6), (['kiem_hon'], 14, 14), (['kiem_hon', 'kiem_hon'], 40, 14), (['kiem_hon'], 27, 20)]:
+        foe(O, grp, 'npc_rival', x, y, 4)
+    foe(O, ['thien_phong_kiem_chu'], 'npc_sage', 27, 4, 4, 3)
+    for x, y in [(6, 30), (49, 30), (24, 36), (32, 36)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'kiem_trung_sau', 27, 10, [P('r', 3)])
+    O.add('auras', 'linh_mach', 27, 8, [P('r', 6), P('value', 3.5), P('label', 'Kiếm Trủng linh mạch')])
+    O.add('auras', 'linh_mach', 27, 33, [P('r', 5), P('value', 2.2), P('label', 'Thiên Phong linh khí')])
+    g.rect(48, 28, 55, 30, 'p')
+    portal(O, 'to_thien_kiep_dai', 26, 41, 4, 1, 'thien_kiep_dai', 'from_thien_phong')
+    portal(O, 'to_hu_khong', 55, 28, 1, 3, 'hu_khong', 'from_thien_phong', {'minRealm': 5, 'questDone': 'm4_2'}, 'Lối ra Hư Không Giới chỉ mở với người đã Luyện Hư và hạ Thiên Phong Kiếm Chủ.')
+    O.add('spawns', 'from_hu_khong', 52, 29)
+    O.add('signs', 'tp', 27, 36, [P('text', 'Thiên Phong Thành')])
+    O.add('signs', 'kt', 27, 19, [P('text', 'Kiếm Trủng')])
+    O.add('spawns', 'spawn', 27, 37)
+    O.add('spawns', 'from_thien_kiep_dai', 27, 37)
+    write('thien_phong', g, O, {'name': 'Thiên Phong Thành & Kiếm Trủng', 'music': 'sect', 'aura': 1.8, 'respawn': 30})
+
+# ═════════ Hư Không Giới ═════════
+def hu_khong():
+    g = Grid(48, 34, 'H')
+    g.rect(16, 26, 31, 31, 'Z'); g.rect(23, 22, 24, 25, 'O'); g.rect(14, 12, 33, 21, 'Z')
+    g.rect(23, 8, 24, 11, 'O'); g.rect(16, 2, 31, 7, 'Z')
+    g.rect(3, 14, 9, 20, 'Z'); g.rect(9, 17, 13, 17, 'O'); g.rect(38, 14, 44, 20, 'Z'); g.rect(34, 17, 37, 17, 'O')
+    for (x, y) in [(15, 13), (32, 13), (15, 20), (32, 20), (17, 3), (30, 3)]: g.put(x, y, 'P')
+    for (x, y) in [(20, 12), (27, 12), (20, 27), (27, 27)]: g.put(x, y, 'l')
+    O = Objs()
+    npc(O, 'hu_khong_lu_gia', 'Lữ Giả Hư Không', 'npc_sage', 24, 29, [{'if': {'questDone': 'm5_2'}, 'id': 'hu_khong_lu_gia_2'}, {'if': {'questActive': 'm5_1'}, 'id': 'hu_khong_lu_gia_1'}, {'if': {'noQuest': 'm5_1'}, 'id': 'hu_khong_lu_gia_1'}, {'id': 'hu_khong_lu_gia_2'}])
+    npc(O, 'bao_tin_hk', 'Bảng Nhiệm Vụ Hư Không', 'npc_clerk', 28, 29, [{'id': '@board'}])
+    for grp, x, y in [(['hu_anh', 'hu_anh'], 19, 15), (['hu_khong_thu'], 28, 15), (['hu_anh', 'hu_khong_thu'], 24, 18), (['hu_khong_thu', 'hu_khong_thu'], 6, 17), (['hu_anh', 'hu_anh'], 41, 17)]:
+        foe(O, grp, 'wolf' if 'thu' in grp[0] else 'cultist', x, y, 5)
+    foe(O, ['hu_khong_thu_ho'], 'elder_boss', 24, 4, 5, 3)
+    for x, y in [(5, 16), (41, 19), (20, 29), (28, 27)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'hu_khong_sau', 24, 10, [P('r', 3)])
+    O.add('auras', 'linh_mach', 24, 5, [P('r', 5), P('value', 4.0), P('label', 'Hư Không linh mạch')])
+    portal(O, 'to_thien_phong', 20, 31, 8, 1, 'thien_phong', 'from_hu_khong')
+    portal(O, 'to_co_chien_truong', 44, 16, 1, 3, 'co_chien_truong', 'from_hu_khong', {'flag': 'enemy7_dead', 'minRealm': 6}, 'Cầu mây phía đông chỉ hiện ra khi Hư Không Thủ Hộ đã gục và ngươi đạt Hợp Thể.')
+    O.add('spawns', 'spawn', 24, 29)
+    O.add('spawns', 'from_thien_phong', 24, 29)
+    O.add('spawns', 'from_co_chien_truong', 41, 17)
+    write('hu_khong', g, O, {'name': 'Hư Không Giới', 'music': 'tribulation', 'aura': 2.6, 'respawn': 30})
+
+# ═════════ Cổ Chiến Trường ═════════
+def co_chien_truong():
+    g = Grid(60, 36, 's')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 91)
+            if r > 0.93: g.put(x, y, 'o')
+            elif r > 0.9: g.put(x, y, 'q')
+            elif r > 0.885: g.put(x, y, 'C')
+    g.rect(0, 18, 59, 18, 'p')
+    g.rect(22, 8, 42, 26, 'X'); g.rect(23, 9, 41, 25, 'd'); g.rect(30, 8, 34, 9, 'd'); g.rect(30, 25, 34, 26, 'd')
+    g.rect(22, 17, 23, 19, 'd'); g.rect(41, 17, 42, 19, 'd')
+    for x0, y0 in [(26, 12), (37, 12), (26, 22), (37, 22)]: g.rect(x0, y0, x0 + 1, y0 + 1, 'V')
+    for (x, y) in [(25, 11), (39, 11), (25, 23), (39, 23)]: g.put(x, y, 'P')
+    for (x, y) in [(28, 15), (36, 15), (28, 20), (36, 20), (31, 22), (33, 11)]: g.put(x, y, 'o')
+    g.border('C'); g.rect(0, 17, 1, 19, 'p'); g.rect(58, 17, 59, 19, 'p')
+    O = Objs()
+    npc(O, 'chien_su_vong', 'Chiến Sĩ Vong Linh', 'npc_guard', 6, 17, [{'if': {'flag': 'enemy8_dead'}, 'id': 'chien_su_vong_3'}, {'if': {'questActive': 'm6_2'}, 'id': 'chien_su_vong_2'}, {'if': {'questActive': 'm6_1'}, 'id': 'chien_su_vong_1'}, {'if': {'noQuest': 'm6_1'}, 'id': 'chien_su_vong_1'}, {'id': 'chien_su_vong_2'}])
+    npc(O, 'bao_tin_cc', 'Bảng Nhiệm Vụ Chiến Trường', 'npc_clerk', 9, 19, [{'id': '@board'}])
+    for grp, x, y in [(['chien_hon', 'thi_ma'], 14, 14), (['chien_hon'], 18, 22), (['thi_ma', 'thi_ma'], 46, 14), (['chien_hon', 'chien_hon'], 48, 22), (['chien_hon', 'thi_ma'], 28, 17), (['thi_ma'], 36, 19)]:
+        foe(O, grp, 'cultist', x, y, 6)
+    foe(O, ['chien_than_tan_hon'], 'elder_boss', 32, 13, 6, 3)
+    for x, y in [(10, 12), (50, 28), (15, 28), (52, 10)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'co_chien_sau', 32, 17, [P('r', 3)])
+    O.add('auras', 'linh_mach', 32, 14, [P('r', 5), P('value', 4.5), P('label', 'Cổ chiến linh mạch')])
+    portal(O, 'to_hu_khong', 1, 17, 1, 3, 'hu_khong', 'from_co_chien_truong')
+    portal(O, 'to_thien_mon', 58, 17, 1, 3, 'thien_mon', 'from_co_chien_truong', {'flag': 'enemy8_dead', 'minRealm': 7}, 'Lối lên Thiên Môn chỉ mở khi Chiến Thần Tàn Hồn đã yên nghỉ và ngươi đạt Đại Thừa.')
+    O.add('spawns', 'spawn', 4, 18)
+    O.add('spawns', 'from_hu_khong', 4, 18)
+    O.add('spawns', 'from_thien_mon', 56, 18)
+    write('co_chien_truong', g, O, {'name': 'Cổ Chiến Trường', 'music': 'boss', 'aura': 3.0, 'respawn': 30})
+
+# ═════════ Thiên Môn ═════════
+def thien_mon():
+    g = Grid(44, 34, 'H')
+    g.rect(6, 6, 37, 31, 'O'); g.rect(20, 2, 23, 8, 'c'); g.rect(20, 8, 23, 31, 'c')
+    g.rect(14, 2, 29, 3, 'S'); g.rect(14, 4, 29, 5, 'M'); g.rect(20, 4, 23, 5, 'c')
+    for x in (14, 17, 26, 29): g.put(x, 4, 'P'); g.put(x, 5, 'P')
+    for (x, y) in [(10, 10), (33, 10), (10, 22), (33, 22), (10, 28), (33, 28)]: g.put(x, y, 'P')
+    for y in (10, 14, 18, 22, 26):
+        g.put(18, y, 'l'); g.put(25, y, 'l')
+    O = Objs()
+    npc(O, 'thien_mon_chi_linh', 'Thiên Môn Chi Linh', 'npc_sage', 21, 27, [{'if': {'flag': 'enemy9_dead'}, 'id': 'thien_mon_3'}, {'if': {'questActive': 'm7_2'}, 'id': 'thien_mon_2'}, {'if': {'questActive': 'm7_1'}, 'id': 'thien_mon_1'}, {'if': {'noQuest': 'm7_1'}, 'id': 'thien_mon_1'}, {'id': 'thien_mon_2'}])
+    npc(O, 'bao_tin_tm', 'Bảng Nhiệm Vụ Thiên Môn', 'npc_clerk', 25, 29, [{'id': '@board'}])
+    for grp, x, y in [(['thien_binh', 'thien_binh'], 12, 14), (['thien_binh', 'thien_binh'], 30, 14), (['thien_binh'], 12, 24), (['thien_binh', 'thien_binh'], 30, 24)]:
+        foe(O, grp, 'npc_guard', x, y, 7)
+    foe(O, ['thien_dao_su_gia'], 'npc_sage', 21, 9, 7, 3)
+    for x, y in [(8, 20), (35, 20)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'thien_mon_dai', 21, 18, [P('r', 3)])
+    O.add('auras', 'linh_mach', 21, 6, [P('r', 5), P('value', 5.0), P('label', 'Thiên Môn linh khí')])
+    portal(O, 'to_co_chien_truong', 19, 31, 6, 1, 'co_chien_truong', 'from_thien_mon')
+    O.add('spawns', 'spawn', 21, 29)
+    O.add('spawns', 'from_co_chien_truong', 21, 29)
+    write('thien_mon', g, O, {'name': 'Thiên Môn', 'music': 'sect', 'aura': 3.5, 'respawn': 30})
 
 # ═════════ Huyết Nguyệt Bí Cảnh ═════════
 def huyet_nguyet():
@@ -357,6 +490,7 @@ def hoang_mac():
     g.border('C'); g.rect(0, 17, 1, 19, 'p')
     O = Objs()
     npc(O, 'mac_gia_chu', 'Mặc Gia Gia Chủ', 'npc_sage', 46, 26, [{'if': {'questActive': 'm2_3'}, 'id': 'mac_gia_chu_1'}, {'if': {'flag': 'enemy3_dead'}, 'id': 'mac_gia_chu_after'}, {'id': 'mac_gia_chu_idle'}])
+    npc(O, 'mac_gia_thuong_hoi', 'Chưởng Quầy Mặc Gia', 'npc_shop', 43, 25, [{'if': {'notFlag': 'met_mgth'}, 'id': 'mgth_1'}, {'id': 'mgth_menu'}], 'mac_gia_thuong_hoi', DAY(43, 25, 43, 28))
     npc(O, 'mac_ho_ve', 'Hộ Vệ Mặc Gia', 'npc_guard', 42, 25, [{'id': 'mac_ho_ve'}])
     npc(O, 'lu_khach', 'Lữ Khách Hoang Mạc', 'npc_merchant', 16, 23, [{'id': 'lu_khach'}], 'thuong_nhan')
     O.add('signs', 'mg', 44, 24, [P('text', 'Mặc Gia Thương Hội')])
@@ -372,4 +506,4 @@ def hoang_mac():
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    thanh_ha(); thanh_van_tong(); phuong_thi(); huyet_nguyet(); hoang_mac(); bang_nguyen(); huyet_anh_dan(); thien_kiep_dai()
+    thanh_ha(); thanh_van_tong(); phuong_thi(); huyet_nguyet(); hoang_mac(); bang_nguyen(); huyet_anh_dan(); thien_kiep_dai(); thien_phong(); hu_khong(); co_chien_truong(); thien_mon()

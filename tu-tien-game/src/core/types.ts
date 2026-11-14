@@ -52,6 +52,7 @@ export interface Realm {
   expPerStage: number[];
   statMul: number;
   bottlenecks?: number[];
+  ascension?: { waves: number; boltPower: number; recommendedPower: number; name: string };
   tribulation: null | { waves: number; boltPower: number; recommendedPower: number; name: string };
   unlocks: string[];
 }
@@ -95,6 +96,14 @@ export interface PlayerState {
   flags: Record<string, boolean | number | string>;
   chapter: number;
   playtime: number;
+  difficulty: 'normal' | 'hard' | 'nightmare'; // độ khó
+  dynQuests: Record<string, any>; // nhiệm vụ sinh động (bảng nhiệm vụ)
+  bountyAccepted: Record<string, boolean>; // id bảng nhiệm vụ đã nhận (chống nhận lại)
+  visited: string[]; // bản đồ đã tới (truyền tống)
+  formations: string[]; // trận pháp đã học
+  formation: string | null; // trận đang bày
+  faction: { id: string; points: number; lastClaim: number } | null; // thế lực
+  law: string | null; // pháp tắc (Hóa Thần)
   auction: { bids: Record<string, number>; news: string[] }; // giá đặt tối đa đang giữ cọc, tin kết quả
   med: { energy: number; at: number }; // tâm lực (0..100) và mốc thời gian hồi
   seclusion: { startedAt: number; aura: number } | null; // bế quan (tu luyện khi rời game)

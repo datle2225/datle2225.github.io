@@ -75,3 +75,18 @@ Không cần sửa code.
 - Kết quả hiện ở thẻ "Kết quả" và thông báo khi đang đi ngoài bản đồ.
 - NPC Chủ Trì Đấu Giá ở Phường Thị, **đi ngủ ban đêm** như các tiệm khác.
 - **Giới hạn:** chưa có cạnh tranh với người chơi thật. Khi có máy chủ có thể thay bộ xét giá bằng giá do người chơi khác đặt mà không đổi giao diện.
+
+## Phân bố cửa hàng theo vùng (mỗi nơi một sở trường)
+Không phải map nào cũng đủ ba quầy: **thành/chợ** là nơi mua bán đầy đủ, **vùng ngoài trời** có một đặc sản riêng, **dungeon và cảnh cuối không có cửa hàng** (phải chuẩn bị trước, ăn khớp với giới hạn uống đan của độ khó).
+
+| Bản đồ | Cửa hàng | Đặc sản |
+|---|---|---|
+| Thanh Hà (đầu game) | Thợ rèn, đan sư, tạp hóa | Mua bán cơ bản |
+| Phường Thị | Thợ rèn (6/10), đan sư (7/10), đấu giá, thương nhân đêm | Tay nghề cao hơn thôn, đấu giá |
+| Thiên Phong | Thợ rèn (8/10), đan sư (9/10) | Tay nghề cao nhất |
+| **Thanh Vân Tông** | **Thương hội tông môn** | Đan chính phái (Tụ Khí, Thanh Tâm, Trúc Cơ, Phá Cảnh), thời trang tông môn; **thành viên Thanh Vân Tông giảm thêm 12%** |
+| **Hoang Mạc** | **Mặc Gia Thương Hội** | **Huyền Thiết rẻ nhất** (16 LT so với 22–34 ở nơi khác), tồn kho lớn |
+| **Băng Nguyên** | **Trạm thợ săn** | Chỉ tiếp tế: Huyết Sâm, Linh Thảo, Hồi Huyết/Hồi Linh Đan; **không có lò rèn hay đan sư** |
+| Bí cảnh, Tổng Đàn, Hư Không, Cổ Chiến Trường, Thiên Môn, Thiên Kiếp Đài | Không có | Phải mang đủ đồ trước |
+
+Cả ba thương hội mới ngủ ban đêm (trừ trạm thợ săn, luôn mở). Test kiểm tra: dungeon không có cửa hàng, không map nào ngoài chợ có đủ rèn + đan, Hoang Mạc rẻ nhất, giảm giá thành viên chỉ áp dụng đúng nơi và đúng thế lực.
