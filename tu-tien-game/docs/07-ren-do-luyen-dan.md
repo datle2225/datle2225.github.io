@@ -1,5 +1,7 @@
 # 07 · Rèn đồ & luyện đan
 
+> **Cập nhật:** rèn đồ & luyện đan được làm ở **NPC trên bản đồ** (Lò Rèn, Đan Phòng): người chơi có thể *thuê NPC làm* hoặc *tự làm bằng mini-game*. Xem [12 · NPC dịch vụ](12-npc-dich-vu.md). Mini-game búa và hỏa hầu **đã có** (không còn là kế hoạch).
+
 ## A. Rèn đồ (Luyện khí)
 
 ### Mục tiêu
@@ -20,7 +22,7 @@ score = 0.45 × phẩm chất nguyên liệu + 0.40 × điểm mini-game búa + 
 ```
 → Người giỏi mini-game + nguyên liệu tốt **tăng xác suất**, nhưng vẫn có yếu tố may mắn (đã test: cùng mẫu cho >15 bộ chỉ số khác nhau trong 30 lần rèn).
 
-### Mini-game búa (kế hoạch; prototype dùng số ngẫu nhiên)
+### Mini-game búa (đã làm)
 - Thanh nhịp: bấm đúng nhịp búa khi thanh chạy vào vùng sáng; 3–5 nhịp mỗi lần rèn.
 - Vùng sáng hẹp dần theo độ hiếm mục tiêu.
 - Có chế độ **tự động** (điểm trung bình) cho người không thích mini-game.
@@ -65,6 +67,7 @@ Mỗi nhánh có **bộ trang bị set** (2/4 món) với hiệu ứng đổi lu
 | Hồi Linh Đan | 3 Linh Thảo | Hồi 40% MP | 28 | 1 |
 | Tụ Khí Đan | 4 Linh Thảo + 1 Huyết Sâm | +120 tu vi | 60 | 2 |
 | Trúc Cơ Đan | 3 Huyết Sâm + 6 Linh Thảo | Giảm 15% sát thương lôi kiếp | 400 | 4 |
+| Thanh Tâm Đan | 5 Linh Thảo + 1 Huyết Sâm | +5 đạo tâm | 90 | 3 |
 | Kiếm Ý Đan *(Kiếm)* | 2 Huyết Sâm + 1 Huyền Thiết | +900 tu vi | 260 | 3 |
 | Huyết Khí Đan *(Thể)* | 3 Huyết Sâm | +900 tu vi | 260 | 3 |
 
@@ -78,7 +81,7 @@ hiệu lực = 0.7 + q × 0.6 + đan văn × 0.1
 giá = giá gốc × (0.6 + q × 0.8) × (1 + 0.25 × đan văn)
 ```
 
-### Mini-game hỏa hầu (kế hoạch)
+### Mini-game hỏa hầu (đã làm)
 - Thanh nhiệt dao động; giữ trong vùng xanh bằng chạm giữ/nhả. Đan khó thì vùng hẹp hơn, nhiệt thay đổi nhanh hơn.
 - Có "tâm pháp" nghề phụ để mở thêm kỹ thuật (bơm hỏa, đảo lò).
 

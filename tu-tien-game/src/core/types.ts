@@ -12,7 +12,7 @@ export interface Skill {
   power: number;
   mp: number;
   cost: number; // "độ trễ" hành động: càng nhỏ càng nhanh
-  target: 'enemy' | 'self';
+  target: 'enemy' | 'self' | 'ally';
   hits?: number;
   gives?: string;
   requires?: string;
@@ -55,6 +55,12 @@ export interface ItemInstance {
   affixes: { id: string; stat: StatKey; value: number }[];
 }
 
+export interface ShopState {
+  day: number;
+  stock: Record<string, number>; // id nguyên liệu/đan/thời trang -> còn lại
+  items: ItemInstance[]; // đồ rèn sẵn
+}
+
 export interface PlayerState {
   name: string;
   rootId: string;
@@ -77,4 +83,8 @@ export interface PlayerState {
   flags: Record<string, boolean | number | string>;
   chapter: number;
   playtime: number;
+  rep: Record<string, number>; // danh vọng phe: chinh_dao, ma_dao, tan_tu
+  relations: Record<string, number>; // quan hệ NPC 0..100
+  party: string[]; // id đồng hành đang theo
+  shops: Record<string, ShopState>;
 }

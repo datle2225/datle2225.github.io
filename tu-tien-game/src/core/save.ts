@@ -25,6 +25,10 @@ export function newPlayer(name = 'Diệp Thanh'): PlayerState {
     flags: {},
     chapter: 1,
     playtime: 0,
+    rep: { chinh_dao: 0, ma_dao: 0, tan_tu: 0 },
+    relations: {},
+    party: [],
+    shops: {},
   };
 }
 

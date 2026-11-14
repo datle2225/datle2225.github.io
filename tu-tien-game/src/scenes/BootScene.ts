@@ -30,6 +30,11 @@ export class BootScene extends Phaser.Scene {
     px('npc_elder', 16, person(0xe3b98c, 0x8a8a8a, 0xdddddd));
     px('npc_girl', 16, person(0xf1c9a0, 0xd86a8a, 0x3a1a1a));
     px('npc_disciple', 16, person(0xf1c9a0, 0xffffff, 0x2a2a2a));
+    px('npc_smith', 16, person(0xe3b98c, 0x6a4a2a, 0x3a2a1a));
+    px('npc_alch', 16, person(0xf1c9a0, 0x2f8a5a, 0x1a1a1a));
+    px('npc_shop', 16, person(0xe3b98c, 0xc9a23a, 0x5a3a1e));
+    px('npc_girl2', 16, person(0xf1c9a0, 0x8ad8c8, 0x1a1a3a));
+    px('house', 16, (g) => { R(g, 0x3b7a3b, 0, 0, 16, 16); R(g, 0x8a2a2a, 0, 0, 16, 8); R(g, 0xb04a3a, 0, 1, 16, 2); R(g, 0xc9b28a, 0, 8, 16, 8); R(g, 0x8a7a5a, 3, 10, 3, 4); R(g, 0x8a7a5a, 10, 10, 3, 4); });
     px('wolf', 16, (g) => { R(g, 0x7a7f8c, 2, 6, 12, 6); R(g, 0x9aa0ae, 11, 4, 4, 4); R(g, 0xff4444, 13, 5, 1, 1); R(g, 0x7a7f8c, 3, 12, 2, 3); R(g, 0x7a7f8c, 10, 12, 2, 3); R(g, 0x5a5f6c, 0, 5, 3, 2); });
     px('snake', 16, (g) => { R(g, 0x4a9a4a, 2, 10, 12, 3); R(g, 0x4a9a4a, 9, 6, 3, 5); R(g, 0x6aba6a, 9, 4, 4, 3); R(g, 0xffee44, 11, 5, 1, 1); });
     px('cultist', 16, person(0xe3b98c, 0x8a1a1a, 0x111111));

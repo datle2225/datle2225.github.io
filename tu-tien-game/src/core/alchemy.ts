@@ -11,15 +11,26 @@ export interface AlchemyResult {
   price: number;
 }
 
-export function canBrew(p: PlayerState, recipeId: string): { ok: boolean; reason?: string } {
+export interface BrewOpts {
+  /** Đan sư NPC tự biết phương, không cần người chơi đã học / đủ cảnh giới / đúng nhánh. */
+  byNpc?: boolean;
+  /** Bỏ qua kiểm tra nguyên liệu (đã được trả tiền mua bù trước đó). */
+  skipIngredients?: boolean;
+}
+
+export function canBrew(p: PlayerState, recipeId: string, o: BrewOpts = {}): { ok: boolean; reason?: string } {
   const r = recipeMap.get(recipeId);
   if (!r) return { ok: false, reason: 'Không có đan phương.' };
-  if (!p.knownRecipes.includes(recipeId)) return { ok: false, reason: 'Chưa học đan phương này.' };
-  const need = REALMS.findIndex((x) => x.id === r.needRealm);
-  if (p.realmIndex < need) return { ok: false, reason: 'Cảnh giới chưa đủ.' };
-  if (r.branch !== 'all' && r.branch !== p.branchId) return { ok: false, reason: 'Đan này chỉ dành cho nhánh khác.' };
-  for (const ing of r.ingredients) {
-    if ((p.inventory[ing.id] ?? 0) < ing.n) return { ok: false, reason: 'Thiếu nguyên liệu.' };
+  if (!o.byNpc) {
+    if (!p.knownRecipes.includes(recipeId)) return { ok: false, reason: 'Chưa học đan phương này.' };
+    const need = REALMS.findIndex((x) => x.id === r.needRealm);
+    if (p.realmIndex < need) return { ok: false, reason: 'Cảnh giới chưa đủ.' };
+    if (r.branch !== 'all' && r.branch !== p.branchId) return { ok: false, reason: 'Đan này chỉ dành cho nhánh khác.' };
+  }
+  if (!o.skipIngredients) {
+    for (const ing of r.ingredients) {
+      if ((p.inventory[ing.id] ?? 0) < ing.n) return { ok: false, reason: 'Thiếu nguyên liệu.' };
+    }
   }
   return { ok: true };
 }
@@ -28,11 +39,11 @@ export function canBrew(p: PlayerState, recipeId: string): { ok: boolean; reason
  * Hỏa hầu 0..1 (độ gần vùng nhiệt lý tưởng trong mini-game).
  * Độ khó của đan phương làm vùng lý tưởng hẹp hơn.
  */
-export function brew(p: PlayerState, recipeId: string, heatScore: number, rng: Rng): AlchemyResult {
-  const chk = canBrew(p, recipeId);
+export function brew(p: PlayerState, recipeId: string, heatScore: number, rng: Rng, o: BrewOpts = {}): AlchemyResult {
+  const chk = canBrew(p, recipeId, o);
   if (!chk.ok) return { ok: false, reason: chk.reason, grade: 0, pillLines: 0, potency: 0, price: 0 };
   const r = recipeMap.get(recipeId)!;
-  for (const ing of r.ingredients) p.inventory[ing.id] -= ing.n;
+  if (!o.skipIngredients) for (const ing of r.ingredients) p.inventory[ing.id] -= ing.n;
   const difficultyPenalty = (r.difficulty - 1) * 0.06;
   const q = Math.max(0, Math.min(1, heatScore - difficultyPenalty + rng.range(-0.05, 0.05)));
   if (q < 0.15) return { ok: false, reason: 'Lò nổ, đan hỏng!', grade: 0, pillLines: 0, potency: 0, price: 0 };

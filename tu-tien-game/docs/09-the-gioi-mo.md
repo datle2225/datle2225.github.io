@@ -1,5 +1,8 @@
 # 09 · Thế giới mở & nội dung
 
+## Dữ liệu bản đồ
+Bản đồ nằm ở `src/data/maps/*.json` (lưới ký tự + danh sách NPC, quái, thảo dược, vùng kích hoạt nhiệm vụ). Thêm khu mới = thêm một file JSON. *(Chưa nhập trực tiếp được file của Tiled; xem backlog ở 11.)*
+
 ## Cấu trúc thế giới
 - **Bản đồ liên tục** theo vùng, tải theo ô (chunk) để chạy mượt cả trên điện thoại.
 - **Vùng theo cảnh giới** (xem 02): mỗi vùng có nhịp độ khó, cư dân, nguyên liệu, nhạc riêng.
@@ -23,7 +26,9 @@
 
 Hệ thống chọn sự kiện dựa trên **vùng + cảnh giới + cờ cốt truyện + khí vận** (một biến ẩn), giúp mỗi lần chơi khác nhau mà vẫn hợp lý.
 
-## NPC có đời sống
+## NPC có đời sống (đã có một phần)
+Đã làm: **hội thoại dữ liệu hóa có lựa chọn và điều kiện**, **quan hệ** (0–100), **danh vọng phe**, **đạo tâm**, **đồng hành** (Liễu Nguyệt Nhi). Chưa làm: lịch sinh hoạt theo giờ, NPC nhớ hành động ngoài hội thoại.
+
 - **Lịch sinh hoạt** (sáng, trưa, tối, đêm): đi làm, mua bán, tu luyện, ngủ.
 - **Trí nhớ**: nhớ hành động quan trọng (cứu, giết, trộm), thái độ thay đổi.
 - **Quan hệ**: 0–100 điểm thiện cảm; mốc mở thoại, quà, nhiệm vụ riêng.

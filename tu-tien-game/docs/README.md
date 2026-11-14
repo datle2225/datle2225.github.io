@@ -15,5 +15,6 @@
 | 09 | [Thế giới mở & nội dung](09-the-gioi-mo.md) | Khu vực, sự kiện, NPC, khám phá, giữ chân người chơi |
 | 10 | [Onboarding & lộ trình mở khóa](10-onboarding-mo-khoa.md) | Mở cơ chế dần theo chương |
 | 11 | [Kỹ thuật & lộ trình làm](11-ky-thuat-lo-trinh.md) | Kiến trúc, dữ liệu, mobile, test, milestone |
+| 12 | [NPC dịch vụ](12-npc-dich-vu.md) | Thợ rèn / Đan sư / Tạp hóa trên bản đồ: mua, bán, thuê, tự làm |
 
 Dữ liệu cân bằng thật nằm trong `src/data/*.json`; GDD mô tả ý định, JSON là nguồn sự thật khi chạy.

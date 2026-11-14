@@ -159,17 +159,19 @@ export class Battle {
       if (actor.side === 'player') this.combo = 0;
     }
 
-    const foe = target ?? this.byNext(this.alive(actor.side === 'player' ? 'enemy' : 'player'))[0];
+    const opp = actor.side === 'player' ? 'enemy' : 'player';
+    const foe = target && target.alive && target.side === opp ? target : this.byNext(this.alive(opp))[0];
 
-    if (sk.target === 'self' || !foe) {
+    if (sk.target === 'self' || sk.target === 'ally' || !foe) {
+      const subject = sk.target === 'ally' ? this.weakestAlly(actor, target) : actor;
       if (sk.heal) {
-        const v = Math.round(actor.stats.hp * sk.heal);
-        actor.hp = Math.min(actor.stats.hp, actor.hp + v);
-        ev.push({ type: 'heal', actor: actor.id, target: actor.id, value: v, text: `${actor.name} dùng ${sk.name}, hồi ${v} sinh lực.` });
+        const v = Math.round(subject.stats.hp * sk.heal);
+        subject.hp = Math.min(subject.stats.hp, subject.hp + v);
+        ev.push({ type: 'heal', actor: actor.id, target: subject.id, value: v, text: `${actor.name} dùng ${sk.name}${subject === actor ? '' : ` lên ${subject.name}`}, hồi ${v} sinh lực.` });
       }
       if (sk.gives) {
-        this.addStatus(actor, sk.gives);
-        ev.push({ type: 'status', actor: actor.id, target: actor.id, text: `${actor.name} nhận ${statusMap.get(sk.gives)?.name}.` });
+        this.addStatus(subject, sk.gives);
+        ev.push({ type: 'status', actor: actor.id, target: subject.id, text: `${subject.name} nhận ${statusMap.get(sk.gives)?.name}.` });
       }
     } else {
       const hits = sk.hits ?? 1;
@@ -212,6 +214,21 @@ export class Battle {
     return ev;
   }
 
+  /** Đồng đội cần hồi nhất (tỉ lệ máu thấp nhất), hoặc mục tiêu chỉ định nếu cùng phe. */
+  weakestAlly(actor: Unit, prefer?: Unit): Unit {
+    if (prefer && prefer.alive && prefer.side === actor.side) return prefer;
+    return [...this.alive(actor.side)].sort((a, b) => a.hp / a.stats.hp - b.hp / b.stats.hp)[0] ?? actor;
+  }
+
+  /** Chọn mục tiêu cho AI: ưu tiên kẻ yếu máu nhất (có chút ngẫu nhiên). */
+  aiTarget(u: Unit, skillId: string): Unit | undefined {
+    const sk = skillMap.get(skillId);
+    if (sk?.target === 'ally') return this.weakestAlly(u);
+    const foes = this.alive(u.side === 'player' ? 'enemy' : 'player');
+    if (!foes.length) return undefined;
+    return [...foes].sort((a, b) => a.hp / a.stats.hp + this.rng.range(0, 0.4) - (b.hp / b.stats.hp + this.rng.range(0, 0.4)))[0];
+  }
+
   private tickStatuses(u: Unit, ev: BattleEvent[]) {
     if (!u.alive) return;
     for (const s of [...u.statuses]) {
@@ -236,16 +253,19 @@ export class Battle {
     if (this.winner) ev.push({ type: 'end', text: this.winner === 'player' ? 'Chiến thắng!' : 'Bại trận...' });
   }
 
-  /** AI đơn giản: ưu tiên chiêu có cộng hưởng, rồi chiêu mạnh còn đủ linh lực. */
+  /** AI đơn giản: ưu tiên chiêu có cộng hưởng, hồi máu khi đồng đội yếu, rồi chiêu mạnh còn đủ linh lực. */
   aiPick(u: Unit): string {
-    const foe = this.byNext(this.alive('player'))[0];
+    const foes = this.alive(u.side === 'player' ? 'enemy' : 'player');
+    const foe = this.byNext(foes)[0];
+    const allies = this.alive(u.side);
+    const lowAlly = Math.min(...allies.map((a) => a.hp / a.stats.hp));
     const options = u.skills.filter((id) => this.canUse(u, id)).map((id) => skillMap.get(id)!);
-    if (!options.length) return 'kiem_co_ban';
+    if (!options.length) return u.skills.find((id) => skillMap.get(id)?.mp === 0) ?? u.skills[0];
     const scored = options.map((s) => {
       let w = s.power + 0.5;
       if (s.requires && foe && this.hasStatus(s.requiresOn === 'self' ? u : foe, s.requires)) w += (s.bonus ?? 1.5) * 2;
-      if (s.heal && u.hp > u.stats.hp * 0.5) w = 0.05;
-      if (s.target === 'self' && !s.heal && u.statuses.length) w = 0.05;
+      if (s.heal) w = lowAlly < 0.55 ? 3 + (1 - lowAlly) * 3 : 0.05;
+      else if (s.target === 'self' && u.statuses.length) w = 0.05;
       return { id: s.id, weight: w + this.rng.next() };
     });
     return scored.sort((a, b) => b.weight - a.weight)[0].id;

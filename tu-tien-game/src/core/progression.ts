@@ -60,33 +60,74 @@ export function tribulationReadiness(p: PlayerState): { ready: boolean; ratio: n
   return { ready: true, ratio };
 }
 
+export type TribChoice = 'dodge' | 'guard' | 'pill';
+
+export interface WaveResult { wave: number; choice: TribChoice; dmg: number; hp: number; dodged: boolean; dead: boolean; done: boolean }
+
+/** Lôi kiếp chạy từng đợt (để scene điện ảnh chọn từng đợt) — runTribulation bên dưới dùng lại cùng logic. */
+export class TribulationRun {
+  hp: number;
+  maxHp: number;
+  wave = 0;
+  readonly waves: number;
+  readonly name: string;
+  private boltPower: number;
+  private stats;
+  constructor(private p: PlayerState, private rng: Rng, private shield = 0) {
+    const t = tribulationFor(p);
+    if (!t) throw new Error('Không có lôi kiếp');
+    this.waves = t.waves; this.name = t.name; this.boltPower = t.boltPower;
+    this.stats = computeStats(p);
+    this.maxHp = this.stats.hp; this.hp = this.maxHp;
+  }
+
+  step(choice: TribChoice): WaveResult {
+    const i = this.wave;
+    const st = this.stats;
+    let dmg = this.boltPower * (1 + i * 0.25) * this.rng.range(0.9, 1.1);
+    let dodged = false;
+    if (choice === 'dodge') {
+      dodged = this.rng.chance(0.35 + st.spd / 600);
+      dmg *= dodged ? 0.1 : 1.2;
+    } else if (choice === 'guard') dmg = Math.max(1, dmg - st.def * 1.2) * 0.8;
+    else dmg *= 0.9;
+    dmg *= 1 - Math.min(0.6, this.shield);
+    // Đạo tâm cao giảm một phần sát thương tâm ma kèm theo
+    dmg *= 1 - Math.min(0.2, this.p.daoHeart / 500);
+    if (choice === 'pill') this.hp = Math.min(this.maxHp, this.hp + this.maxHp * 0.2);
+    this.hp -= dmg;
+    this.wave++;
+    const dead = this.hp <= 0;
+    return { wave: i + 1, choice, dmg: Math.round(dmg), hp: Math.max(0, Math.round(this.hp)), dodged, dead, done: dead || this.wave >= this.waves };
+  }
+
+  /** Áp kết quả lên người chơi. */
+  finish(success: boolean): { lost: number } {
+    if (success) {
+      if (this.p.realmIndex < REALMS.length - 1) this.p.realmIndex++;
+      this.p.stage = 1;
+      this.p.exp = 0;
+      return { lost: 0 };
+    }
+    const lost = Math.round(this.p.exp * 0.3);
+    this.p.exp -= lost;
+    return { lost };
+  }
+}
+
 export function runTribulation(p: PlayerState, plan: TribulationPlan, rng: Rng): TribulationResult {
   const ready = tribulationReadiness(p);
-  const t = tribulationFor(p);
-  if (!ready.ready || !t) return { allowed: false, success: false, reason: ready.reason, hpLeft: 0, log: [] };
-  const stats = computeStats(p);
-  let hp = stats.hp;
+  if (!ready.ready || !tribulationFor(p)) return { allowed: false, success: false, reason: ready.reason, hpLeft: 0, log: [] };
+  const run = new TribulationRun(p, rng, plan.shield);
   const log: string[] = [];
-  for (let i = 0; i < t.waves; i++) {
-    const choice = plan.choices[i] ?? 'guard';
-    let dmg = t.boltPower * (1 + i * 0.25) * rng.range(0.9, 1.1);
-    if (choice === 'dodge') dmg *= rng.chance(0.35 + stats.spd / 600) ? 0.1 : 1.2;
-    else if (choice === 'guard') dmg = Math.max(1, dmg - stats.def * 1.2) * 0.8;
-    else dmg *= 0.9;
-    dmg *= 1 - Math.min(0.6, plan.shield);
-    // Đạo tâm cao giảm một phần sát thương tâm ma kèm theo
-    dmg *= 1 - Math.min(0.2, p.daoHeart / 500);
-    if (choice === 'pill') hp = Math.min(stats.hp, hp + stats.hp * 0.2);
-    hp -= dmg;
-    log.push(`Đợt ${i + 1}: ${choice} → nhận ${Math.round(dmg)} sát thương, còn ${Math.max(0, Math.round(hp))}.`);
-    if (hp <= 0) {
-      const lost = Math.round(p.exp * 0.3);
-      p.exp -= lost;
+  for (let i = 0; i < run.waves; i++) {
+    const r = run.step(plan.choices[i] ?? 'guard');
+    log.push(`Đợt ${r.wave}: ${r.choice} → nhận ${r.dmg} sát thương, còn ${r.hp}.`);
+    if (r.dead) {
+      const { lost } = run.finish(false);
       return { allowed: true, success: false, reason: `Độ kiếp thất bại! Mất ${lost} tu vi.`, hpLeft: 0, log };
     }
   }
-  if (p.realmIndex < REALMS.length - 1) p.realmIndex++;
-  p.stage = 1;
-  p.exp = 0;
-  return { allowed: true, success: true, hpLeft: Math.round(hp), log };
+  run.finish(true);
+  return { allowed: true, success: true, hpLeft: Math.round(run.hp), log };
 }

@@ -4,6 +4,7 @@ import { continueGame, startNew, persist, game } from '../state';
 import { button, label } from '../ui/widgets';
 import { load } from '../core/save';
 import { enterChapter, unlockSystem } from '../core/session';
+import { audio } from '../audio';
 
 export class TitleScene extends Phaser.Scene {
   constructor() { super('Title'); }
@@ -14,6 +15,8 @@ export class TitleScene extends Phaser.Scene {
     label(this, W / 2, 60, 'TÀN CĂN NGHỊCH THIÊN', { fontSize: '28px', color: '#ffe38a' }).setOrigin(0.5);
     label(this, W / 2, 96, 'Phế vật nghịch tập · Báo thù huyết hải', { fontSize: '11px', color: '#9fb0ff' }).setOrigin(0.5);
 
+    this.input.on('pointerdown', () => { audio.unlock(); audio.music('title'); });
+    this.input.keyboard!.once('keydown', () => { audio.unlock(); audio.music('title'); });
     const hasSave = !!load();
     const bx = W / 2 - 90;
     button(this, bx, 140, 180, 34, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
@@ -21,7 +24,7 @@ export class TitleScene extends Phaser.Scene {
     button(this, bx, 224, 180, 34, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
       startNew();
       const p = game.p;
-      p.rootId = 'kim'; p.realmIndex = 1; p.stage = 5; p.branchId = 'kiem_tu'; p.gold = 500;
+      p.rootId = 'kim'; p.realmIndex = 1; p.stage = 5; p.branchId = 'kiem_tu'; p.gold = 800;
       p.inventory = { hoi_huyet_dan: 3, linh_thao: 12, huyet_tham: 4, huyen_thiet: 8 };
       p.knownRecipes = ['hoi_huyet_dan', 'hoi_linh_dan', 'tu_khi_dan'];
       p.comboPresets = [['kiem_nhat_thiem', 'kiem_phong_cuong', 'kiem_tam_ho'], [], []];

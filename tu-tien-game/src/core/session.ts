@@ -1,6 +1,6 @@
-import { REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES } from './data';
+import { REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
 import { gainExp, levelUpStages } from './progression';
-import type { PlayerState, Skill } from './types';
+import type { PlayerState, Skill, Stats } from './types';
 
 /** Chiêu người chơi đã mở: nhánh đã chọn (hoặc chiêu cơ bản của mọi nhánh khi chưa chọn) theo cảnh giới/tầng. */
 export function availableSkills(p: PlayerState): Skill[] {
@@ -76,4 +76,13 @@ export function rollDrops(enemyId: string, rnd: () => number): Record<string, nu
   const out: Record<string, number> = {};
   for (const d of e?.drops ?? []) if (rnd() < d.chance) out[d.id] = (out[d.id] ?? 0) + 1;
   return out;
+}
+
+/** Chỉ số đồng hành: gốc × hệ số cảnh giới của người chơi, cộng nhẹ theo tầng. */
+export function companionStats(p: PlayerState, id: string): Stats | null {
+  const def = companionMap.get(id);
+  if (!def) return null;
+  const mul = REALMS[p.realmIndex].statMul * (1 + (p.stage - 1) * 0.04);
+  const s = def.stats as Stats;
+  return { hp: Math.round(s.hp * mul), mp: Math.round(s.mp * mul), atk: Math.round(s.atk * mul), def: Math.round(s.def * mul), spd: s.spd, crit: s.crit };
 }

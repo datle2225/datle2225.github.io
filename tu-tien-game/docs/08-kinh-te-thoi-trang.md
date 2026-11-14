@@ -10,6 +10,8 @@
 
 Trong prototype, tiền nạp **chưa mở** (`premium` luôn 0, thời trang trả bằng "xu" bị khóa), để dành giai đoạn kiếm tiền.
 
+> **Cập nhật:** các cửa hàng là **NPC trên bản đồ** (xem [12 · NPC dịch vụ](12-npc-dich-vu.md)): tồn kho theo ngày, giá dao động ±15%, quan hệ càng cao càng được giảm giá.
+
 ## Cửa hàng (mở dần)
 | Giai đoạn | Cửa hàng | Bán |
 |---|---|---|

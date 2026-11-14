@@ -15,3 +15,4 @@ export function continueGame(): boolean {
 export function persist() {
   return save(game.p);
 }
+if (typeof window !== 'undefined') (window as unknown as { __game: typeof game }).__game = game; // phục vụ debug/test

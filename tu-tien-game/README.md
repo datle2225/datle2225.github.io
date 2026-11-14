@@ -18,17 +18,22 @@ npm run build    # build ra play/
 ## Điều khiển
 | Hành động | PC | Điện thoại |
 |---|---|---|
-| Di chuyển | WASD / phím mũi tên | Chạm-giữ nơi muốn tới |
-| Nói chuyện | E hoặc nút "Nói chuyện" | Chạm nút "Nói chuyện" |
-| Qua câu thoại | Space / Click | Chạm khung thoại |
+| Di chuyển | WASD / phím mũi tên / chạm-giữ | **Joystick ảo** góc trái dưới |
+| Nói chuyện | E / Space hoặc nút "Nói chuyện" | Chạm nút "Nói chuyện" |
+| Qua câu thoại / chọn | Space / Click, phím 1–3 | Chạm khung thoại / nút lựa chọn |
 | Menu | M | Nút "Menu" |
+| Tắt/bật tiếng | N | Menu → Cài đặt |
 
-## Đã có trong khung (prototype)
-- Chiến đấu theo lượt dạng **timeline (CTB)**: Tốc Độ → số lần hành động, softcap, tối đa 3 hành động liên tiếp.
-- **Combo tag** (gieo trạng thái → cộng hưởng), bộ combo tùy chỉnh (3 preset).
-- 3 nhánh (Kiếm / Thể / Pháp) với chiêu mở dần theo cảnh giới/tầng.
-- Tu luyện, **lôi kiếp** (không đủ khí tức thì không bị phạt), 8 cảnh giới.
-- **Rèn đồ** (cùng tên, chỉ số khác nhau), **luyện đan**, **cửa hàng**, **thời trang**.
-- Nhiệm vụ chính/phụ, mở hệ thống theo chương, lưu game (`localStorage`).
+## Đã có
+- Chiến đấu **timeline (CTB)** nhiều người: Tốc Độ → số lần hành động, softcap, tối đa 3 hành động liền; **đồng hành** (Liễu Nguyệt Nhi hồi máu cho đồng đội).
+- **Combo tag**, bộ combo tùy chỉnh (3 preset), 3 nhánh (Kiếm / Thể / Pháp) mở chiêu dần theo cảnh giới.
+- Tu luyện, **lôi kiếp điện ảnh** (chọn Né / Đỡ / Uống đan từng đợt; chưa đủ khí tức thì không bị phạt).
+- **Chợ Thanh Hà Tập** với 3 NPC: **Lão Thiết (Thợ Rèn)**, **Lục Dược Sư (Đan Sư)**, **Chưởng Quầy Tiền (Tạp Hóa)**:
+  - **Mua** nguyên liệu / đan / đồ rèn sẵn / thời trang (tồn kho theo ngày, giá dao động).
+  - **Bán** lại 50%.
+  - **Thuê** NPC rèn đồ hoặc luyện đan khác (kể cả đan phương bạn chưa học), gói Thường/Tinh phẩm.
+  - **Tự làm** bằng mini-game búa rèn / hỏa hầu.
+- Hội thoại có lựa chọn → đạo tâm, danh vọng phe, quan hệ NPC (xem Menu → Huyết Thư).
+- Âm thanh chiptune, lưu game, **PWA** (cài lên màn hình chính, chơi offline).
 
-Trên màn hình chính có nút **"Thử nhanh: Trúc Cơ + Kiếm Tu"** để thử các hệ thống mở sau mà không cần chơi từ đầu.
+Trên màn hình chính có nút **"Thử nhanh: Trúc Cơ + Kiếm Tu"** để thử các hệ thống mở sau mà không cần chơi từ đầu. Chợ nằm phía nam đường lớn, từ điểm xuất phát đi xuống rồi sang phải.

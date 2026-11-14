@@ -19,7 +19,7 @@
 | 7+ | Nguyên Anh | … | Mạng thứ 2, Trận pháp, Thế lực | Nhánh nâng cao |
 | … | Hóa Thần+ | … | Pháp tắc | Endgame |
 
-> Ghi chú prototype: tab "Luyện đan" hiện mở cùng "Rèn đồ" để thử sớm; bản chính thức tách thành Chương 4 (lò sơ cấp) và Chương 6 (đầy đủ).
+> **Cập nhật:** *thuê NPC rèn/luyện đan* và *mua bán* dùng được ngay khi gặp NPC ở chợ (đưa người chơi làm quen sớm). *Tự rèn/tự luyện (mini-game)* mở ở Chương 4 cùng hệ thống `ren_do`. Luyện đan đầy đủ (đan văn, đan nhánh) ở Chương 6.
 
 ## Kịch bản 30 phút đầu (trải nghiệm mong muốn)
 | Phút | Việc | Cảm giác |

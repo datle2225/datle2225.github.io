@@ -8,6 +8,9 @@ import items from '../data/items.json';
 import recipes from '../data/recipes.json';
 import quests from '../data/quests.json';
 import chapters from '../data/chapters.json';
+import companions from '../data/companions.json';
+import services from '../data/services.json';
+import systems from '../data/systems.json';
 import type { Realm, Skill, StatusDef } from './types';
 
 const byId = <T extends { id: string }>(arr: T[]) => new Map(arr.map((x) => [x.id, x] as const));
@@ -32,3 +35,11 @@ export const recipeMap = byId(RECIPES);
 export const questMap = byId(QUESTS);
 export const realmMap = byId(REALMS);
 export const materialMap = byId(ITEMS.materials as any[]);
+
+export const COMPANIONS = companions as any[];
+export const companionMap = byId(COMPANIONS);
+export const SERVICES = services as any;
+export const vendorMap = byId(SERVICES.vendors as any[]);
+
+export const SYSTEM_NAMES = systems as Record<string, string>;
+export const systemName = (id: string) => SYSTEM_NAMES[id] ?? id;

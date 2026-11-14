@@ -1,0 +1,378 @@
+{
+ "id": "thanh_ha",
+ "name": "Thanh Hà Thôn & Hắc Lâm",
+ "tile": 16,
+ "legend": {
+  "g": "grass",
+  "p": "path",
+  "t": "tree",
+  "r": "rock",
+  "w": "water",
+  "R": "ruin",
+  "W": "well",
+  "G": "gate",
+  "h": "house"
+ },
+ "solid": [
+  "t",
+  "r",
+  "w",
+  "W",
+  "h"
+ ],
+ "spawn": {
+  "x": 10,
+  "y": 10
+ },
+ "rows": [
+  "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+  "tgggggggggggggggggtgrgggtgggtggggggggtgggggggggggttggggtggggggtt",
+  "tgggtggggggtggggtgtggggggrgggggggggggggggggggtgtggggggggtggtrrgt",
+  "tggtgtggggggggggggggggggggtgggggggggtgggggggggggggggggrggggtggrt",
+  "tgggggRRRRRRRggggggrggtgggtgggggtggggggggggggrgggggggggggggtgrgt",
+  "tgggggRRRRRRRggggggttgggggggttgtgggggrtggrgggrgggggggggggggggggt",
+  "tgggggRRRRRRRrgggrgtgrggggtgggggggggttgtggggtgggtgggggtggggggggt",
+  "tgtgggRRRRRRRgtggggtgggggggggggggggggtgggggggggggggggggtgggggggt",
+  "ttggggRRRRRRRggggtggtggtgggtrggggggggggggtgggggggggrggggggggggrt",
+  "tgggggggggpgggtggggggggggggggtggggtgggggggggrrgtgggggtgggtgggggt",
+  "tgtgggggggpgggggggggggggggtggggrggggtgtgggggrtgggggtgtggrggggrgt",
+  "tggggtggtgpggggrgggggggggtgggggrtggggrgggtrtggtggggggggggggttggt",
+  "tggtggggggpggggggggggrggggrgggggggttgggggggggggggrggggggtgggrggt",
+  "tppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppt",
+  "tgrgggggggWtggggggggggggggggggpgggrgtgggggggggggggggrggggggggtgt",
+  "tgggggggggpggggtggtggggggggrggpggggggggggggtrggggggggggggggtgggt",
+  "tggggggggtpggttgggrgggggggggggprggggggggggggggggggggggggggggggtt",
+  "tggtttggggpgggttggggggggggggggpgtrgggtrggggrggggrgggtgggrggtgggt",
+  "tggggggggtpgggggggggtggtgggggtpgrrgggggtgggrggtgggggggggGggggggt",
+  "tgggggggrgppppppppppppppppppppppppppppppppppppppppppppppGggtgggt",
+  "tggggggggrpgggggggpggggggpggggpggggggggggrgggggggggggggtGggggtgt",
+  "tgggggtgggpgghhhhgpghhhhgpggggpggghhhhgggggrrrggggggrggggggggtgt",
+  "trggggggggpgghhhhgpghhhhgpggggpggghhhhggggrgggtggtggggggggtggggt",
+  "tggtggrgggpgpppppppppppppppppppppppppppggtggggrgggggggggggggggrt",
+  "tgtgggggggptggggggggggggggggggpggggggggggggggggggggggtggggggggrt",
+  "tgggggggggggggggggggggggggggggpggggggggggggggggggttgggggggggrtgt",
+  "tgggtgggggggggggggggggggggggggpggggggggggtgggggttgrgggtgrggggggt",
+  "tggggggggggggggggttggggggggggtptgggggggtgggrggggggggtggggggggggt",
+  "tgggggggggggggrgggggtggggggggtpgggggrggggtggtggggggggggrggtgggtt",
+  "tggtggggggtggggggggggggggtggggpgtgggggggggggtggggggggggtgggggggt",
+  "tggggggtgggggggggtggggggggggggggggggggggggtgggrggggggggggggggggt",
+  "ttgggggggtgtggggtgtggtggggggtggggggggggggtgggrgggggggggggggggggt",
+  "tggtggggrggggrgggggggggrggggtggggggggggggwwwwwwwggggggggggtgggrt",
+  "tggggtgggggggggggggggggggggggtrggggtggrgwwwwwwwwwggggggggggggggt",
+  "tggggggtgggggggggggtrggtggggggggtgggggggwwwwwwwwwgtgggrggrgggggt",
+  "tgggggggrgggggggggtgggggttgggggggtgggggtwwwwwwwwwggtgggggggggggt",
+  "tggtgggtggggggggggggggggggggrggggtgggggttwwwwwwwggggggggggggtgtt",
+  "tggtggggggtgggggtggtgggtgggggggggggggggggggggggtggtggggggggggggt",
+  "tgggggtgtgggtggrggtgggggggtgrgggggggtggttggggggtggggggggggtgggtt",
+  "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"
+ ],
+ "npcs": [
+  {
+   "id": "lao_ngu",
+   "name": "Lão Ngư",
+   "tex": "npc_elder",
+   "x": 14,
+   "y": 12,
+   "talk": [
+    {
+     "if": {
+      "notFlag": "met_laongu"
+     },
+     "id": "lao_ngu_1"
+    },
+    {
+     "id": "lao_ngu_2"
+    }
+   ]
+  },
+  {
+   "id": "ba_ly",
+   "name": "Bà Lý",
+   "tex": "npc_girl",
+   "x": 24,
+   "y": 16,
+   "talk": [
+    {
+     "if": {
+      "questDone": "s1_1",
+      "notFlag": "wolf_resolved"
+     },
+     "id": "ba_ly_choice"
+    },
+    {
+     "if": {
+      "questActive": "s1_1"
+     },
+     "id": "ba_ly_wait"
+    },
+    {
+     "if": {
+      "noQuest": "s1_1"
+     },
+     "id": "ba_ly_offer"
+    },
+    {
+     "id": "ba_ly_after"
+    }
+   ]
+  },
+  {
+   "id": "gate",
+   "name": "Đệ tử Thanh Vân",
+   "tex": "npc_disciple",
+   "x": 54,
+   "y": 19,
+   "talk": [
+    {
+     "if": {
+      "questDone": "m1_2"
+     },
+     "id": "gate_open"
+    },
+    {
+     "id": "gate_closed"
+    }
+   ]
+  },
+  {
+   "id": "tho_ren",
+   "name": "Lão Thiết (Thợ Rèn)",
+   "tex": "npc_smith",
+   "x": 14,
+   "y": 23,
+   "vendor": "tho_ren",
+   "talk": [
+    {
+     "if": {
+      "notFlag": "met_tho_ren"
+     },
+     "id": "tho_ren_1"
+    },
+    {
+     "id": "tho_ren_menu"
+    }
+   ]
+  },
+  {
+   "id": "dan_su",
+   "name": "Lục Dược Sư (Đan Sư)",
+   "tex": "npc_alch",
+   "x": 21,
+   "y": 23,
+   "vendor": "dan_su",
+   "talk": [
+    {
+     "if": {
+      "notFlag": "met_dan_su"
+     },
+     "id": "dan_su_1"
+    },
+    {
+     "id": "dan_su_menu"
+    }
+   ]
+  },
+  {
+   "id": "tap_hoa",
+   "name": "Chưởng Quầy Tiền (Tạp Hóa)",
+   "tex": "npc_shop",
+   "x": 35,
+   "y": 23,
+   "vendor": "tap_hoa",
+   "talk": [
+    {
+     "if": {
+      "notFlag": "met_tap_hoa"
+     },
+     "id": "tap_hoa_1"
+    },
+    {
+     "id": "tap_hoa_menu"
+    }
+   ]
+  },
+  {
+   "id": "nguyet_nhi",
+   "name": "Liễu Nguyệt Nhi",
+   "tex": "npc_girl2",
+   "x": 27,
+   "y": 24,
+   "talk": [
+    {
+     "if": {
+      "notFlag": "nguyet_met"
+     },
+     "id": "nguyet_1"
+    },
+    {
+     "if": {
+      "party": "nguyet_nhi"
+     },
+     "id": "nguyet_party"
+    },
+    {
+     "if": {
+      "questDone": "m1_2",
+      "notParty": "nguyet_nhi"
+     },
+     "id": "nguyet_join"
+    },
+    {
+     "id": "nguyet_idle"
+    }
+   ]
+  }
+ ],
+ "signs": [
+  {
+   "x": 15,
+   "y": 20,
+   "text": "Lò Rèn"
+  },
+  {
+   "x": 22,
+   "y": 20,
+   "text": "Đan Phòng"
+  },
+  {
+   "x": 36,
+   "y": 20,
+   "text": "Tạp Hóa"
+  },
+  {
+   "x": 26,
+   "y": 21,
+   "text": "Thanh Hà Tập"
+  }
+ ],
+ "enemies": [
+  {
+   "group": [
+    "soi_hoang",
+    "soi_hoang"
+   ],
+   "tex": "wolf",
+   "x": 34,
+   "y": 10
+  },
+  {
+   "group": [
+    "soi_hoang"
+   ],
+   "tex": "wolf",
+   "x": 44,
+   "y": 14
+  },
+  {
+   "group": [
+    "soi_hoang"
+   ],
+   "tex": "wolf",
+   "x": 26,
+   "y": 32
+  },
+  {
+   "group": [
+    "yeu_xa",
+    "yeu_xa"
+   ],
+   "tex": "snake",
+   "x": 40,
+   "y": 20
+  },
+  {
+   "group": [
+    "yeu_xa"
+   ],
+   "tex": "snake",
+   "x": 48,
+   "y": 28
+  },
+  {
+   "group": [
+    "huyet_anh_do_de"
+   ],
+   "tex": "cultist",
+   "x": 46,
+   "y": 10
+  },
+  {
+   "group": [
+    "huyet_anh_do_de",
+    "huyet_anh_do_de"
+   ],
+   "tex": "cultist",
+   "x": 52,
+   "y": 14,
+   "minRealm": 1
+  },
+  {
+   "group": [
+    "boss_huyet_anh_truong_lao"
+   ],
+   "tex": "elder_boss",
+   "scale": 3,
+   "x": 50,
+   "y": 8,
+   "minRealm": 1
+  }
+ ],
+ "herbs": [
+  [
+   18,
+   8
+  ],
+  [
+   24,
+   12
+  ],
+  [
+   28,
+   22
+  ],
+  [
+   36,
+   16
+  ],
+  [
+   20,
+   28
+  ],
+  [
+   42,
+   24
+  ],
+  [
+   12,
+   28
+  ],
+  [
+   8,
+   18
+  ]
+ ],
+ "zones": [
+  {
+   "id": "diep_gia_tan_tich",
+   "x": 9,
+   "y": 6,
+   "r": 3
+  },
+  {
+   "id": "gieng_co",
+   "x": 10,
+   "y": 14,
+   "r": 2
+  },
+  {
+   "id": "thanh_van_mon",
+   "x": 55,
+   "y": 19,
+   "r": 2,
+   "if": {
+    "questActive": "m1_3"
+   },
+   "deny": "Cổng Thanh Vân Tông đóng chặt. Hãy hoàn thành \"Cổ Đỉnh\" trước."
+  }
+ ]
+}
