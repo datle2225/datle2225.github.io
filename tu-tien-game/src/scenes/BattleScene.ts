@@ -8,6 +8,8 @@ import { Rng } from '../core/rng';
 import { availableSkills, questEvent, rollDrops } from '../core/session';
 import { enemyMap, skillMap, materialMap, statusMap } from '../core/data';
 import { ELITE, applyDefeatPenalty, difficultyOf, effectiveDifficulty } from '../core/difficulty';
+import { computeStats } from '../core/stats';
+import { DEFEAT_HP, restoreFull, setVitals } from '../core/vitals';
 import { bump } from '../core/achievements';
 import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
@@ -44,7 +46,7 @@ export class BattleScene extends Phaser.Scene {
     this.add.rectangle(0, 200, W, 160, 0x1b2a4a).setOrigin(0);
 
     this.pillsLeft = difficultyOf(p).pills;
-    const built = buildBattle(p, this.init0.enemies, new Rng(), true, { elite: !!this.init0.elite, mult: this.init0.mult });
+    const built = buildBattle(p, this.init0.enemies, new Rng(), true, { elite: !!this.init0.elite, mult: this.init0.mult, persist: this.persistVitals() });
     this.b = built.battle;
     this.player = built.player;
     this.enemyIds = built.enemyUnitIds;
@@ -135,12 +137,14 @@ export class BattleScene extends Phaser.Scene {
     if (preset.length) {
       const nx = this.peekCombo(preset);
       const sk = nx ? skillMap.get(nx.id) : null;
-      add(button(this, 330, 322, 150, 28, sk ? `Combo ▶ ${sk.name}` : 'Combo: thiếu linh lực', () => { if (nx) { this.comboIdx = nx.next; this.playerAct(nx.id); } }, { enabled: !!sk && !this.locked, color: 0x6a3a8c }));
+      add(button(this, 330, 322, 90, 28, sk ? `▶ ${sk.name}` : 'Combo: hết MP', () => { if (nx) { this.comboIdx = nx.next; this.playerAct(nx.id); } }, { enabled: !!sk && !this.locked, color: 0x6a3a8c }));
     }
     const pill = p.inventory.hoi_huyet_dan ?? 0;
-    add(button(this, 484, 322, 70, 28, `Đan ${pill}·${this.pillsLeft}/${difficultyOf(p).pills}`, () => this.usePill(), { enabled: pill > 0 && this.pillsLeft > 0 && !this.locked, color: 0x2a6a4a }));
+    add(button(this, 424, 322, 70, 28, `Đan ${pill}·${this.pillsLeft}/${difficultyOf(p).pills}`, () => this.usePill(), { enabled: pill > 0 && this.pillsLeft > 0 && !this.locked, color: 0x2a6a4a }));
+    const mpill = p.inventory.hoi_linh_dan ?? 0;
+    add(button(this, 498, 322, 62, 28, `Linh ${mpill}`, () => this.useManaPill(), { enabled: mpill > 0 && this.pillsLeft > 0 && !this.locked, color: 0x2a4a8a }));
     const boss = enemyMap.get(this.init0.enemies[0])?.boss || this.init0.enemies.includes('tam_ma');
-    add(button(this, 558, 322, 74, 28, 'Bỏ chạy', () => this.end(false, true), { enabled: !boss && difficultyOf(p).canFlee && !this.locked, color: 0x6a2a2a }));
+    add(button(this, 564, 322, 68, 28, 'Bỏ chạy', () => this.end(false, true), { enabled: !boss && difficultyOf(p).canFlee && !this.locked, color: 0x6a2a2a }));
   }
 
   /** Xem chiêu kế tiếp trong combo (không đổi trạng thái); bỏ qua chiêu thiếu linh lực. */
@@ -162,6 +166,19 @@ export class BattleScene extends Phaser.Scene {
     this.player.nextAt += 100;
     this.push('Dùng Hồi Huyết Đan, hồi 35% sinh lực.');
     this.floatText(this.player.id, '+HP', '#7aff9a');
+    this.updateBars(); this.drawTimeline(); this.step();
+  }
+
+  private useManaPill() {
+    const p = game.p;
+    if ((p.inventory.hoi_linh_dan ?? 0) <= 0 || this.pillsLeft <= 0) return;
+    this.pillsLeft--;
+    bump(p, 'pills_used');
+    p.inventory.hoi_linh_dan--;
+    this.player.mp = Math.min(this.player.stats.mp, this.player.mp + Math.round(this.player.stats.mp * 0.4));
+    this.player.nextAt += 100;
+    this.push('Dùng Hồi Linh Đan, hồi 40% linh lực.');
+    this.floatText(this.player.id, '+MP', '#7ac8ff');
     this.updateBars(); this.drawTimeline(); this.step();
   }
 
@@ -226,8 +243,15 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
+  /** Sinh lực/linh lực mang sang trận sau — trừ Vô Tận Tháp và tâm ma (trận đặc biệt, luôn đầy). */
+  private persistVitals() { return this.init0.foeIndex !== -2 && !this.init0.enemies.includes('tam_ma'); }
+
   private end(won: boolean, fled = false) {
     const p = game.p;
+    if (this.persistVitals()) {
+      if (won || fled) setVitals(p, this.player.hp, this.player.mp);
+      else { restoreFull(p); setVitals(p, computeStats(p).hp * DEFEAT_HP, computeStats(p).mp); } // thua: tỉnh lại, bị thương nặng
+    }
     let msg = '';
     const completed: string[] = [];
     if (won) {

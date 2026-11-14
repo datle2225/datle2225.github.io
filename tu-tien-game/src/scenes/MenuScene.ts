@@ -15,6 +15,7 @@ import { getSettings, setSettings } from '../settings';
 import { exportSave, importSave, writeSave } from '../core/save';
 import { check, type Cond } from '../core/story';
 import { FACTIONS, FORMATIONS, LAWS, factionMap } from '../core/data';
+import { curHp, curMp, heal } from '../core/vitals';
 import { ACHIEVEMENTS } from '../core/data';
 import { progressOf } from '../core/achievements';
 import { canStartNgPlus, startNewGamePlus } from '../core/ngplus';
@@ -108,7 +109,7 @@ export class MenuScene extends Phaser.Scene {
       { text: `${p.name} · ${r.name} tầng ${p.stage}/${r.stages} · Thọ nguyên ${r.lifespan} năm` },
       { text: `Linh căn: ${root?.name}`, sub: root?.desc },
       { text: `Nhánh tu: ${p.branchId ? branchMap.get(p.branchId)?.name : 'Chưa chọn'}${p.subBranchId ? ` + phụ ${branchMap.get(p.subBranchId)?.name}` : ''} · Đạo tâm ${p.daoHeart}/100 · Lực chiến ${power(s)}` },
-      { text: `HP ${s.hp} · MP ${s.mp} · Công ${s.atk} · Thủ ${s.def} · Tốc ${Math.round(s.spd)} · Bạo ${(s.crit * 100).toFixed(0)}%` },
+      { text: `HP ${curHp(p)}/${s.hp} · MP ${curMp(p)}/${s.mp} · Công ${s.atk} · Thủ ${s.def} · Tốc ${Math.round(s.spd)} · Bạo ${(s.crit * 100).toFixed(0)}%` },
       { text: `Linh thạch ${p.gold} · Chương ${p.chapter} · Chơi ${Math.round(p.playtime / 60)} phút` },
     ];
     if (ownsSystem(p, 'chon_nhanh') && !p.branchId) {
@@ -198,7 +199,13 @@ export class MenuScene extends Phaser.Scene {
   private rowsBag(): Row[] {
     const p = game.p;
     const rows: Row[] = [];
-    for (const [id, n] of Object.entries(p.inventory)) if (n > 0) rows.push({ text: `${(materialMap.get(id) as any)?.name ?? recipeMap.get(id)?.name ?? id} ×${n}` });
+    const POTION: Record<string, [number, number, string]> = { hoi_huyet_dan: [0.35, 0, 'sinh lực'], hoi_linh_dan: [0, 0.4, 'linh lực'] };
+    for (const [id, n] of Object.entries(p.inventory)) {
+      if (n <= 0) continue;
+      const pot = POTION[id];
+      const full = p.hp === undefined && p.mp === undefined;
+      rows.push({ text: `${(materialMap.get(id) as any)?.name ?? recipeMap.get(id)?.name ?? id} ×${n}`, sub: pot ? `Hồi ${Math.round((pot[0] || pot[1]) * 100)}% ${pot[2]} (dùng cả ngoài trận)` : undefined, btns: pot ? [{ label: 'Dùng', enabled: !full, fn: () => { p.inventory[id]--; heal(p, pot[0], pot[1]); this.note(`Đã dùng ${recipeMap.get(id)?.name}.`); } }] : undefined });
+    }
     rows.push({ text: '— Trang bị —' });
     for (const g of p.gear) {
       const on = p.equipped[g.slot] === g.uid;
