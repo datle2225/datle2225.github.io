@@ -23,17 +23,17 @@ npm run build    # build ra play/
 | Qua câu thoại / chọn | Space / Click, phím 1–3 | Chạm khung thoại / nút lựa chọn |
 | Menu | M | Nút "Menu" |
 | Tắt/bật tiếng | N | Menu → Cài đặt |
+| Xem FPS (debug) | F | – |
 
 ## Đã có
-- Chiến đấu **timeline (CTB)** nhiều người: Tốc Độ → số lần hành động, softcap, tối đa 3 hành động liền; **đồng hành** (Liễu Nguyệt Nhi hồi máu cho đồng đội).
-- **Combo tag**, bộ combo tùy chỉnh (3 preset), 3 nhánh (Kiếm / Thể / Pháp) mở chiêu dần theo cảnh giới.
-- Tu luyện, **lôi kiếp điện ảnh** (chọn Né / Đỡ / Uống đan từng đợt; chưa đủ khí tức thì không bị phạt).
-- **Chợ Thanh Hà Tập** với 3 NPC: **Lão Thiết (Thợ Rèn)**, **Lục Dược Sư (Đan Sư)**, **Chưởng Quầy Tiền (Tạp Hóa)**:
-  - **Mua** nguyên liệu / đan / đồ rèn sẵn / thời trang (tồn kho theo ngày, giá dao động).
-  - **Bán** lại 50%.
-  - **Thuê** NPC rèn đồ hoặc luyện đan khác (kể cả đan phương bạn chưa học), gói Thường/Tinh phẩm.
-  - **Tự làm** bằng mini-game búa rèn / hỏa hầu.
-- Hội thoại có lựa chọn → đạo tâm, danh vọng phe, quan hệ NPC (xem Menu → Huyết Thư).
-- Âm thanh chiptune, lưu game, **PWA** (cài lên màn hình chính, chơi offline).
+- **3 bản đồ nối nhau** (Thanh Hà Thôn & Hắc Lâm → Thanh Vân Tông, Phường Thị Vân Hải), định dạng **Tiled**; **ngày–đêm**, NPC **ngủ ban đêm**, **sự kiện ngẫu nhiên**, **tin đồn**.
+- Chiến đấu **timeline (CTB)** nhiều người; **6 nhánh** (Kiếm / Thể / Pháp / Đan / Phù Trận / Ma) với cơ chế riêng (khiên, độc, **bẫy**, **hy sinh máu**); **boss nhiều pha**; đồng hành Liễu Nguyệt Nhi.
+- Tu luyện, **lôi kiếp điện ảnh**, rèn đồ, luyện đan, **NPC dịch vụ** (mua · bán · thuê · tự làm bằng mini-game), thời trang.
+- Hội thoại có lựa chọn → đạo tâm, danh vọng phe, quan hệ (Menu → Huyết Thư).
+- Nhạc chiptune theo khu vực, **PWA**, **xuất/nhập save**, joystick ảo chọn bên trái/phải.
+- **74 unit test** và **mô phỏng cân bằng** (`npm run sim`).
 
-Trên màn hình chính có nút **"Thử nhanh: Trúc Cơ + Kiếm Tu"** để thử các hệ thống mở sau mà không cần chơi từ đầu. Chợ nằm phía nam đường lớn, từ điểm xuất phát đi xuống rồi sang phải.
+Trên màn hình chính có nút **"Thử nhanh: Trúc Cơ + Kiếm Tu"** để thử các hệ thống mở sau. Từ Chương 2 trở đi có cổng sang Thanh Vân Tông (sau khi xin nhập môn) và Phường Thị Vân Hải (đường lớn đi về phía đông).
+
+## Công cụ
+`npm run dev` · `npm test` · `npm run build` · `npm run sim` (cân bằng) · `npm run maps` (sinh map Tiled) · `npm run tileset`. Hướng dẫn thay art và chỉnh bản đồ: [`docs/13-art-guide.md`](docs/13-art-guide.md).

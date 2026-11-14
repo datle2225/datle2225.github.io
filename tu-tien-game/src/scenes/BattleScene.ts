@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 import { W, H } from '../main';
 import { game, persist } from '../state';
 import { button, label, bar } from '../ui/widgets';
-import { Battle, makeUnit, type Unit } from '../core/battle';
+import { type Battle, type Unit } from '../core/battle';
+import { buildBattle } from '../core/encounter';
 import { Rng } from '../core/rng';
-import { computeStats } from '../core/stats';
-import { availableSkills, companionStats, questEvent, rollDrops } from '../core/session';
-import { companionMap, enemyMap, skillMap, materialMap, statusMap } from '../core/data';
+import { availableSkills, questEvent, rollDrops } from '../core/session';
+import { enemyMap, skillMap, materialMap, statusMap } from '../core/data';
 import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
 
@@ -39,23 +39,10 @@ export class BattleScene extends Phaser.Scene {
     this.add.rectangle(0, 0, W, H, 0x101a36).setOrigin(0);
     this.add.rectangle(0, 200, W, 160, 0x1b2a4a).setOrigin(0);
 
-    const stats = computeStats(p);
-    const skills = availableSkills(p).map((s) => s.id);
-    this.player = makeUnit('player', p.name, 'player', stats, skills, 'none');
-    const units: Unit[] = [this.player];
-    for (const cid of p.party) {
-      const def = companionMap.get(cid);
-      const cs = companionStats(p, cid);
-      if (def && cs) units.push(makeUnit(`c_${cid}`, def.name, 'player', cs, def.skills, def.element));
-    }
-    this.enemyIds = [];
-    this.init0.enemies.forEach((eid, i) => {
-      const e = enemyMap.get(eid);
-      const id = `e${i}`;
-      this.enemyIds.push(id);
-      units.push(makeUnit(id, e.name, 'enemy', e.stats, e.skills, e.element));
-    });
-    this.b = new Battle(units, new Rng());
+    const built = buildBattle(p, this.init0.enemies, new Rng());
+    this.b = built.battle;
+    this.player = built.player;
+    this.enemyIds = built.enemyUnitIds;
     this.target = this.enemyIds[0];
 
     const allies = this.b.units.filter((u) => u.side === 'player');
@@ -70,7 +57,7 @@ export class BattleScene extends Phaser.Scene {
     this.logText = label(this, 10, 232, '', { fontSize: '9px', wordWrap: { width: 300 }, lineSpacing: 1, color: '#c8d0ff' });
     label(this, 10, 2, 'THỨ TỰ HÀNH ĐỘNG', { fontSize: '8px', color: '#6b7391' });
     this.push(`Gặp ${this.b.units.filter((u) => u.side === 'enemy').map((u) => u.name).join(', ')}!`);
-    audio.music('battle');
+    audio.music(enemyMap.get(this.init0.enemies[0])?.boss ? 'boss' : 'battle');
     this.drawTimeline();
     this.step();
   }
@@ -128,14 +115,14 @@ export class BattleScene extends Phaser.Scene {
     this.clearUi();
     const p = game.p;
     const skills = availableSkills(p);
-    const bw = 98, bh = 26;
-    let x = 330, y = 238, n = 0;
+    const bw = 98, bh = 24;
+    let x = 330, y = 232, n = 0;
     const add = (b: { bg: any; t: any }) => this.ui.push(b.bg, b.t);
     for (const s of skills) {
       const ok = this.b.canUse(this.player, s.id);
       add(button(this, x, y, bw, bh, `${s.name}${s.mp ? ` (${s.mp})` : ''}`, () => this.playerAct(s.id), { enabled: ok && !this.locked }));
       x += bw + 4;
-      if (++n % 3 === 0) { x = 330; y += bh + 4; }
+      if (++n % 3 === 0) { x = 330; y += bh + 3; }
     }
     // combo preset
     const preset = (p.comboPresets[p.activeCombo] ?? []).filter((id) => skillMap.has(id) && this.player.skills.includes(id));
@@ -174,7 +161,6 @@ export class BattleScene extends Phaser.Scene {
     if (this.locked || this.b.current()?.id !== 'player') return;
     const tgt = this.b.units.find((u) => u.id === this.target && u.alive) ?? this.b.alive('enemy')[0];
     const ev = this.b.act(this.player, skillId, tgt);
-    this.player.mp = Math.min(this.player.stats.mp, this.player.mp + 2);
     this.afterAct(ev);
   }
 
@@ -184,6 +170,8 @@ export class BattleScene extends Phaser.Scene {
       if (e.type === 'hit') audio.sfx(e.crit ? 'crit' : 'hit');
       if (e.type === 'heal') audio.sfx('heal');
       if (e.type === 'combo') audio.sfx('combo');
+      if (e.type === 'trap') { audio.sfx('crit'); if (e.target) this.floatText(e.target, `${e.value}`, '#ffb84a'); }
+      if (e.type === 'phase') { audio.sfx('thunder'); this.cameras.main.shake(250, 0.01); this.cameras.main.flash(250, 255, 60, 60); const t = label(this, W / 2, 110, e.text, { fontSize: '13px', color: '#ff8a8a', backgroundColor: '#200a0acc', padding: { x: 6, y: 3 }, wordWrap: { width: 460 }, align: 'center' }).setOrigin(0.5); this.tweens.add({ targets: t, alpha: 0, y: 90, delay: 1500, duration: 600, onComplete: () => t.destroy() }); }
       if (e.type === 'hit' && e.target) {
         this.floatText(e.target, `${e.value}${e.crit ? '!' : ''}`, e.crit ? '#ffe38a' : '#ffffff');
         const s = this.sprites.get(e.target);

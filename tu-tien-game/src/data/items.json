@@ -1,38 +1,304 @@
 {
-  "materials": [
-    { "id": "linh_thao", "name": "Linh Thảo", "kind": "herb", "price": 8 },
-    { "id": "huyet_tham", "name": "Huyết Sâm", "kind": "herb", "price": 40 },
-    { "id": "da_soi", "name": "Da Sói", "kind": "mat", "price": 5 },
-    { "id": "huyen_thiet", "name": "Huyền Thiết", "kind": "ore", "price": 25 },
-    { "id": "linh_thach_ha", "name": "Hạ Phẩm Linh Thạch", "kind": "currency", "price": 1 },
-    { "id": "huyet_anh_lenh", "name": "Huyết Ảnh Lệnh", "kind": "quest", "price": 0 }
-  ],
-  "bases": [
-    { "id": "phi_kiem_so", "name": "Phi Kiếm Sơ Cấp", "slot": "weapon", "branch": "kiem_tu", "base": { "atk": 10 }, "ore": 3 },
-    { "id": "quyen_sao_so", "name": "Quyền Sáo Thiết Thạch", "slot": "weapon", "branch": "the_tu", "base": { "atk": 8, "def": 3 }, "ore": 3 },
-    { "id": "phap_truong_so", "name": "Pháp Trượng Mộc Linh", "slot": "weapon", "branch": "phap_tu", "base": { "atk": 6, "mp": 15 }, "ore": 3 },
-    { "id": "kiem_y_so", "name": "Kiếm Y Vải Thô", "slot": "armor", "branch": "kiem_tu", "base": { "def": 4, "spd": 4 }, "ore": 2 },
-    { "id": "chien_giap_so", "name": "Chiến Giáp Huyền Thiết", "slot": "armor", "branch": "the_tu", "base": { "def": 9, "hp": 30 }, "ore": 4 },
-    { "id": "dao_bao_so", "name": "Đạo Bào Thanh Vân", "slot": "armor", "branch": "phap_tu", "base": { "def": 3, "mp": 20 }, "ore": 2 }
-  ],
-  "affixes": [
-    { "id": "atk", "label": "Công", "stat": "atk", "min": 2, "max": 9, "weight": 10 },
-    { "id": "def", "label": "Thủ", "stat": "def", "min": 2, "max": 8, "weight": 10 },
-    { "id": "hp", "label": "Sinh Lực", "stat": "hp", "min": 10, "max": 45, "weight": 10 },
-    { "id": "mp", "label": "Linh Lực", "stat": "mp", "min": 6, "max": 25, "weight": 8 },
-    { "id": "spd", "label": "Tốc Độ", "stat": "spd", "min": 2, "max": 10, "weight": 6 },
-    { "id": "crit", "label": "Bạo Kích", "stat": "crit", "min": 0.02, "max": 0.08, "weight": 4 }
-  ],
-  "rarities": [
-    { "id": "pham", "name": "Phàm", "affixes": [0, 1], "mult": [0.9, 1.0] },
-    { "id": "linh", "name": "Linh", "affixes": [1, 2], "mult": [1.0, 1.15] },
-    { "id": "bao", "name": "Bảo", "affixes": [2, 3], "mult": [1.15, 1.35] },
-    { "id": "tien", "name": "Tiên", "affixes": [3, 4], "mult": [1.35, 1.6] }
-  ],
-  "fashion": [
-    { "id": "ao_thanh_van", "name": "Áo Thanh Vân", "slot": "outfit", "price": 300, "currency": "linh_thach" },
-    { "id": "ao_huyet_nguyet", "name": "Áo Huyết Nguyệt", "slot": "outfit", "price": 120, "currency": "tien_nap", "limited": true },
-    { "id": "kiem_quang_xanh", "name": "Hiệu Ứng Kiếm Quang Xanh", "slot": "sword_fx", "price": 90, "currency": "tien_nap" },
-    { "id": "mu_da_the", "name": "Mũ Đạo Sĩ", "slot": "hat", "price": 150, "currency": "linh_thach" }
-  ]
+ "materials": [
+  {
+   "id": "linh_thao",
+   "name": "Linh Thảo",
+   "kind": "herb",
+   "price": 8
+  },
+  {
+   "id": "huyet_tham",
+   "name": "Huyết Sâm",
+   "kind": "herb",
+   "price": 40
+  },
+  {
+   "id": "da_soi",
+   "name": "Da Sói",
+   "kind": "mat",
+   "price": 5
+  },
+  {
+   "id": "huyen_thiet",
+   "name": "Huyền Thiết",
+   "kind": "ore",
+   "price": 25
+  },
+  {
+   "id": "linh_thach_ha",
+   "name": "Hạ Phẩm Linh Thạch",
+   "kind": "currency",
+   "price": 1
+  },
+  {
+   "id": "huyet_anh_lenh",
+   "name": "Huyết Ảnh Lệnh",
+   "kind": "quest",
+   "price": 0
+  }
+ ],
+ "bases": [
+  {
+   "id": "phi_kiem_so",
+   "name": "Phi Kiếm Sơ Cấp",
+   "slot": "weapon",
+   "branch": "kiem_tu",
+   "base": {
+    "atk": 10
+   },
+   "ore": 3
+  },
+  {
+   "id": "quyen_sao_so",
+   "name": "Quyền Sáo Thiết Thạch",
+   "slot": "weapon",
+   "branch": "the_tu",
+   "base": {
+    "atk": 8,
+    "def": 3
+   },
+   "ore": 3
+  },
+  {
+   "id": "phap_truong_so",
+   "name": "Pháp Trượng Mộc Linh",
+   "slot": "weapon",
+   "branch": "phap_tu",
+   "base": {
+    "atk": 6,
+    "mp": 15
+   },
+   "ore": 3
+  },
+  {
+   "id": "kiem_y_so",
+   "name": "Kiếm Y Vải Thô",
+   "slot": "armor",
+   "branch": "kiem_tu",
+   "base": {
+    "def": 4,
+    "spd": 4
+   },
+   "ore": 2
+  },
+  {
+   "id": "chien_giap_so",
+   "name": "Chiến Giáp Huyền Thiết",
+   "slot": "armor",
+   "branch": "the_tu",
+   "base": {
+    "def": 9,
+    "hp": 30
+   },
+   "ore": 4
+  },
+  {
+   "id": "dao_bao_so",
+   "name": "Đạo Bào Thanh Vân",
+   "slot": "armor",
+   "branch": "phap_tu",
+   "base": {
+    "def": 3,
+    "mp": 20
+   },
+   "ore": 2
+  },
+  {
+   "id": "dan_lo_so",
+   "name": "Đan Lô Đồng Nhỏ",
+   "slot": "weapon",
+   "branch": "dan_tu",
+   "base": {
+    "atk": 5,
+    "hp": 25
+   },
+   "ore": 3
+  },
+  {
+   "id": "duoc_dai_so",
+   "name": "Dược Đại Vải Bố",
+   "slot": "armor",
+   "branch": "dan_tu",
+   "base": {
+    "def": 3,
+    "hp": 35
+   },
+   "ore": 2
+  },
+  {
+   "id": "phu_but_so",
+   "name": "Phù Bút Lang Hào",
+   "slot": "weapon",
+   "branch": "phu_tran_tu",
+   "base": {
+    "atk": 6,
+    "mp": 18
+   },
+   "ore": 3
+  },
+  {
+   "id": "tran_ky_so",
+   "name": "Trận Kỳ Vải Đỏ",
+   "slot": "armor",
+   "branch": "phu_tran_tu",
+   "base": {
+    "def": 3,
+    "mp": 22
+   },
+   "ore": 2
+  },
+  {
+   "id": "ma_dao_so",
+   "name": "Ma Đao Huyết Sắc",
+   "slot": "weapon",
+   "branch": "ma_tu",
+   "base": {
+    "atk": 12
+   },
+   "ore": 3
+  },
+  {
+   "id": "huyet_y_so",
+   "name": "Huyết Y Rách",
+   "slot": "armor",
+   "branch": "ma_tu",
+   "base": {
+    "def": 3,
+    "hp": 40,
+    "atk": 3
+   },
+   "ore": 2
+  }
+ ],
+ "affixes": [
+  {
+   "id": "atk",
+   "label": "Công",
+   "stat": "atk",
+   "min": 2,
+   "max": 9,
+   "weight": 10
+  },
+  {
+   "id": "def",
+   "label": "Thủ",
+   "stat": "def",
+   "min": 2,
+   "max": 8,
+   "weight": 10
+  },
+  {
+   "id": "hp",
+   "label": "Sinh Lực",
+   "stat": "hp",
+   "min": 10,
+   "max": 45,
+   "weight": 10
+  },
+  {
+   "id": "mp",
+   "label": "Linh Lực",
+   "stat": "mp",
+   "min": 6,
+   "max": 25,
+   "weight": 8
+  },
+  {
+   "id": "spd",
+   "label": "Tốc Độ",
+   "stat": "spd",
+   "min": 2,
+   "max": 10,
+   "weight": 6
+  },
+  {
+   "id": "crit",
+   "label": "Bạo Kích",
+   "stat": "crit",
+   "min": 0.02,
+   "max": 0.08,
+   "weight": 4
+  }
+ ],
+ "rarities": [
+  {
+   "id": "pham",
+   "name": "Phàm",
+   "affixes": [
+    0,
+    1
+   ],
+   "mult": [
+    0.9,
+    1.0
+   ]
+  },
+  {
+   "id": "linh",
+   "name": "Linh",
+   "affixes": [
+    1,
+    2
+   ],
+   "mult": [
+    1.0,
+    1.15
+   ]
+  },
+  {
+   "id": "bao",
+   "name": "Bảo",
+   "affixes": [
+    2,
+    3
+   ],
+   "mult": [
+    1.15,
+    1.35
+   ]
+  },
+  {
+   "id": "tien",
+   "name": "Tiên",
+   "affixes": [
+    3,
+    4
+   ],
+   "mult": [
+    1.35,
+    1.6
+   ]
+  }
+ ],
+ "fashion": [
+  {
+   "id": "ao_thanh_van",
+   "name": "Áo Thanh Vân",
+   "slot": "outfit",
+   "price": 300,
+   "currency": "linh_thach"
+  },
+  {
+   "id": "ao_huyet_nguyet",
+   "name": "Áo Huyết Nguyệt",
+   "slot": "outfit",
+   "price": 120,
+   "currency": "tien_nap",
+   "limited": true
+  },
+  {
+   "id": "kiem_quang_xanh",
+   "name": "Hiệu Ứng Kiếm Quang Xanh",
+   "slot": "sword_fx",
+   "price": 90,
+   "currency": "tien_nap"
+  },
+  {
+   "id": "mu_da_the",
+   "name": "Mũ Đạo Sĩ",
+   "slot": "hat",
+   "price": 150,
+   "currency": "linh_thach"
+  }
+ ]
 }

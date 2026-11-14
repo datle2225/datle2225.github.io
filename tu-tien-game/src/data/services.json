@@ -99,6 +99,109 @@
     "mu_da_the"
    ],
    "greeting": "Khách quan cần gì cứ nói, hàng của ta đủ cả!"
+  },
+  {
+   "id": "thiet_phong",
+   "name": "Thiết Phong Lâu",
+   "title": "Tiệm Rèn Phường Thị",
+   "type": "smith",
+   "skill": 6,
+   "labor": 18,
+   "sells": [
+    {
+     "id": "huyen_thiet",
+     "price": 28,
+     "stock": 20
+    },
+    {
+     "id": "da_soi",
+     "price": 8,
+     "stock": 10
+    }
+   ],
+   "readyBases": [
+    "phi_kiem_so",
+    "quyen_sao_so",
+    "phap_truong_so",
+    "kiem_y_so",
+    "chien_giap_so",
+    "dao_bao_so",
+    "dan_lo_so",
+    "duoc_dai_so",
+    "phu_but_so",
+    "tran_ky_so",
+    "ma_dao_so",
+    "huyet_y_so"
+   ],
+   "readyCount": 4,
+   "greeting": "Tay nghề của Thiết Phong Lâu nổi tiếng khắp Vân Hải."
+  },
+  {
+   "id": "van_duoc",
+   "name": "Vạn Dược Đường",
+   "title": "Đan Đường Phường Thị",
+   "type": "alchemist",
+   "skill": 7,
+   "labor": 0.5,
+   "sells": [
+    {
+     "id": "linh_thao",
+     "price": 9,
+     "stock": 30
+    },
+    {
+     "id": "huyet_tham",
+     "price": 45,
+     "stock": 12
+    }
+   ],
+   "readyPills": [
+    "hoi_huyet_dan",
+    "hoi_linh_dan",
+    "tu_khi_dan",
+    "thanh_tam_dan",
+    "truc_co_dan"
+   ],
+   "pillStock": 4,
+   "recipes": [
+    "hoi_huyet_dan",
+    "hoi_linh_dan",
+    "tu_khi_dan",
+    "truc_co_dan",
+    "thanh_tam_dan",
+    "kiem_y_dan",
+    "huyet_khi_dan"
+   ],
+   "greeting": "Đan đường của Vạn Dược Cốc, phẩm chất bảo đảm."
+  },
+  {
+   "id": "thuong_nhan",
+   "name": "Thương Nhân Bí Ẩn",
+   "title": "Thương nhân lang thang",
+   "type": "general",
+   "skill": 0,
+   "labor": 0,
+   "sells": [
+    {
+     "id": "huyet_tham",
+     "price": 40,
+     "stock": 4
+    },
+    {
+     "id": "huyen_thiet",
+     "price": 22,
+     "stock": 8
+    }
+   ],
+   "readyPills": [
+    "truc_co_dan",
+    "thanh_tam_dan"
+   ],
+   "pillStock": 2,
+   "fashion": [
+    "ao_huyet_nguyet"
+   ],
+   "greeting": "Hàng hiếm, giá hời, chỉ hôm nay thôi."
   }
  ],
  "priceDrift": 0.15,

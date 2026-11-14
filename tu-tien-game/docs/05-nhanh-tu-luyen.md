@@ -19,7 +19,19 @@
 | **Ma Tu** | Nguyên Anh | Hy sinh máu lấy sức | Công | Sát Khí | Rủi ro cao; ảnh hưởng đạo tâm |
 | **Âm Tu** | Nguyên Anh | Buff/debuff nhịp | MP | Âm Luật | Thao túng thứ tự hành động |
 
-`playable: true` trong `branches.json` cho các nhánh đã có chiêu: hiện Kiếm / Thể / Pháp.
+`playable: true` trong `branches.json` cho các nhánh đã có chiêu: **hiện 6 nhánh** (Kiếm, Thể, Pháp, **Đan, Phù Trận, Ma**). Ngự Thú và Âm Tu chưa làm.
+
+> **Lưu ý:** theo thiết kế gốc Đan/Phù Trận mở ở Kết Đan và Ma Tu ở Nguyên Anh; **bản hiện tại mở cả 6 nhánh ở Trúc Cơ** để dễ thử. Khi có đủ nội dung sẽ khóa lại theo bảng trên.
+
+### Đan Tu (đã làm)
+Đan Châm (cơ bản) → Độc Đan Phi Xạ (gieo **Trúng Độc**) → Thanh Liên Hộ Thể (hồi + khiên) → **Bạo Đan** (cộng hưởng với Độc) → Hồi Xuân Đan Vũ (hồi đồng đội) → Vạn Độc Quy Tông (Kết Đan).
+
+### Phù Trận Tu (đã làm)
+Phù Kích → **Địa Lôi Phù** (đặt **bẫy**) → Định Thân Phù (làm chậm) → **Dẫn Lôi** (kích nổ bẫy sớm, cộng hưởng) → Vạn Phù Quy Nhất (Kết Đan). Chiến thuật: đặt bẫy trước, đối thủ ra tay là bị nổ và chậm lượt.
+
+### Ma Tu (đã làm)
+Huyết Trảm → **Hiến Tế** (hy sinh 15% HP, gieo **Huyết Nhiễm**) → Ma Công (cộng hưởng Huyết Nhiễm, hy sinh 10%) → Thôn Phệ (hút máu 60%) → Thiên Ma Giải Thể (hy sinh 25% HP, sát thương khủng khiếp, Kết Đan). Rủi ro cao, **mô phỏng cho thấy mất nhiều HP hơn** các nhánh khác khi chiến thắng.
+
 
 ## Các tầng chiêu thức (khung cho mỗi nhánh)
 | Cảnh giới | Số chiêu mới | Loại |

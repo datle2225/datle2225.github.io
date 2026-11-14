@@ -3,6 +3,31 @@
 ## Dữ liệu bản đồ
 Bản đồ nằm ở `src/data/maps/*.json` (lưới ký tự + danh sách NPC, quái, thảo dược, vùng kích hoạt nhiệm vụ). Thêm khu mới = thêm một file JSON. *(Chưa nhập trực tiếp được file của Tiled; xem backlog ở 11.)*
 
+## Bản đồ hiện có (3 map nối nhau bằng cổng)
+| Map | Nhạc | Nội dung | Cổng |
+|---|---|---|---|
+| **Thanh Hà Thôn & Hắc Lâm** (64×40) | overworld | Khởi đầu, tàn tích, giếng cổ, chợ Thanh Hà Tập (3 NPC dịch vụ + Nguyệt Nhi), quái, boss | → Thanh Vân Tông (sau `m1_3`), → Phường Thị (từ Chương 2) |
+| **Thanh Vân Tông** (48×34) | sect | Sân tông môn, chính điện, võ trường, Mặc Trần, Quản Sự (nhiệm vụ `s2_1`), Lục Vân Sinh, bảng tin. **Khu an toàn** (không quái) | → Thanh Hà |
+| **Phường Thị Vân Hải** (56×36) | market | Thiết Phong Lâu (thợ rèn tay nghề 6), Vạn Dược Đường (đan sư tay nghề 7), Thiên Cơ Các (tin đồn), thương gia, vệ binh, quái ngoại ô | → Thanh Hà |
+
+## Ngày – đêm & lịch sinh hoạt NPC (đã làm)
+- **Một ngày game = 300 giây chơi**, bắt đầu 8:00; trùng chu kỳ nhập hàng của cửa hàng (nhập hàng lúc sáng).
+- Màn hình **tối dần từ 18h, tối nhất 21h–4h**, sáng lại từ 4h–7h.
+- NPC có **lịch** (`schedule`): thợ rèn, đan sư, tạp hóa, Nguyệt Nhi **về nhà ngủ** (biến mất) lúc 22h–6h và đi ra lại; đi bộ mượt giữa các vị trí. Ban đêm **cửa hàng đóng**, muốn mua phải đợi hoặc gặp **thương nhân bí ẩn** (chỉ xuất hiện ban đêm).
+
+## Cơ duyên ngẫu nhiên (đã làm, `src/data/events.json`)
+Đi bộ đủ xa thì thử bốc sự kiện hợp lệ (đúng map, đúng điều kiện, hết thời gian hồi):
+| Sự kiện | Điều kiện | Nội dung |
+|---|---|---|
+| Thương nhân bí ẩn | 18h–6h | Mở cửa hàng đặc biệt (Huyết Sâm, Trúc Cơ Đan…) |
+| Tán tu bị thương | – | Cứu (tốn 1 đan, +đạo tâm, +tu vi) hoặc lục túi (–đạo tâm, +linh thạch) |
+| Cướp đường | Sau `m1_2` | Đánh hoặc trả 20 LT |
+| Suối linh khí | – | Thiền (+tu vi) hoặc lấy nước (Linh Thảo) |
+| Ma Tu lang thang | Trúc Cơ+ | Trận đấu với Ma Tu (có thể dạy người chơi về hy sinh máu) |
+
+## Tin đồn (đã làm)
+NPC `@rumor` (Bảng Tin, Thiên Cơ Các) chọn ngẫu nhiên 3 tin **phù hợp tiến trình** (cờ, chương, cảnh giới), ví dụ nhắc lại việc bạn tha sói mẹ, hoặc tin về Ma Tu khi bạn đã Trúc Cơ. Dữ liệu: `src/data/rumors.json`.
+
 ## Cấu trúc thế giới
 - **Bản đồ liên tục** theo vùng, tải theo ô (chunk) để chạy mượt cả trên điện thoại.
 - **Vùng theo cảnh giới** (xem 02): mỗi vùng có nhịp độ khó, cư dân, nguyên liệu, nhạc riêng.

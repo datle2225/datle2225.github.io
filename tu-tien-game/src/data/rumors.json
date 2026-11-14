@@ -1,0 +1,54 @@
+[
+ {
+  "text": "Nghe nói Huyết Ảnh Môn vừa mất một trưởng lão ở Hắc Lâm, chúng đang điên cuồng tìm kẻ gây ra.",
+  "if": {
+   "questDone": "m1_2"
+  }
+ },
+ {
+  "text": "Thương nhân bí ẩn hay xuất hiện vào ban đêm trên đường lớn. Hàng của hắn hiếm lắm.",
+  "if": {}
+ },
+ {
+  "text": "Lão Thiết thợ rèn lần nào cũng chê quặng, nhưng khách thuê rèn thì chưa ai chê tay nghề của lão.",
+  "if": {}
+ },
+ {
+  "text": "Đan sư Vạn Dược Cốc có thể luyện cả những đan phương mà ngươi chưa từng nghe tên, chỉ cần có tiền công.",
+  "if": {}
+ },
+ {
+  "text": "Thanh Vân Tông sắp mở đại hội tuyển chọn đệ tử. Phế vật cũng được đăng ký, nhưng đừng mong ai coi trọng.",
+  "if": {
+   "questDone": "m1_2"
+  }
+ },
+ {
+  "text": "Bà Lý kể sói mẹ trong rừng đã không còn tha gà nữa. Ai đó đã giúp bà.",
+  "if": {
+   "flag": "wolf_spared"
+  }
+ },
+ {
+  "text": "Có người thấy một Ma Tu lang thang ở rừng phía đông, hắn dám hy sinh cả máu của mình để chiến đấu.",
+  "if": {
+   "minRealm": 1
+  }
+ },
+ {
+  "text": "Phường Thị Vân Hải ở phía đông bắc, nơi đủ loại đan sư và thợ rèn tụ họp. Tay nghề ở đó cao hơn hẳn thôn quê.",
+  "if": {
+   "minChapter": 2
+  }
+ },
+ {
+  "text": "Có kẻ đồn rằng Diệp gia từng giữ một vật báu cổ xưa, và vật ấy vẫn còn ở đâu đó dưới giếng.",
+  "if": {
+   "notFlag": "met_laongu"
+  }
+ },
+ {
+  "text": "Trời tối là lúc yêu thú hoạt động mạnh nhất. Ban đêm đi đường nên mang theo đan hồi máu.",
+  "if": {}
+ }
+]

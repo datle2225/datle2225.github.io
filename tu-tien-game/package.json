@@ -9,7 +9,10 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sim": "vite-node tools/sim-cli.ts",
+    "maps": "python3 tools/make_maps.py",
+    "tileset": "node tools/export-tileset.cjs"
   },
   "dependencies": {
     "phaser": "3.90.0"

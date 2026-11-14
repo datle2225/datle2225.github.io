@@ -47,6 +47,36 @@ dmg    = max(1, base × ngũ_hành × random(0.95–1.05) × combo × (bạo kí
 - Người chơi tạo **bộ combo (preset)**: chuỗi chiêu thứ tự cố định; nút "Combo ▶" trong trận chạy chiêu kế tiếp còn đủ MP. Có **3 preset**, **số ô = 3 + 2 × (chỉ số cảnh giới)** (Luyện Khí 3 → Trúc Cơ 5 → Kết Đan 7…).
 - Huy hiệu `COMBO xN` hiện khi chạm cộng hưởng, N là số cộng hưởng liên tiếp trong cùng chuỗi hành động.
 
+## Cơ chế mở rộng (đã làm)
+| Cơ chế | Mô tả | Dùng bởi |
+|---|---|---|
+| **Hy sinh máu** (`hpCost`) | Dùng chiêu tốn % HP tối đa; không cho dùng nếu sẽ tự sát | Ma Tu |
+| **Bẫy** (trạng thái `trap`) | Đặt lên đối thủ; **nổ khi họ hành động**: gây % HP tối đa và đẩy lượt kế lùi thêm | Phù Trận Tu |
+| **Độc** (DoT %) | Gây sát thương theo % HP tối đa mỗi lượt của mục tiêu | Đan Tu |
+| **Hồi cho đồng đội** (`target: ally`) | Hồi người yếu nhất phe mình | Đan Tu, đồng hành |
+| **Boss nhiều pha** (`phases`) | Khi HP dưới ngưỡng: đổi bộ chiêu, tăng Công/Tốc, hồi một phần, hiện thông báo + rung màn hình | Huyết Ảnh Trưởng Lão (70% & 35%) |
+| **Chiêu riêng của địch** (`branch: "enemy"`) | Địch dùng bản sao chiêu riêng, **chỉnh cân bằng người chơi không làm boss mạnh lên** | Boss, đệ tử Huyết Ảnh Môn |
+
+## Cân bằng bằng mô phỏng tự động
+`npm run sim` cho mỗi nhánh tự đánh hàng trăm trận (AI chơi cả hai phe, không dùng đan/trang bị/combo thủ công) trước từng nhóm địch. Số liệu được chỉnh theo kết quả này, và **được khóa bằng unit test** (`tests/systems.test.ts`).
+
+```
+Kịch bản             kiem_tu        the_tu         phap_tu        dan_tu         phu_tran_tu    ma_tu         
+LK1 vs 1 Sói         100% hp39      100% hp39      100% hp39      100% hp39      100% hp39      100% hp39     
+LK5 vs 2 Sói         100% hp46      100% hp46      100% hp46      100% hp46      100% hp46      100% hp46     
+LK9 vs Đệ tử HAM     100% hp17      100% hp17      100% hp17      100% hp17      100% hp17      100% hp17     
+TC5 vs Ma Tu         100% hp71      100% hp84      100% hp80      100% hp79      100% hp76      100% hp57     
+TC5 vs Boss          45% hp9        77% hp15       49% hp63       41% hp61       54% hp10       51% hp10      
+TC9 vs Boss          99% hp23       100% hp41      100% hp66      100% hp68      99% hp20       99% hp25
+```
+(Ô: `tỉ lệ thắng` và `HP còn lại trung bình khi thắng`. Trước Trúc Cơ chưa có nhánh nên các cột giống nhau.)
+
+**Mục tiêu thiết kế đã kiểm tra bằng test**
+- Trước Trúc Cơ: thắng quái cùng tầng ≥ 90% nhưng **mất đáng kể HP** (không bao giờ "đi dạo").
+- **Boss Trúc Cơ 5: mọi nhánh thắng 25–90%**, chênh giữa nhánh mạnh nhất và yếu nhất < 45 điểm % → cần chuẩn bị (đan, trang bị, combo, đồng đội), không bất khả thi, không nhánh nào áp đảo.
+- Vượt tầng (Trúc Cơ 9) thắng boss **dễ hơn rõ rệt** → cày thật sự có ý nghĩa.
+- Lưu ý: AI mô phỏng thô nên Thể Tu (có khiên) nhỉnh hơn; người chơi dùng combo giỏi sẽ thay đổi bảng này.
+
 ## MP / tài nguyên
 - Chiêu cơ bản không tốn MP, chiêu mạnh tốn.
 - Hồi nhẹ **+2 MP mỗi hành động**, hồi lớn bằng đan Hồi Linh.

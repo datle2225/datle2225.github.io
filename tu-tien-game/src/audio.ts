@@ -8,6 +8,9 @@ const TRACKS: Record<string, Track> = {
   overworld: { bpm: 84, wave: 'triangle', vol: 0.05, notes: [69, null, 72, null, 74, null, 72, 69, 67, null, 69, null, 64, null, 67, null, 69, null, 72, null, 76, null, 74, 72, 69, null, 67, null, 64, null, null, null], bass: [45, null, null, null, 43, null, null, null, 45, null, null, null, 40, null, null, null] },
   battle: { bpm: 140, wave: 'square', vol: 0.035, notes: [64, 64, 67, 64, 71, 64, 69, 67, 64, 64, 67, 64, 72, 71, 69, 67, 62, 62, 65, 62, 69, 62, 67, 65, 62, 62, 65, 62, 71, 69, 67, 65], bass: [40, null, 40, null, 43, null, 43, null, 38, null, 38, null, 41, null, 41, null] },
   tribulation: { bpm: 70, wave: 'sawtooth', vol: 0.03, notes: [40, null, null, null, 41, null, null, null, 40, null, null, null, 43, null, 41, null], bass: [28, null, null, null, null, null, null, null] },
+  sect: { bpm: 66, wave: 'triangle', vol: 0.05, notes: [62, null, 66, null, 69, null, 74, null, 73, null, 69, null, 66, null, 64, null, 62, null, 64, null, 66, null, 69, 71, 69, null, 66, null, 62, null, null, null], bass: [38, null, null, null, 45, null, null, null, 38, null, null, null, 43, null, null, null] },
+  market: { bpm: 108, wave: 'square', vol: 0.03, notes: [72, null, 76, 79, 76, null, 72, null, 74, null, 77, 81, 77, null, 74, null, 72, null, 76, 79, 83, null, 79, 76, 74, 76, 77, null, 72, null, null, null], bass: [48, null, 55, null, 50, null, 57, null, 48, null, 55, null, 43, null, 50, null] },
+  boss: { bpm: 156, wave: 'sawtooth', vol: 0.03, notes: [57, 57, 60, 57, 64, 57, 62, 60, 57, 57, 60, 57, 65, 64, 62, 60, 55, 55, 58, 55, 62, 55, 60, 58, 55, 55, 58, 55, 64, 62, 60, 58], bass: [33, null, 33, null, 36, null, 36, null, 31, null, 31, null, 34, null, 34, null] },
   title: { bpm: 72, wave: 'triangle', vol: 0.05, notes: [60, null, 64, null, 67, null, 72, null, 71, null, 67, null, 64, null, 62, null], bass: [36, null, null, null, 43, null, null, null] },
 };
 

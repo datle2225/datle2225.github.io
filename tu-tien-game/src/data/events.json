@@ -1,0 +1,64 @@
+[
+ {
+  "id": "thuong_nhan",
+  "maps": [
+   "thanh_ha",
+   "phuong_thi"
+  ],
+  "if": {
+   "hour": [
+    18,
+    6
+   ]
+  },
+  "chance": 0.35,
+  "cooldown": 240,
+  "dialogue": "ev_thuong_nhan"
+ },
+ {
+  "id": "tan_tu",
+  "maps": [
+   "thanh_ha"
+  ],
+  "if": {
+   "minChapter": 1
+  },
+  "chance": 0.25,
+  "cooldown": 200,
+  "dialogue": "ev_tan_tu"
+ },
+ {
+  "id": "cuop_duong",
+  "maps": [
+   "thanh_ha",
+   "phuong_thi"
+  ],
+  "if": {
+   "questDone": "m1_2"
+  },
+  "chance": 0.2,
+  "cooldown": 220,
+  "dialogue": "ev_cuop_duong"
+ },
+ {
+  "id": "suoi_linh_khi",
+  "maps": [
+   "thanh_ha"
+  ],
+  "chance": 0.2,
+  "cooldown": 260,
+  "dialogue": "ev_suoi"
+ },
+ {
+  "id": "ma_tu",
+  "maps": [
+   "thanh_ha"
+  ],
+  "if": {
+   "minRealm": 1
+  },
+  "chance": 0.3,
+  "cooldown": 300,
+  "dialogue": "ev_ma_tu"
+ }
+]

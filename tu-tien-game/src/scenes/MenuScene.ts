@@ -8,6 +8,7 @@ import { atStageCap, expNeeded, gainExp, levelUpStages, tribulationFor, tribulat
 import { availableSkills, ownsSystem } from '../core/session';
 import { audio } from '../audio';
 import { getSettings, setSettings } from '../settings';
+import { exportSave, importSave, writeSave } from '../core/save';
 
 const SLOTS_BASE = 3;
 
@@ -71,7 +72,10 @@ export class MenuScene extends Phaser.Scene {
       { text: `Linh thạch ${p.gold} · Chương ${p.chapter} · Chơi ${Math.round(p.playtime / 60)} phút` },
     ];
     if (ownsSystem(p, 'chon_nhanh') && !p.branchId) {
-      rows.push({ text: 'Đã Trúc Cơ! Chọn nhánh tu:', btns: BRANCHES.filter((b: any) => b.playable).map((b: any) => ({ label: b.name, fn: () => { p.branchId = b.id; p.comboPresets[0] = [availableSkills(p)[0]?.id].filter(Boolean) as string[]; this.note(`Đã chọn ${b.name}.`); } })) });
+      rows.push({ text: 'Đã Trúc Cơ! Hãy chọn nhánh tu (không đổi được miễn phí):' });
+      for (const b of BRANCHES.filter((x: any) => x.playable)) {
+        rows.push({ text: `${b.name} — ${b.role}`, sub: b.desc, btns: [{ label: 'Chọn', fn: () => { p.branchId = b.id; p.comboPresets[0] = [availableSkills(p)[0]?.id].filter(Boolean) as string[]; this.note(`Đã chọn ${b.name}.`); } }] });
+      }
     }
     rows.push({ text: 'Lưu game (tự lưu mỗi 30 giây và khi thoát menu)', btns: [{ label: 'Lưu', fn: () => this.note(persist() ? 'Đã lưu.' : 'Không lưu được (trình duyệt chặn).') }] });
     return rows;
@@ -172,8 +176,51 @@ export class MenuScene extends Phaser.Scene {
     const nm = { auto: 'Tự động', on: 'Luôn bật', off: 'Tắt' } as const;
     return [
       { text: `Âm thanh: ${audio.muted ? 'TẮT' : 'BẬT'}`, btns: [{ label: audio.muted ? 'Bật' : 'Tắt', fn: () => { audio.setMuted(!audio.muted); audio.unlock(); } }] },
-      { text: `Joystick ảo (điện thoại): ${nm[st.joystick]}`, sub: 'Hiện vòng tròn điều khiển ở góc trái dưới màn hình.', btns: [{ label: 'Đổi', fn: () => { setSettings({ joystick: next[st.joystick] }); this.note('Áp dụng ở lần vào bản đồ kế tiếp.'); } }] },
-      { text: 'Phím tắt: WASD/Mũi tên đi · E nói chuyện · Space qua thoại · M menu · N tắt/bật tiếng' },
+      { text: `Joystick ảo (điện thoại): ${nm[st.joystick]} · vị trí: ${st.joyside === 'left' ? 'trái' : 'phải'}`, sub: 'Vòng tròn điều khiển ở góc dưới màn hình. Áp dụng khi vào lại bản đồ.', btns: [{ label: 'Đổi chế độ', fn: () => { setSettings({ joystick: next[st.joystick] }); this.note('Đã đổi. Áp dụng khi đổi bản đồ.'); } }, { label: 'Đổi bên', fn: () => { setSettings({ joyside: st.joyside === 'left' ? 'right' : 'left' }); this.note('Đã đổi bên. Áp dụng khi đổi bản đồ.'); } }] },
+      { text: 'Sao lưu save', sub: 'Tải file .txt về máy, hoặc sao chép chuỗi save vào clipboard.', btns: [{ label: 'Tải file', fn: () => this.downloadSave() }, { label: 'Sao chép', fn: () => this.copySave() }] },
+      { text: 'Khôi phục save', sub: 'Chọn file .txt đã sao lưu hoặc dán chuỗi. Sẽ GHI ĐÈ tiến trình hiện tại.', btns: [{ label: 'Chọn file', color: 0x6a3a3a, fn: () => this.pickSaveFile() }, { label: 'Dán chuỗi', color: 0x6a3a3a, fn: () => this.pasteSave() }] },
+      { text: 'Phím tắt: WASD/Mũi tên đi · E/Space nói chuyện · 1-3 chọn · M menu · N tắt tiếng · F hiện FPS' },
     ];
+  }
+
+  private downloadSave() {
+    try {
+      const blob = new Blob([exportSave(game.p)], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `tan-can-nghich-thien-${Date.now()}.txt`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      this.note('Đã tạo file save.');
+    } catch { this.note('Không tải được file. Hãy thử "Sao chép".'); }
+  }
+
+  private copySave() {
+    const text = exportSave(game.p);
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => { this.note('Đã sao chép chuỗi save vào clipboard.'); this.panel.render(); }, () => this.note('Trình duyệt chặn clipboard.'));
+    else this.note('Trình duyệt không hỗ trợ clipboard.');
+  }
+
+  private applyImported(text: string) {
+    const r = importSave(text);
+    if (!r.ok) { this.note(r.reason); this.panel.render(); return; }
+    game.p = r.p;
+    writeSave(r.p);
+    this.note('Đã khôi phục save. Bản đồ sẽ tải lại.');
+    this.panel.render();
+    this.time.delayedCall(700, () => { this.scene.stop(); this.scene.stop('Overworld'); this.scene.start('Overworld'); });
+  }
+
+  private pickSaveFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.txt,text/plain';
+    input.onchange = () => { const f = input.files?.[0]; if (f) f.text().then((t) => this.applyImported(t)); };
+    input.click();
+  }
+
+  private pasteSave() {
+    const t = window.prompt('Dán chuỗi save (bắt đầu bằng TCNT1.):');
+    if (t) this.applyImported(t);
   }
 }

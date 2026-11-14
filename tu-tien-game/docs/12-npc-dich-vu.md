@@ -9,6 +9,12 @@ Rèn đồ, luyện đan và cửa hàng **không còn là tab menu** mà là **
 | **Lục Dược Sư** (Đan Phòng) | `alchemist` | Linh Thảo, Huyết Sâm | Hồi Huyết/Hồi Linh/Tụ Khí Đan | Luyện **mọi** đan phương NPC biết (kể cả chưa học) | 5/10 |
 | **Chưởng Quầy Tiền** (Tạp Hóa) | `general` | Linh Thảo, Da Sói, Huyền Thiết | Hồi Huyết Đan | – | – |
 | Liễu Nguyệt Nhi | Đồng hành | – | – | – | – |
+| **Thiết Phong Lâu** (Phường Thị) | `smith` | Huyền Thiết, Da Sói | 4 món rèn sẵn (mọi nhánh) | Rèn mọi mẫu | **6/10** (công 18/quặng) |
+| **Vạn Dược Đường** (Phường Thị) | `alchemist` | Linh Thảo, Huyết Sâm (rẻ hơn thôn) | Cả Thanh Tâm Đan, Trúc Cơ Đan | Luyện mọi đan phương | **7/10** |
+| **Thương Nhân Bí Ẩn** | `general` | Huyết Sâm, Huyền Thiết (giá hời) | Trúc Cơ Đan, Thanh Tâm Đan | – | – (chỉ xuất hiện ban đêm) |
+
+NPC ở Phường Thị **giỏi hơn nhưng đắt hơn** NPC ở thôn → có lý do đi xa và tích tiền.
+Các NPC dịch vụ có **lịch sinh hoạt**: ngủ lúc 22h–6h (tiệm đóng cửa). Xem 09.
 
 ## Bốn thẻ trong cửa hàng
 1. **Mua**: nguyên liệu (có tồn kho), đan sẵn, **đồ rèn sẵn** (mỗi món là một bản độc nhất với dòng phụ riêng), thời trang (Tạp Hóa).

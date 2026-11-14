@@ -16,5 +16,6 @@
 | 10 | [Onboarding & lộ trình mở khóa](10-onboarding-mo-khoa.md) | Mở cơ chế dần theo chương |
 | 11 | [Kỹ thuật & lộ trình làm](11-ky-thuat-lo-trinh.md) | Kiến trúc, dữ liệu, mobile, test, milestone |
 | 12 | [NPC dịch vụ](12-npc-dich-vu.md) | Thợ rèn / Đan sư / Tạp hóa trên bản đồ: mua, bán, thuê, tự làm |
+| 13 | [Art, bản đồ Tiled, công cụ](13-art-guide.md) | Thay art thật, chỉnh map bằng Tiled, mô phỏng cân bằng |
 
 Dữ liệu cân bằng thật nằm trong `src/data/*.json`; GDD mô tả ý định, JSON là nguồn sự thật khi chạy.

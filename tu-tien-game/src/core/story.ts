@@ -1,7 +1,9 @@
 import dialogues from '../data/dialogues.json';
 import { enterChapter, questEvent, unlockSystem, completeQuest } from './session';
 import { gainExp, levelUpStages } from './progression';
-import { companionMap, systemName } from './data';
+import { gameHour, inHours } from './time';
+import rumors from '../data/rumors.json';
+import { companionMap, materialMap, recipeMap, systemName } from './data';
 import type { PlayerState } from './types';
 
 export interface Cond {
@@ -13,6 +15,10 @@ export interface Cond {
   party?: string; notParty?: string;
   system?: string; notSystem?: string;
   gold?: number;
+  hour?: [number, number]; // giờ trong game, hỗ trợ qua nửa đêm
+  notHour?: [number, number];
+  map?: string;
+  hasItem?: { id: string; n: number };
 }
 
 export type Effect =
@@ -32,7 +38,8 @@ export type Effect =
   | { system: string }
   | { chapter: number }
   | { toast: string }
-  | { openShop: string; tab?: string };
+  | { openShop: string; tab?: string }
+  | { battle: string[] };
 
 export interface Choice { text: string; goto?: string | null; if?: Cond; do?: Effect[] }
 export interface Node { who?: string; text: string; next?: string | null; choices?: Choice[]; do?: Effect[] }
@@ -57,10 +64,14 @@ export function check(p: PlayerState, c?: Cond): boolean {
   if (c.system && !p.unlockedSystems.includes(c.system)) return false;
   if (c.notSystem && p.unlockedSystems.includes(c.notSystem)) return false;
   if (c.gold !== undefined && p.gold < c.gold) return false;
+  if (c.hour && !inHours(gameHour(p), c.hour[0], c.hour[1])) return false;
+  if (c.notHour && inHours(gameHour(p), c.notHour[0], c.notHour[1])) return false;
+  if (c.map && p.mapId !== c.map) return false;
+  if (c.hasItem && (p.inventory[c.hasItem.id] ?? 0) < c.hasItem.n) return false;
   return true;
 }
 
-export interface EffectOutput { toasts: string[]; openShop?: { vendor: string; tab?: string }; completed: string[] }
+export interface EffectOutput { toasts: string[]; openShop?: { vendor: string; tab?: string }; completed: string[]; battle?: string[] }
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
@@ -74,7 +85,7 @@ export function applyEffects(p: PlayerState, effects: Effect[] | undefined, out:
     else if ('done' in e) { if (p.quests.active.includes(e.done)) { completeQuest(p, e.done); out.completed.push(e.done); } }
     else if ('event' in e) out.completed.push(...questEvent(p, e.event.kind, e.event.target, e.event.n ?? 1));
     else if ('gold' in e) { p.gold += e.gold; out.toasts.push(`${e.gold > 0 ? '+' : ''}${e.gold} linh thạch`); }
-    else if ('item' in e) { p.inventory[e.item.id] = (p.inventory[e.item.id] ?? 0) + e.item.n; out.toasts.push(`Nhận ${e.item.n} ${e.item.id}`); }
+    else if ('item' in e) { p.inventory[e.item.id] = Math.max(0, (p.inventory[e.item.id] ?? 0) + e.item.n); out.toasts.push(`${e.item.n > 0 ? 'Nhận' : 'Mất'} ${Math.abs(e.item.n)} ${(materialMap.get(e.item.id) as any)?.name ?? recipeMap.get(e.item.id)?.name ?? e.item.id}`); }
     else if ('exp' in e) { const g = gainExp(p, e.exp); levelUpStages(p); out.toasts.push(`+${g.gained} tu vi`); }
     else if ('recipe' in e) { if (!p.knownRecipes.includes(e.recipe)) { p.knownRecipes.push(e.recipe); out.toasts.push('Học được đan phương mới'); } }
     else if ('join' in e) { if (!p.party.includes(e.join) && p.party.length < 2) { p.party.push(e.join); out.toasts.push(`${companionMap.get(e.join)?.name ?? e.join} gia nhập đội`); } }
@@ -83,6 +94,7 @@ export function applyEffects(p: PlayerState, effects: Effect[] | undefined, out:
     else if ('chapter' in e) enterChapter(p, e.chapter).forEach((s) => out.toasts.push(`Mở khóa: ${systemName(s)}`));
     else if ('toast' in e) out.toasts.push(e.toast);
     else if ('openShop' in e) out.openShop = { vendor: e.openShop, tab: e.tab };
+    else if ('battle' in e) out.battle = e.battle;
   }
   return out;
 }
@@ -131,4 +143,34 @@ export class DialogueRunner {
     this.enter();
     return !this.ended;
   }
+}
+
+
+/* ───────────── Tin đồn (bảng tin / Thiên Cơ Các) ───────────── */
+interface Rumor { if?: Cond; text: string }
+
+/** Chọn vài tin đồn đang phù hợp với tiến trình, dựng thành một hội thoại tạm `__rumor`. */
+export function rumorDialogue(p: PlayerState, pickIndex: (n: number) => number = (n) => Math.floor(Math.random() * n)): string {
+  const pool = (rumors as Rumor[]).filter((r) => check(p, r.if));
+  const chosen: Rumor[] = [];
+  const left = [...pool];
+  while (chosen.length < 3 && left.length) chosen.push(left.splice(pickIndex(left.length), 1)[0]);
+  const nodes: Record<string, Node> = {};
+  chosen.forEach((r, i) => { nodes[`n${i}`] = { who: 'Tin đồn', text: r.text, next: i + 1 < chosen.length ? `n${i + 1}` : null }; });
+  if (!chosen.length) nodes.n0 = { who: 'Tin đồn', text: 'Hôm nay chưa có tin gì đáng chú ý.', next: null };
+  DIALOGUES.__rumor = { start: 'n0', nodes };
+  return '__rumor';
+}
+
+/* ───────────── Sự kiện ngẫu nhiên (cơ duyên) ───────────── */
+export interface GameEvent { id: string; maps?: string[]; if?: Cond; chance: number; cooldown: number; dialogue: string }
+
+/** Thử bốc một sự kiện hợp lệ (đúng map, đúng điều kiện, hết hồi). Trả về id hội thoại hoặc null. */
+export function rollEvent(p: PlayerState, events: GameEvent[], rnd: () => number): GameEvent | null {
+  const lastAt = (id: string) => { const v = p.flags[`ev_cd_${id}`]; return typeof v === 'number' ? v : -1e9; };
+  const ok = events.filter((e) => (!e.maps || e.maps.includes(p.mapId)) && check(p, e.if) && p.playtime - lastAt(e.id) >= e.cooldown);
+  for (const e of ok) {
+    if (rnd() < e.chance) { p.flags[`ev_cd_${e.id}`] = p.playtime; return e; }
+  }
+  return null;
 }

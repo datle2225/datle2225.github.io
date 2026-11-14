@@ -57,6 +57,11 @@ Người chơi lần lượt tìm được tên trên **Huyết Thư** (sổ tay
 
 Mỗi nhiệm vụ lớn có **ít nhất một lựa chọn có hậu quả nhớ được** (cờ `flags` trong save).
 
+## Đã có trong game (Hồi 1, Chương 2)
+- **Mặc Trần** (đối thủ) gặp lần đầu ở Thanh Vân Tông, 3 lựa chọn thái độ ảnh hưởng quan hệ và đạo tâm.
+- **Lục Vân Sinh** (phản diện chính) xuất hiện **hiền từ**. Người chơi có thể chọn *"Quan sát ánh mắt ông ta kỹ hơn"* → đặt cờ `luc_suspect` (lời nhắc ngầm cho Hồi 2). Đây là **mầm foreshadowing** cho cú twist.
+- **Quản Sự Tạp Dịch** giao nhiệm vụ phụ `s2_1` *"Tạp dịch Thanh Vân"* (hái 5 Linh Thảo).
+
 ## Nhiệm vụ phụ (nguyên tắc)
 - Mỗi nhiệm vụ phụ phải có **câu chuyện nhỏ + một quyết định**, không chỉ "giết N con".
 - 5 loại: **Giải cứu** · **Điều tra** · **Thu thập có câu chuyện** · **Giao hàng/cạnh tranh buôn bán** · **Cơ duyên ẩn** (kích hoạt bởi hành vi, không có dấu chấm than).

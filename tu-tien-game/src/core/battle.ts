@@ -19,10 +19,15 @@ export interface Unit {
   nextAt: number;
   statuses: { id: string; left: number }[];
   alive: boolean;
+  /** Boss nhiều pha: khi HP dưới ngưỡng `at` (tỉ lệ) sẽ đổi chiêu / tăng sức mạnh. */
+  phases?: Phase[];
+  phaseIdx?: number;
 }
 
+export interface Phase { at: number; text: string; skills?: string[]; atkMul?: number; spdMul?: number; heal?: number }
+
 export interface BattleEvent {
-  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap';
+  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap' | 'trap' | 'phase';
   actor?: string;
   target?: string;
   value?: number;
@@ -62,6 +67,8 @@ export class Battle {
   private lastActor: string | null = null;
   private streak = 0;
   combo = 0;
+  /** Linh lực hồi mỗi lần phe người chơi hành động. */
+  mpRegen = 2;
 
   constructor(units: Unit[], rng = new Rng()) {
     this.units = units;
@@ -105,7 +112,9 @@ export class Battle {
 
   canUse(u: Unit, skillId: string): boolean {
     const s = skillMap.get(skillId);
-    return !!s && u.skills.includes(skillId) && u.mp >= s.mp;
+    if (!s || !u.skills.includes(skillId) || u.mp < s.mp) return false;
+    if (s.hpCost && u.hp <= Math.round(u.stats.hp * s.hpCost)) return false; // không tự sát bằng hiến tế
+    return true;
   }
 
   hasStatus(u: Unit, id: string) {
@@ -150,6 +159,14 @@ export class Battle {
     if (!sk || !actor.alive || this.winner) return ev;
     if (!this.canUse(actor, skillId)) return ev;
     actor.mp -= sk.mp;
+    if (sk.hpCost) {
+      const c = Math.round(actor.stats.hp * sk.hpCost);
+      actor.hp -= c;
+      ev.push({ type: 'dot', target: actor.id, value: c, text: `${actor.name} hy sinh ${c} sinh lực.` });
+    }
+    // bẫy đã đặt lên người hành động: nổ ngay khi họ ra tay
+    const trapDelay = this.triggerTraps(actor, ev);
+    if (!actor.alive) { this.checkEnd(ev); this.log.push(...ev); return ev; }
 
     // giới hạn hành động liên tiếp
     if (this.lastActor === actor.id) this.streak++;
@@ -201,17 +218,47 @@ export class Battle {
     }
 
     // đẩy lượt kế tiếp
-    actor.nextAt += (sk.cost * 100) / unitSpeed(actor);
+    actor.nextAt += ((sk.cost + trapDelay) * 100) / unitSpeed(actor);
     this.clock = Math.max(this.clock, actor.nextAt);
     if (this.streak >= MAX_CONSECUTIVE) {
       const others = this.alive(actor.side === 'player' ? 'enemy' : 'player');
       if (others.length) ev.push({ type: 'cap', text: `${actor.name} đã ra ${MAX_CONSECUTIVE} đòn liên tiếp, đối thủ kịp phản ứng.` });
     }
 
+    if (actor.side === 'player' && actor.alive) actor.mp = Math.min(actor.stats.mp, actor.mp + this.mpRegen);
+    for (const u of this.units) if (u.alive && u.phases) this.checkPhase(u, ev);
     this.tickStatuses(actor, ev);
     this.checkEnd(ev);
     this.log.push(...ev);
     return ev;
+  }
+
+  /** Kích nổ mọi bẫy trên `u`. Trả về độ trễ cộng thêm cho lượt kế. */
+  private triggerTraps(u: Unit, ev: BattleEvent[]): number {
+    let delay = 0;
+    for (const s of [...u.statuses]) {
+      const def = statusMap.get(s.id);
+      if (def?.kind !== 'trap') continue;
+      const d = Math.max(1, Math.round(u.stats.hp * (def.trapPct ?? 0.1)));
+      u.hp = Math.max(0, u.hp - d);
+      delay += def.trapDelay ?? 0;
+      this.removeStatus(u, s.id);
+      ev.push({ type: 'trap', target: u.id, value: d, text: `${def.name} phát nổ dưới chân ${u.name}, gây ${d} sát thương!` });
+      if (u.hp <= 0) { u.alive = false; ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` }); break; }
+    }
+    return delay;
+  }
+
+  private checkPhase(u: Unit, ev: BattleEvent[]) {
+    const idx = u.phaseIdx ?? 0;
+    const ph = u.phases?.[idx];
+    if (!ph || u.hp / u.stats.hp > ph.at) return;
+    u.phaseIdx = idx + 1;
+    if (ph.skills) u.skills = [...ph.skills];
+    if (ph.atkMul) u.stats = { ...u.stats, atk: Math.round(u.stats.atk * ph.atkMul) };
+    if (ph.spdMul) u.stats = { ...u.stats, spd: Math.round(u.stats.spd * ph.spdMul) };
+    if (ph.heal) u.hp = Math.min(u.stats.hp, u.hp + Math.round(u.stats.hp * ph.heal));
+    ev.push({ type: 'phase', target: u.id, text: ph.text });
   }
 
   /** Đồng đội cần hồi nhất (tỉ lệ máu thấp nhất), hoặc mục tiêu chỉ định nếu cùng phe. */
@@ -272,6 +319,6 @@ export class Battle {
   }
 }
 
-export function makeUnit(id: string, name: string, side: 'player' | 'enemy', stats: Stats, skills: string[], element: Element = 'none'): Unit {
-  return { id, name, side, element, stats: { ...stats }, hp: stats.hp, mp: stats.mp, skills, nextAt: 0, statuses: [], alive: true };
+export function makeUnit(id: string, name: string, side: 'player' | 'enemy', stats: Stats, skills: string[], element: Element = 'none', phases?: Phase[]): Unit {
+  return { id, name, side, element, stats: { ...stats }, hp: stats.hp, mp: stats.mp, skills, nextAt: 0, statuses: [], alive: true, phases, phaseIdx: 0 };
 }

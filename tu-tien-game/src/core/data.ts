@@ -11,6 +11,7 @@ import chapters from '../data/chapters.json';
 import companions from '../data/companions.json';
 import services from '../data/services.json';
 import systems from '../data/systems.json';
+import events from '../data/events.json';
 import type { Realm, Skill, StatusDef } from './types';
 
 const byId = <T extends { id: string }>(arr: T[]) => new Map(arr.map((x) => [x.id, x] as const));
@@ -43,3 +44,4 @@ export const vendorMap = byId(SERVICES.vendors as any[]);
 
 export const SYSTEM_NAMES = systems as Record<string, string>;
 export const systemName = (id: string) => SYSTEM_NAMES[id] ?? id;
+export const EVENTS = events as any[];

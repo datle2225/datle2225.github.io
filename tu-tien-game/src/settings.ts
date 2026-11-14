@@ -1,8 +1,9 @@
 const KEY = 'tu-tien-game:settings:v1';
 export type JoyMode = 'auto' | 'on' | 'off';
-export interface Settings { joystick: JoyMode }
+export type JoySide = 'left' | 'right';
+export interface Settings { joystick: JoyMode; joyside: JoySide }
 
-const DEFAULTS: Settings = { joystick: 'auto' };
+const DEFAULTS: Settings = { joystick: 'auto', joyside: 'left' };
 
 export function getSettings(): Settings {
   try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }; } catch { return { ...DEFAULTS }; }

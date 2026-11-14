@@ -1,0 +1,4 @@
+{
+  "_doc": "Thả ảnh 16x16 vào thư mục này rồi khai báo ở đây để thay art vẽ bằng code. Ví dụ: { \"images\": { \"grass\": \"grass.png\", \"player\": \"hero.png\", \"player_w1\": \"hero_walk1.png\", \"player_w2\": \"hero_walk2.png\" } }. Xem docs/13-art-guide.md.",
+  "images": {}
+}

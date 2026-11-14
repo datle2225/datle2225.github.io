@@ -20,18 +20,21 @@ export interface Skill {
   bonus?: number;
   heal?: number;
   lifesteal?: number;
+  hpCost?: number; // hy sinh % HP tối đa khi dùng (Ma Tu)
   desc: string;
 }
 
 export interface StatusDef {
   id: string;
   name: string;
-  kind: 'buff' | 'debuff' | 'dot';
+  kind: 'buff' | 'debuff' | 'dot' | 'trap';
   duration: number;
   defMul?: number;
   spdMul?: number;
   dotPct?: number;
   damageTakenMul?: number;
+  trapPct?: number; // bẫy: nổ khi chủ thể hành động, gây % HP tối đa
+  trapDelay?: number; // và đẩy lượt kế tiếp lùi thêm
 }
 
 export interface Realm {
@@ -83,6 +86,8 @@ export interface PlayerState {
   flags: Record<string, boolean | number | string>;
   chapter: number;
   playtime: number;
+  mapId: string;
+  pos: { x: number; y: number } | null;
   rep: Record<string, number>; // danh vọng phe: chinh_dao, ma_dao, tan_tu
   relations: Record<string, number>; // quan hệ NPC 0..100
   party: string[]; // id đồng hành đang theo
