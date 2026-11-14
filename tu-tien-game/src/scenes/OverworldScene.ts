@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { W, H } from '../main';
+import { W, H, Z } from '../main';
 import { game, persist } from '../state';
 import { button, label } from '../ui/widgets';
 import { checkCollect, getQuest, questEvent } from '../core/session';
@@ -82,7 +82,7 @@ export class OverworldScene extends Phaser.Scene {
     const spawn = (arrive && this.map.spawns[arrive]) || (!arrive && p.pos ? p.pos : this.map.spawns.spawn);
     this.initData = {};
     this.player = this.add.sprite(spawn.x * TS + HALF, spawn.y * TS + HALF, 'player').setScale(2).setDepth(10);
-    this.cameras.main.setBounds(0, 0, this.map.w * TS, this.map.h * TS).startFollow(this.player, true, 0.15, 0.15);
+    this.camFollow(true);
 
     for (const n of this.map.npcs) {
       const spr = this.add.sprite(n.x * TS + HALF, n.y * TS + HALF, n.tex).setScale(2).setDepth(5);
@@ -238,7 +238,7 @@ export class OverworldScene extends Phaser.Scene {
     this.joyThumb = this.add.circle(cx, cy, 22, 0xffffff, 0.35).setScrollFactor(0).setDepth(151);
     this.input.on('pointerdown', (ptr: Phaser.Input.Pointer) => {
       if (this.busy || this.runner) return;
-      if (Math.abs(ptr.x - cx) < 100 && ptr.y > H - 190 && !this.joyPtr) { this.joyPtr = ptr; this.moveJoy(ptr); }
+      if (Math.abs(ptr.x / Z - cx) < 100 && ptr.y / Z > H - 190 && !this.joyPtr) { this.joyPtr = ptr; this.moveJoy(ptr); }
     });
     this.input.on('pointermove', (ptr: Phaser.Input.Pointer) => { if (this.joyPtr && ptr.id === this.joyPtr.id) this.moveJoy(ptr); });
     const end = (ptr: Phaser.Input.Pointer) => {
@@ -250,7 +250,7 @@ export class OverworldScene extends Phaser.Scene {
 
   private moveJoy(ptr: Phaser.Input.Pointer) {
     const { x: cx, y: cy } = this.joyCenter;
-    const v = new Phaser.Math.Vector2(ptr.x - cx, ptr.y - cy);
+    const v = new Phaser.Math.Vector2(ptr.x / Z - cx, ptr.y / Z - cy);
     const len = Math.min(v.length(), 48);
     if (v.length() > 0) v.normalize();
     this.joyThumb!.setPosition(cx + v.x * len, cy + v.y * len);
@@ -261,14 +261,26 @@ export class OverworldScene extends Phaser.Scene {
     return this.solid.has(`${Math.floor(px / TS)},${Math.floor(py / TS)}`);
   }
 
+  /** Camera tự theo người chơi (zoom Z, gốc 0,0): giữ trong biên bản đồ, nhỏ hơn màn hình thì căn giữa. */
+  private camFollow(snap = false) {
+    const cam = this.cameras.main;
+    const mw = this.map.w * TS, mh = this.map.h * TS;
+    const clampAxis = (v: number, view: number, size: number) => (size <= view ? (size - view) / 2 : Math.max(0, Math.min(size - view, v)));
+    const tx = clampAxis(this.player.x - W / 2, W, mw);
+    const ty = clampAxis(this.player.y - H / 2, H, mh);
+    const k = snap ? 1 : 0.15;
+    cam.setScroll(Math.round(cam.scrollX + (tx - cam.scrollX) * k), Math.round(cam.scrollY + (ty - cam.scrollY) * k));
+  }
+
   update(_t: number, dt: number) {
+    this.camFollow();
     if (this.busy || this.runner) { this.player.anims.stop(); this.player.setTexture('player'); return; }
     const k = this.keys;
     let vx = (k.D.isDown || k.RIGHT.isDown ? 1 : 0) - (k.A.isDown || k.LEFT.isDown ? 1 : 0);
     let vy = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
     if (!vx && !vy && this.joyPtr) { vx = this.joyVec.x; vy = this.joyVec.y; }
     const ptr = this.input.activePointer;
-    if (!vx && !vy && !this.joyOn && ptr.isDown && ptr.y > 40) {
+    if (!vx && !vy && !this.joyOn && ptr.isDown && ptr.y / Z > 40) {
       const wp = this.cameras.main.getWorldPoint(ptr.x, ptr.y);
       const dx = wp.x - this.player.x, dy = wp.y - this.player.y;
       if (Math.hypot(dx, dy) > 8) { vx = dx; vy = dy; }
