@@ -1878,5 +1878,132 @@
     "next": null
    }
   }
+ },
+ "kiem_su_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Ngươi là người đã hạ Lục Vân Sinh? Tin ngươi truyền đến đây từ lâu rồi. Thiên Phong Đại Lục này khác hẳn nơi ngươi từng ở.",
+    "do": [
+     {
+      "quest": "m4_1"
+     },
+     {
+      "event": {
+       "kind": "talk",
+       "target": "kiem_su"
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Phía bắc có Kiếm Trủng, nơi chôn vạn thanh kiếm của người đi trước. Kiếm Chủ canh giữ nơi đó mấy trăm năm. Muốn lên đường phi thăng, ngươi phải được hắn công nhận.",
+    "next": null
+   }
+  }
+ },
+ "kiem_su_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Kiếm Trủng ở phía bắc thành. Hãy chuẩn bị kỹ, Kiếm Chủ không nương tay.",
+    "next": null
+   }
+  }
+ },
+ "kiem_su_done": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Kiếm Sư Thiên Phong",
+    "text": "Ngươi đã được Kiếm Chủ công nhận. Con đường phi thăng đã mở. Nhưng đó là câu chuyện cho lần sau.",
+    "next": null
+   }
+  }
+ },
+ "thien_phong_ren_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Kiếm Lô",
+    "text": "Kiếm Lô Thiên Phong chỉ rèn cho người đáng rèn. Ngươi trông cũng đáng đấy.",
+    "do": [
+     {
+      "flag": "met_tp_ren"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thien_phong_ren"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "thien_phong_dan_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Linh Đan Các",
+    "text": "Linh Đan Các mở cửa cho mọi người có tiền. Đan phẩm cao nhất, giá cũng cao nhất.",
+    "do": [
+     {
+      "flag": "met_tp_dan"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thien_phong_dan"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "phan2_demo_end": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Thanh kiếm cuối cùng của Kiếm Chủ rơi xuống. Ông ta cười, lần đầu tiên sau mấy trăm năm.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi đã đi hết con đường Hóa Thần. Phía trước là Luyện Hư, Hợp Thể, Đại Thừa... rồi cổng Phi Thăng. Nhưng đoạn đường đó ta sẽ kể ngươi nghe sau.",
+    "do": [
+     {
+      "flag": "phan2_demo_done"
+     }
+    ],
+    "next": "c"
+   },
+   "c": {
+    "text": "=== HẾT PHẦN 2 (BẢN THỬ): THIÊN PHONG KIẾM TRỦNG ===\nPhi thăng và các cảnh giới từ Luyện Hư trở lên sẽ ở phần tiếp theo.",
+    "next": null
+   }
+  }
  }
 }

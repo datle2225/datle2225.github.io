@@ -223,6 +223,86 @@
    "labor": 0,
    "lots": 4,
    "greeting": "Mỗi ngày một phiên. Đặt giá tối đa của ngươi, kết thúc lúc rạng sáng ta sẽ xét: ai trả cao hơn các thương nhân thì thắng."
+  },
+  {
+   "id": "thien_phong_ren",
+   "name": "Kiếm Lô Thiên Phong",
+   "title": "Lò rèn Thiên Phong Thành",
+   "type": "smith",
+   "skill": 8,
+   "labor": 24,
+   "sells": [
+    {
+     "id": "huyen_thiet",
+     "price": 26,
+     "stock": 30
+    },
+    {
+     "id": "da_soi",
+     "price": 7,
+     "stock": 10
+    }
+   ],
+   "readyBases": [
+    "phi_kiem_so",
+    "quyen_sao_so",
+    "phap_truong_so",
+    "kiem_y_so",
+    "chien_giap_so",
+    "dao_bao_so",
+    "dan_lo_so",
+    "duoc_dai_so",
+    "phu_but_so",
+    "tran_ky_so",
+    "ma_dao_so",
+    "huyet_y_so",
+    "thu_boi_so",
+    "linh_thu_hoan_so",
+    "co_cam_so",
+    "tieu_sao_so"
+   ],
+   "readyCount": 5,
+   "greeting": "Rèn kiếm ở Thiên Phong, đến thần binh còn phải nể."
+  },
+  {
+   "id": "thien_phong_dan",
+   "name": "Linh Đan Các",
+   "title": "Đan các Thiên Phong Thành",
+   "type": "alchemist",
+   "skill": 9,
+   "labor": 0.55,
+   "sells": [
+    {
+     "id": "linh_thao",
+     "price": 8,
+     "stock": 40
+    },
+    {
+     "id": "huyet_tham",
+     "price": 42,
+     "stock": 16
+    }
+   ],
+   "readyPills": [
+    "hoi_huyet_dan",
+    "hoi_linh_dan",
+    "tu_khi_dan",
+    "thanh_tam_dan",
+    "truc_co_dan",
+    "pha_canh_dan"
+   ],
+   "pillStock": 5,
+   "recipes": [
+    "hoi_huyet_dan",
+    "hoi_linh_dan",
+    "tu_khi_dan",
+    "truc_co_dan",
+    "thanh_tam_dan",
+    "kiem_y_dan",
+    "huyet_khi_dan",
+    "pha_canh_dan"
+   ],
+   "greeting": "Đan của Linh Đan Các, phẩm cao nhất vùng."
   }
  ],
  "priceDrift": 0.15,

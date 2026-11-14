@@ -1,5 +1,6 @@
 import { REALMS, rootMap } from './data';
 import type { ItemInstance, PlayerState, StatKey, Stats } from './types';
+import { factionPerks, lawPerks } from './advanced';
 
 export const BASE_STATS: Stats = { hp: 100, mp: 30, atk: 10, def: 5, spd: 100, crit: 0.05 };
 
@@ -20,6 +21,10 @@ export function computeStats(p: PlayerState): Stats {
     const it = p.gear.find((g) => g.uid === uid);
     if (it) addGear(out, it);
   }
+  // phúc lợi thế lực & pháp tắc
+  const fp = factionPerks(p);
+  out.atk *= fp.atkMul; out.def *= fp.defMul; out.hp *= fp.hpMul; out.spd += fp.spdAdd;
+  out.crit += lawPerks(p).critBonus ?? 0;
   for (const k of Object.keys(out) as StatKey[]) out[k] = k === 'crit' ? out[k] : Math.round(out[k]);
   return out;
 }

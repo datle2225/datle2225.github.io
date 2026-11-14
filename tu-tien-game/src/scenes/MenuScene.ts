@@ -11,6 +11,8 @@ import { audio } from '../audio';
 import { getSettings, setSettings } from '../settings';
 import { exportSave, importSave, writeSave } from '../core/save';
 import { check, type Cond } from '../core/story';
+import { FACTIONS, FORMATIONS, LAWS, factionMap } from '../core/data';
+import { LAW_CHANGE_COST, canJoin, chooseLaw, claimStipend, donate, factionPerks, joinFaction, leaveFaction, learnFormation, pendingStipend, rankIndex, setFormation } from '../core/advanced';
 
 const SLOTS_BASE = 3;
 
@@ -49,6 +51,7 @@ export class MenuScene extends Phaser.Scene {
           { id: 'tribulation', name: 'Độ kiếp', on: ownsSystem(p, 'tu_luyen') && !!tribulationFor(p) },
           { id: 'combo', name: 'Chiêu/Combo', on: true },
           { id: 'bag', name: 'Kho đồ', on: true },
+          { id: 'inner', name: 'Nội tình', on: ownsSystem(p, 'tran_phap') || ownsSystem(p, 'the_luc') || ownsSystem(p, 'phap_tac') },
           { id: 'journal', name: 'Huyết Thư', on: true },
           { id: 'settings', name: 'Cài đặt', on: true },
         ];
@@ -80,6 +83,7 @@ export class MenuScene extends Phaser.Scene {
       case 'combo': return this.rowsCombo();
       case 'bag': return this.rowsBag();
       case 'journal': return this.rowsJournal();
+      case 'inner': return this.rowsInner();
       default: return this.rowsSettings();
     }
   }
@@ -198,6 +202,41 @@ export class MenuScene extends Phaser.Scene {
         const on = Object.values(p.fashion.worn).includes(fid);
         rows.push({ text: `${fid}${on ? ' (đang mặc)' : ''}`, btns: [{ label: on ? 'Cởi' : 'Mặc', fn: () => { p.fashion.worn.outfit = on ? null : fid; } }] });
       }
+    }
+    return rows;
+  }
+
+  /** Hệ mở ở Nguyên Anh / Hóa Thần: trận pháp, thế lực, pháp tắc. */
+  private rowsInner(): Row[] {
+    const p = game.p;
+    const rows: Row[] = [];
+    if (ownsSystem(p, 'the_luc')) {
+      rows.push({ text: '— THẾ LỰC —' });
+      if (p.faction) {
+        const f = factionMap.get(p.faction.id) as any;
+        const r = rankIndex(p);
+        const next = f.ranks[r + 1];
+        const fp = factionPerks(p);
+        const perks = [fp.atkMul > 1 ? `Công +${Math.round((fp.atkMul - 1) * 100)}%` : '', fp.defMul > 1 ? `Thủ +${Math.round((fp.defMul - 1) * 100)}%` : '', fp.hpMul > 1 ? `HP +${Math.round((fp.hpMul - 1) * 100)}%` : '', fp.expMul > 1 ? `Tu vi +${Math.round((fp.expMul - 1) * 100)}%` : '', fp.spdAdd ? `Tốc +${fp.spdAdd}` : '', fp.discount ? `Giảm giá ${Math.round(fp.discount * 100)}%` : ''].filter(Boolean).join(' · ');
+        rows.push({ text: `${f.name}: ${f.ranks[r].name} · ${p.faction.points} điểm${next ? ` (chức kế: ${next.name} ở ${next.points})` : ' (cấp cao nhất)'}`, sub: `${perks} · Bổng lộc ${fp.stipend} LT/ngày` });
+        const pend = pendingStipend(p);
+        rows.push({ text: `Bổng lộc đang chờ: ${pend} LT (tích tối đa 3 ngày)`, btns: [{ label: 'Nhận', enabled: pend > 0, fn: () => this.note(claimStipend(p).msg) }] });
+        rows.push({ text: 'Quyên góp lấy điểm cống hiến (10 LT = 1 điểm)', btns: [{ label: '100 LT', enabled: p.gold >= 100, fn: () => this.note(donate(p, 100).msg) }, { label: '1000 LT', enabled: p.gold >= 1000, fn: () => this.note(donate(p, 1000).msg) }, { label: 'Rời', color: 0x6a2a2a, fn: () => this.note(leaveFaction(p).msg) }] });
+      } else {
+        for (const f of FACTIONS) { const c = canJoin(p, f.id); rows.push({ text: f.name, sub: c.ok ? f.desc : `${f.desc} (${c.reason})`, btns: [{ label: 'Gia nhập', enabled: c.ok, fn: () => this.note(joinFaction(p, f.id).msg) }] }); }
+      }
+    }
+    if (ownsSystem(p, 'tran_phap')) {
+      rows.push({ text: `— TRẬN PHÁP — đang bày: ${p.formation ? (FORMATIONS.find((x) => x.id === p.formation) as any).name : 'không'}` });
+      for (const f of FORMATIONS) {
+        const has = p.formations.includes(f.id);
+        const on = p.formation === f.id;
+        rows.push({ text: `${f.name}${has ? '' : ` (${f.price} LT)`}`, sub: f.desc, btns: has ? [{ label: on ? 'Thu trận' : 'Bày trận', fn: () => this.note(setFormation(p, on ? null : f.id).msg) }] : [{ label: 'Học', enabled: p.gold >= f.price, fn: () => this.note(learnFormation(p, f.id).msg) }] });
+      }
+    }
+    if (ownsSystem(p, 'phap_tac')) {
+      rows.push({ text: `— PHÁP TẮC — ${p.law ? (LAWS.find((x) => x.id === p.law) as any).name : 'chưa lĩnh ngộ'}  (đổi tốn ${LAW_CHANGE_COST} LT)` });
+      for (const l of LAWS) rows.push({ text: l.name, sub: l.desc, btns: [{ label: p.law === l.id ? 'Đang tu' : 'Lĩnh ngộ', enabled: p.law !== l.id && p.gold >= (p.law ? LAW_CHANGE_COST : 0), fn: () => this.note(chooseLaw(p, l.id).msg) }] });
     }
     return rows;
   }

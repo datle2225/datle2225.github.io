@@ -22,6 +22,9 @@ export interface Unit {
   /** Boss nhiều pha: khi HP dưới ngưỡng `at` (tỉ lệ) sẽ đổi chiêu / tăng sức mạnh. */
   phases?: Phase[];
   phaseIdx?: number;
+  takenMul?: number; // nhân sát thương nhận vào (trận pháp)
+  hpRegenPct?: number; // hồi % HP mỗi lần hành động (trận pháp)
+  perks?: { softcap?: number; healOnKill?: number; dodge?: number; elemBonus?: boolean; critDmg?: number }; // pháp tắc
   reviveFrac?: number; // thoát xác: hồi sinh một lần mỗi trận với tỉ lệ HP này
   revived?: boolean;
   tempoResist?: number; // 0..1: nhân với độ trễ bị đẩy lùi (boss kháng đảo nhịp)
@@ -45,14 +48,14 @@ export const MAX_CONSECUTIVE = 3;
 const SPD_SOFTCAP = 150;
 
 /** Tốc độ hiệu dụng: trên ngưỡng mềm chỉ còn 50% hiệu quả, tránh khóa cứng đối thủ. */
-export function effectiveSpeed(spd: number): number {
-  return spd <= SPD_SOFTCAP ? spd : SPD_SOFTCAP + (spd - SPD_SOFTCAP) * 0.5;
+export function effectiveSpeed(spd: number, softcap = SPD_SOFTCAP): number {
+  return spd <= softcap ? spd : softcap + (spd - softcap) * 0.5;
 }
 
 export function unitSpeed(u: Unit): number {
   let m = 1;
   for (const s of u.statuses) m *= statusMap.get(s.id)?.spdMul ?? 1;
-  return Math.max(10, effectiveSpeed(u.stats.spd) * m);
+  return Math.max(10, effectiveSpeed(u.stats.spd, u.perks?.softcap) * m);
 }
 
 /** Ngũ hành tương khắc: Kim>Mộc>Thổ>Thủy>Hỏa>Kim. */
@@ -157,9 +160,10 @@ export class Battle {
   /** Tính sát thương một đòn (public để test). */
   calcDamage(att: Unit, def: Unit, sk: Skill, comboMult = 1, crit = false): number {
     const raw = att.stats.atk * sk.power - this.defOf(def) * 0.5;
-    const el = elementMult(sk.element === 'none' ? att.element : sk.element, def.element);
+    let el = elementMult(sk.element === 'none' ? att.element : sk.element, def.element);
+    if (att.perks?.elemBonus) el = el > 1 ? 1.5 : el < 1 ? 1 : el; // Ngũ Hành Pháp Tắc
     const variance = this.rng.range(0.95, 1.05);
-    return Math.max(1, Math.round(raw * el * variance * comboMult * (crit ? 1.5 : 1) * this.damageTakenMul(def)));
+    return Math.max(1, Math.round(raw * el * variance * comboMult * (crit ? (att.perks?.critDmg ?? 1.5) : 1) * this.damageTakenMul(def) * (def.takenMul ?? 1)));
   }
 
   act(actor: Unit, skillId: string, target?: Unit): BattleEvent[] {
@@ -218,13 +222,25 @@ export class Battle {
         ev.push({ type: 'combo', actor: actor.id, target: foe.id, text: `Cộng hưởng ${statusMap.get(sk.requires)?.name}! x${comboMult}` });
       }
       for (let i = 0; i < hits && foe.alive; i++) {
+        // Hư Không Pháp Tắc: né hoàn toàn một đòn
+        if (foe.perks?.dodge && this.rng.chance(foe.perks.dodge)) {
+          ev.push({ type: 'miss', actor: actor.id, target: foe.id, text: `${foe.name} né hoàn toàn đòn của ${actor.name}!` });
+          continue;
+        }
         const crit = this.rng.chance(actor.stats.crit);
         const dmg = this.calcDamage(actor, foe, sk, comboMult, crit);
         foe.hp = Math.max(0, foe.hp - dmg);
         ev.push({ type: 'hit', actor: actor.id, target: foe.id, value: dmg, crit, text: `${actor.name} dùng ${sk.name} gây ${dmg} sát thương${crit ? ' (bạo kích)' : ''}.` });
         if (sk.lifesteal) actor.hp = Math.min(actor.stats.hp, actor.hp + Math.round(dmg * sk.lifesteal));
         if (foe.hp <= 0) {
-          if (this.markDead(foe, ev)) ev.push({ type: 'status', target: foe.id, text: `${foe.name} gục ngã.` });
+          if (this.markDead(foe, ev)) {
+            ev.push({ type: 'status', target: foe.id, text: `${foe.name} gục ngã.` });
+            if (actor.perks?.healOnKill) { // Sinh Tử Pháp Tắc
+              const h = Math.round(actor.stats.hp * actor.perks.healOnKill);
+              actor.hp = Math.min(actor.stats.hp, actor.hp + h);
+              ev.push({ type: 'heal', actor: actor.id, target: actor.id, value: h, text: `${actor.name} hấp thụ sinh khí, hồi ${h} sinh lực.` });
+            }
+          }
         }
       }
       if (sk.delay && foe.alive) {
@@ -244,7 +260,10 @@ export class Battle {
       if (others.length) ev.push({ type: 'cap', text: `${actor.name} đã ra ${MAX_CONSECUTIVE} đòn liên tiếp, đối thủ kịp phản ứng.` });
     }
 
-    if (actor.side === 'player' && actor.alive) actor.mp = Math.min(actor.stats.mp, actor.mp + this.mpRegen);
+    if (actor.side === 'player' && actor.alive) {
+      actor.mp = Math.min(actor.stats.mp, actor.mp + this.mpRegen);
+      if (actor.hpRegenPct) { const h = Math.round(actor.stats.hp * actor.hpRegenPct); actor.hp = Math.min(actor.stats.hp, actor.hp + h); }
+    }
     for (const u of this.units) if (u.alive && u.phases) this.checkPhase(u, ev);
     this.tickStatuses(actor, ev);
     this.checkEnd(ev);

@@ -16,6 +16,8 @@ export const SCENARIOS: Scenario[] = [
   { name: 'NA3 vs 2 Quái', realm: 3, stage: 3, enemies: ['huyet_ve', 'bang_lang'] },
   { name: 'NA5 vs Môn Chủ', realm: 3, stage: 5, enemies: ['huyet_anh_mon_chu'] },
   { name: 'NA7 vs Lục Vân Sinh', realm: 3, stage: 7, enemies: ['luc_van_sinh'] },
+  { name: 'HT3 vs 2 Kiếm Hồn', realm: 4, stage: 3, enemies: ['kiem_hon', 'kiem_hon'] },
+  { name: 'HT5 vs Kiếm Chủ', realm: 4, stage: 5, enemies: ['thien_phong_kiem_chu'] },
   { name: 'KĐ6 vs Mặc Gia', realm: 2, stage: 6, enemies: ['mac_gia_chu'] },
 ];
 

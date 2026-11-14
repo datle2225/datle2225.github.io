@@ -249,5 +249,46 @@
    "linh_thach": 1000
   },
   "unlocks": []
+ },
+ {
+  "id": "m4_1",
+  "type": "main",
+  "chapter": 9,
+  "title": "Thiên Phong Thành",
+  "desc": "Phần 2: tìm Kiếm Sư ở Thiên Phong Thành và nghe về Kiếm Trủng.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "kiem_su"
+   }
+  ],
+  "reward": {
+   "exp": 20000
+  },
+  "unlocks": [
+   "m4_2"
+  ]
+ },
+ {
+  "id": "m4_2",
+  "type": "main",
+  "chapter": 9,
+  "title": "Kiếm Trủng",
+  "desc": "Tiến vào Kiếm Trủng phía bắc thành, đối mặt Thiên Phong Kiếm Chủ.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "kiem_trung_sau"
+   },
+   {
+    "kind": "battle",
+    "target": "thien_phong_kiem_chu"
+   }
+  ],
+  "reward": {
+   "exp": 80000,
+   "linh_thach": 3000
+  },
+  "unlocks": []
  }
 ]

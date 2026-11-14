@@ -362,6 +362,7 @@ export class OverworldScene extends Phaser.Scene {
       audio.sfx('levelup');
       if (id === 'm1_2') this.startDialogue('co_dinh');
       if (id === 'm1_3') this.startDialogue('m1_3_done');
+      if (id === 'm4_2') this.time.delayedCall(400, () => this.startDialogue('phan2_demo_end'));
       if (id === 'm3_3') this.time.delayedCall(400, () => { const e = pickDialogue(game.p, [{ if: { flag: 'ending_join' }, id: 'end_dark' }, { if: { flag: 'route_expose' }, id: 'end_expose' }, { if: { minDao: 65 }, id: 'end_chinh' }, { if: { maxDao: 35 }, id: 'end_ma' }, { id: 'end_tan' }]); if (e) this.startDialogue(e); });
       if (id === 'm2_3') this.startDialogue('unseal', () => { const e = pickDialogue(game.p, [{ if: { minDao: 65 }, id: 'hoi2_end_chinh' }, { if: { maxDao: 35 }, id: 'hoi2_end_ma' }, { id: 'hoi2_end_tan' }]); if (e) this.time.delayedCall(300, () => this.startDialogue(e)); });
     }

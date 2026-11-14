@@ -1,5 +1,6 @@
 import { BRANCHES, REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
 import { gainExp, levelUpStages } from './progression';
+import { addContribution } from './advanced';
 import type { PlayerState, Skill, Stats } from './types';
 
 /** Chiêu người chơi đã mở: nhánh đã chọn (hoặc chiêu cơ bản của mọi nhánh khi chưa chọn) theo cảnh giới/tầng. */
@@ -65,6 +66,7 @@ export function completeQuest(p: PlayerState, id: string) {
   if (r.recipe && !p.knownRecipes.includes(r.recipe)) p.knownRecipes.push(r.recipe);
   if (q.unlockSystem) unlockSystem(p, q.unlockSystem);
   if (q.unlockChapter) enterChapter(p, q.unlockChapter);
+  addContribution(p, q.type === 'main' ? 30 : 10); // điểm cống hiến thế lực
   for (const next of q.unlocks ?? []) if (!p.quests.active.includes(next) && !p.quests.done.includes(next)) p.quests.active.push(next);
 }
 

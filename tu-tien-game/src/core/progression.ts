@@ -2,6 +2,7 @@ import { REALMS, rootMap } from './data';
 import type { Rng } from './rng';
 import { computeStats, power } from './stats';
 import type { PlayerState } from './types';
+import { factionPerks } from './advanced';
 
 export function expNeeded(p: PlayerState): number {
   return REALMS[p.realmIndex].expPerStage[p.stage - 1];
@@ -9,7 +10,7 @@ export function expNeeded(p: PlayerState): number {
 
 export function gainExp(p: PlayerState, amount: number): { gained: number; breakthroughReady: boolean } {
   const root = rootMap.get(p.rootId) as any;
-  const gained = Math.round(amount * (root?.expMul ?? 1));
+  const gained = Math.round(amount * (root?.expMul ?? 1) * factionPerks(p).expMul);
   p.exp += gained;
   return { gained, breakthroughReady: atStageCap(p) };
 }

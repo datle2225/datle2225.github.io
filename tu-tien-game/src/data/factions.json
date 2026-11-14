@@ -1,0 +1,146 @@
+[
+ {
+  "id": "thanh_van",
+  "name": "Thanh Vân Tông (chính đạo)",
+  "desc": "Tông môn danh môn chính phái. Cần danh vọng Chính đạo ≥ 5.",
+  "req": {
+   "chinh_dao": 5
+  },
+  "ranks": [
+   {
+    "name": "Ngoại môn",
+    "points": 0,
+    "atkMul": 1.03,
+    "stipend": 20
+   },
+   {
+    "name": "Nội môn",
+    "points": 100,
+    "atkMul": 1.06,
+    "stipend": 50
+   },
+   {
+    "name": "Chấp sự",
+    "points": 400,
+    "atkMul": 1.1,
+    "defMul": 1.05,
+    "stipend": 120
+   },
+   {
+    "name": "Trưởng lão",
+    "points": 1200,
+    "atkMul": 1.15,
+    "defMul": 1.1,
+    "stipend": 300
+   }
+  ]
+ },
+ {
+  "id": "van_duoc",
+  "name": "Vạn Dược Cốc",
+  "desc": "Thánh địa đan dược. Giảm giá mọi cửa hàng. Không yêu cầu danh vọng.",
+  "req": {},
+  "ranks": [
+   {
+    "name": "Dược đồng",
+    "points": 0,
+    "discount": 0.04,
+    "stipend": 15
+   },
+   {
+    "name": "Đan sư",
+    "points": 100,
+    "discount": 0.07,
+    "hpMul": 1.05,
+    "stipend": 45
+   },
+   {
+    "name": "Đan chủ",
+    "points": 400,
+    "discount": 0.1,
+    "hpMul": 1.1,
+    "stipend": 110
+   },
+   {
+    "name": "Cốc chủ",
+    "points": 1200,
+    "discount": 0.15,
+    "hpMul": 1.15,
+    "stipend": 280
+   }
+  ]
+ },
+ {
+  "id": "huyet_anh",
+  "name": "Huyết Ảnh Tàn Dư (ma đạo)",
+  "desc": "Tàn quân ma đạo, trọng sức mạnh. Cần danh vọng Ma đạo ≥ 5.",
+  "req": {
+   "ma_dao": 5
+  },
+  "ranks": [
+   {
+    "name": "Huyết nô",
+    "points": 0,
+    "atkMul": 1.04,
+    "stipend": 18
+   },
+   {
+    "name": "Huyết vệ",
+    "points": 100,
+    "atkMul": 1.08,
+    "stipend": 45
+   },
+   {
+    "name": "Huyết tướng",
+    "points": 400,
+    "atkMul": 1.13,
+    "hpMul": 1.05,
+    "stipend": 115
+   },
+   {
+    "name": "Huyết chủ",
+    "points": 1200,
+    "atkMul": 1.2,
+    "hpMul": 1.1,
+    "stipend": 290
+   }
+  ]
+ },
+ {
+  "id": "tan_tu",
+  "name": "Tán Tu Liên Minh",
+  "desc": "Liên minh người tự do: tu luyện nhanh hơn. Cần danh vọng Tán tu ≥ 2.",
+  "req": {
+   "tan_tu": 2
+  },
+  "ranks": [
+   {
+    "name": "Hội viên",
+    "points": 0,
+    "expMul": 1.05,
+    "stipend": 12
+   },
+   {
+    "name": "Trụ cột",
+    "points": 100,
+    "expMul": 1.1,
+    "spdAdd": 4,
+    "stipend": 40
+   },
+   {
+    "name": "Đại diện",
+    "points": 400,
+    "expMul": 1.15,
+    "spdAdd": 8,
+    "stipend": 100
+   },
+   {
+    "name": "Minh chủ",
+    "points": 1200,
+    "expMul": 1.25,
+    "spdAdd": 12,
+    "stipend": 260
+   }
+  ]
+ }
+]

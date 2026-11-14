@@ -95,6 +95,10 @@ export interface PlayerState {
   flags: Record<string, boolean | number | string>;
   chapter: number;
   playtime: number;
+  formations: string[]; // trận pháp đã học
+  formation: string | null; // trận đang bày
+  faction: { id: string; points: number; lastClaim: number } | null; // thế lực
+  law: string | null; // pháp tắc (Hóa Thần)
   auction: { bids: Record<string, number>; news: string[] }; // giá đặt tối đa đang giữ cọc, tin kết quả
   med: { energy: number; at: number }; // tâm lực (0..100) và mốc thời gian hồi
   seclusion: { startedAt: number; aura: number } | null; // bế quan (tu luyện khi rời game)

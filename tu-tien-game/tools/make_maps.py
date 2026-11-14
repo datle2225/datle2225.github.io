@@ -305,10 +305,52 @@ def thien_kiep_dai():
     O.add('auras', 'linh_mach', 20, 15, [P('r', 6), P('value', 3.5), P('label', 'Thiên Kiếp Đài')])
     portal(O, 'to_bang_nguyen', 18, 29, 4, 1, 'bang_nguyen', 'from_thien_kiep_dai')
     portal(O, 'to_bang_nguyen_w', 0, 14, 1, 3, 'bang_nguyen', 'from_thien_kiep_dai')
+    g.rect(32, 14, 39, 16, 'I')
+    portal(O, 'to_thien_phong', 39, 14, 1, 3, 'thien_phong', 'from_thien_kiep_dai', {'minRealm': 4, 'flag': 'game_complete'}, 'Cổng đến Thiên Phong Đại Lục chỉ mở với người đã hoàn thành Phần 1 và đạt Hóa Thần.')
+    O.add('spawns', 'from_thien_phong', 36, 15)
     O.add('signs', 'tk', 20, 27, [P('text', 'Thiên Kiếp Đài')])
     O.add('spawns', 'spawn', 20, 27)
     O.add('spawns', 'from_bang_nguyen', 20, 27)
     write('thien_kiep_dai', g, O, {'name': 'Thiên Kiếp Đài', 'music': 'sect', 'aura': 2.5})
+
+# ═════════ Thiên Phong Thành & Kiếm Trủng ═════════
+def thien_phong():
+    g = Grid(56, 42, 'N')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 77)
+            if r > 0.94: g.put(x, y, 'Y')
+            elif r > 0.91: g.put(x, y, 'K')
+    # Kiếm Trủng (phía bắc): sân đá dungeon + tượng kiếm
+    g.rect(10, 2, 45, 18, 'd'); g.rect(26, 18, 29, 22, 'd')
+    for (x, y) in [(12, 4), (43, 4), (12, 16), (43, 16), (22, 6), (33, 6), (22, 14), (33, 14)]: g.put(x, y, 'P')
+    for (x, y) in [(16, 8), (39, 8), (16, 12), (39, 12), (27, 3), (28, 3), (20, 10), (35, 10)]: g.put(x, y, 'o')
+    for (x, y) in [(10, 9), (45, 9)]: g.put(x, y, 'l')
+    # thành (phía nam)
+    g.rect(8, 22, 47, 38, 'f'); g.rect(26, 18, 29, 24, 'c')
+    g.house(12, 25, 5, 2); g.house(34, 25, 5, 2); g.house(20, 25, 5, 2, 's')
+    for x in (14, 22, 36): g.put(x, 27, 'p')
+    g.rect(8, 28, 47, 28, 'p')
+    for x in range(10, 46, 5): g.put(x, 23, 'l')
+    g.border('Y'); g.rect(26, 38, 29, 41, 'p')
+    O = Objs()
+    npc(O, 'kiem_su', 'Kiếm Sư Thiên Phong', 'npc_sage', 27, 30, [{'if': {'questDone': 'm4_2'}, 'id': 'kiem_su_done'}, {'if': {'questActive': 'm4_2'}, 'id': 'kiem_su_wait'}, {'if': {'noQuest': 'm4_1'}, 'id': 'kiem_su_1'}, {'id': 'kiem_su_done'}])
+    npc(O, 'thien_phong_ren', 'Chủ Kiếm Lô (Thợ Rèn)', 'npc_smith', 14, 28, [{'if': {'notFlag': 'met_tp_ren'}, 'id': 'thien_phong_ren_1'}, {'id': 'thien_phong_ren_1'}], 'thien_phong_ren', DAY(14, 28, 14, 24))
+    npc(O, 'thien_phong_dan', 'Chủ Linh Đan Các (Đan Sư)', 'npc_alch', 36, 28, [{'if': {'notFlag': 'met_tp_dan'}, 'id': 'thien_phong_dan_1'}, {'id': 'thien_phong_dan_1'}], 'thien_phong_dan', DAY(36, 28, 36, 24))
+    npc(O, 'bao_tin_tp', 'Bảng Tin Thiên Phong', 'npc_clerk', 22, 32, [{'id': '@rumor'}])
+    for grp, x, y in [(['kiem_hon', 'kiem_hon'], 18, 6), (['kiem_hon', 'kiem_hon'], 37, 6), (['kiem_hon'], 14, 14), (['kiem_hon', 'kiem_hon'], 40, 14), (['kiem_hon'], 27, 20)]:
+        foe(O, grp, 'npc_rival', x, y, 4)
+    foe(O, ['thien_phong_kiem_chu'], 'npc_sage', 27, 4, 4, 3)
+    for x, y in [(6, 30), (49, 30), (24, 36), (32, 36)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'kiem_trung_sau', 27, 10, [P('r', 3)])
+    O.add('auras', 'linh_mach', 27, 8, [P('r', 6), P('value', 3.5), P('label', 'Kiếm Trủng linh mạch')])
+    O.add('auras', 'linh_mach', 27, 33, [P('r', 5), P('value', 2.2), P('label', 'Thiên Phong linh khí')])
+    portal(O, 'to_thien_kiep_dai', 26, 41, 4, 1, 'thien_kiep_dai', 'from_thien_phong')
+    O.add('signs', 'tp', 27, 36, [P('text', 'Thiên Phong Thành')])
+    O.add('signs', 'kt', 27, 19, [P('text', 'Kiếm Trủng')])
+    O.add('spawns', 'spawn', 27, 37)
+    O.add('spawns', 'from_thien_kiep_dai', 27, 37)
+    write('thien_phong', g, O, {'name': 'Thiên Phong Thành & Kiếm Trủng', 'music': 'sect', 'aura': 1.8, 'respawn': 30})
 
 # ═════════ Huyết Nguyệt Bí Cảnh ═════════
 def huyet_nguyet():
@@ -372,4 +414,4 @@ def hoang_mac():
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    thanh_ha(); thanh_van_tong(); phuong_thi(); huyet_nguyet(); hoang_mac(); bang_nguyen(); huyet_anh_dan(); thien_kiep_dai()
+    thanh_ha(); thanh_van_tong(); phuong_thi(); huyet_nguyet(); hoang_mac(); bang_nguyen(); huyet_anh_dan(); thien_kiep_dai(); thien_phong()

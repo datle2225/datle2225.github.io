@@ -645,5 +645,101 @@
   "flagOnWin": "enemy5_dead",
   "exp": 12000,
   "drops": []
+ },
+ {
+  "id": "kiem_hon",
+  "name": "Kiếm Hồn",
+  "realm": "hoa_than",
+  "element": "kim",
+  "stats": {
+   "hp": 5200,
+   "mp": 300,
+   "atk": 900,
+   "def": 300,
+   "spd": 112,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_thanh_van_kiem",
+   "yeu_kim_cuong"
+  ],
+  "exp": 20000,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.6
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "thien_phong_kiem_chu",
+  "name": "Thiên Phong Kiếm Chủ",
+  "realm": "hoa_than",
+  "element": "kim",
+  "boss": true,
+  "stats": {
+   "hp": 16500,
+   "mp": 900,
+   "atk": 960,
+   "def": 470,
+   "spd": 125,
+   "crit": 0.12
+  },
+  "skills": [
+   "yeu_thanh_van_kiem",
+   "yeu_kim_cuong",
+   "yeu_ho_the"
+  ],
+  "phases": [
+   {
+    "at": 0.75,
+    "text": "Kiếm Chủ rút kiếm khỏi vỏ, kiếm khí rạch đôi mặt đất!",
+    "skills": [
+     "yeu_thanh_van_kiem",
+     "yeu_kim_cuong",
+     "yeu_thien_loi"
+    ],
+    "atkMul": 1.1
+   },
+   {
+    "at": 0.5,
+    "text": "Vạn kiếm trong Trủng cùng rung lên, đáp lại tiếng gọi của ông ta!",
+    "skills": [
+     "yeu_thien_loi",
+     "yeu_thanh_van_kiem",
+     "yeu_kim_cuong"
+    ],
+    "atkMul": 1.2,
+    "spdMul": 1.1
+   },
+   {
+    "at": 0.25,
+    "text": "Kiếm Chủ hợp nhất với thanh kiếm: ông ta không còn là người nữa!",
+    "skills": [
+     "yeu_thien_loi",
+     "yeu_thanh_van_kiem"
+    ],
+    "atkMul": 1.25,
+    "spdMul": 1.15,
+    "heal": 0.05
+   }
+  ],
+  "tempoResist": 0.3,
+  "flagOnWin": "enemy6_dead",
+  "exp": 60000,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
  }
 ]

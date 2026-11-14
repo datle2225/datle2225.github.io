@@ -88,6 +88,12 @@ Hoàn thành `m2_3` kích hoạt: **gỡ phong ấn** (Tàn Căn → **Hỗn Đ�
 
 5 kết cục: **Chính đạo chân nhân · Ma đạo chi chủ · Tán tu tiêu dao · Sự thật phơi bày · Hai kẻ cùng phi thăng**. Mỗi kết cục đặt cờ `game_complete` và khép lại *phần 1*; **phi thăng, Đại Thừa và Tiên Giới để dành cho phần tiếp theo** (chưa làm).
 
+## Phần 2 (bản thử): Thiên Phong Đại Lục (Hóa Thần)
+Sau **HẾT PHẦN 1**, người đã đạt **Hóa Thần** mở được cổng đông của Thiên Kiếp Đài tới **Thiên Phong Thành & Kiếm Trủng**:
+- `m4_1` gặp **Kiếm Sư Thiên Phong** (nhận việc và nghe về Kiếm Trủng) → `m4_2` vào Kiếm Trủng, hạ **Thiên Phong Kiếm Chủ** (boss 4 pha, kháng đảo nhịp, cờ `enemy6_dead`).
+- Có Kiếm Lô (thợ rèn tay nghề 8) và Linh Đan Các (đan sư tay nghề 9), bảng tin, linh mạch Kiếm Trủng ×3.5.
+- Hạ Kiếm Chủ khép lại bằng **"HẾT PHẦN 2 (BẢN THỬ)"**. Phi thăng và các cảnh giới Luyện Hư → Đại Thừa **chưa có nội dung**.
+
 ## Nhiệm vụ phụ (nguyên tắc)
 - Mỗi nhiệm vụ phụ phải có **câu chuyện nhỏ + một quyết định**, không chỉ "giết N con".
 - 5 loại: **Giải cứu** · **Điều tra** · **Thu thập có câu chuyện** · **Giao hàng/cạnh tranh buôn bán** · **Cơ duyên ẩn** (kích hoạt bởi hành vi, không có dấu chấm than).

@@ -19,9 +19,9 @@ export class TitleScene extends Phaser.Scene {
     this.input.keyboard!.once('keydown', () => { audio.unlock(); audio.music('title'); });
     const hasSave = !!load();
     const bx = W / 2 - 90;
-    button(this, bx, 130, 180, 34, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
-    button(this, bx, 170, 180, 34, hasSave ? 'Tiếp tục' : 'Tiếp tục (chưa có save)', () => { if (continueGame()) this.scene.start('Overworld'); }, { enabled: hasSave });
-    button(this, bx, 210, 180, 34, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
+    button(this, bx, 112, 180, 28, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
+    button(this, bx, 144, 180, 28, hasSave ? 'Tiếp tục' : 'Tiếp tục (chưa có save)', () => { if (continueGame()) this.scene.start('Overworld'); }, { enabled: hasSave });
+    button(this, bx, 176, 180, 28, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
       startNew();
       const p = game.p;
       p.rootId = 'kim'; p.realmIndex = 1; p.stage = 5; p.branchId = 'kiem_tu'; p.gold = 800;
@@ -33,7 +33,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 250, 180, 34, 'Thử nhanh: Kết Đan (Hồi 2)', () => {
+    button(this, bx, 208, 180, 28, 'Thử nhanh: Kết Đan (Hồi 2)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'kim'; p.realmIndex = 2; p.stage = 3; p.branchId = 'kiem_tu'; p.gold = 1500; p.daoHeart = 60;
@@ -48,7 +48,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 290, 180, 34, 'Thử nhanh: Nguyên Anh (Hồi 3)', () => {
+    button(this, bx, 240, 180, 28, 'Thử nhanh: Nguyên Anh (Hồi 3)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'hon_don'; p.realmIndex = 3; p.stage = 5; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 4000; p.daoHeart = 60;
@@ -60,6 +60,22 @@ export class TitleScene extends Phaser.Scene {
       for (const c of [1, 2, 3, 4, 6, 7]) enterChapter(p, c);
       for (const sy of ['tu_luyen', 'luyen_dan', 'thoat_xac', 'hon_don']) unlockSystem(p, sy);
       p.mapId = 'phuong_thi';
+      persist();
+      this.scene.start('Overworld');
+    });
+    button(this, bx, 272, 180, 28, 'Thử nhanh: Hóa Thần (Phần 2)', () => {
+      startNew();
+      const p = game.p;
+      p.rootId = 'hon_don'; p.realmIndex = 4; p.stage = 4; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 12000; p.daoHeart = 60;
+      p.rep = { chinh_dao: 6, ma_dao: 0, tan_tu: 2 };
+      p.inventory = { hoi_huyet_dan: 10, linh_thao: 20, huyet_tham: 12, huyen_thiet: 20 };
+      p.knownRecipes = ['hoi_huyet_dan', 'hoi_linh_dan', 'tu_khi_dan'];
+      p.comboPresets = [['kiem_nhat_thiem', 'kiem_phong_cuong', 'kiem_tam_ho', 'kiem_van_ly'], [], []];
+      p.quests = { active: [], done: ['m1_1', 'm1_2', 'm1_3', 'm2_1', 'm2_2', 'm2_3', 'm3_1', 'm3_2', 'm3_3'], progress: {} };
+      p.flags = { intro: true, met_laongu: true, enemy1_dead: true, enemy2_dead: true, enemy3_dead: true, enemy4_dead: true, enemy5_dead: true, mac_gia_known: true, unsealed: true, game_complete: true, ending_end_chinh: true, hoi3_open: true };
+      for (const c of [1, 2, 3, 4, 6, 7, 8]) enterChapter(p, c);
+      for (const sy of ['tu_luyen', 'luyen_dan', 'thoat_xac', 'hon_don', 'tran_phap', 'the_luc', 'phap_tac']) unlockSystem(p, sy);
+      p.mapId = 'thien_kiep_dai';
       persist();
       this.scene.start('Overworld');
     });

@@ -1,0 +1,41 @@
+[
+ {
+  "id": "tu_linh",
+  "name": "Tụ Linh Trận",
+  "desc": "Linh khí hội tụ: hồi thêm +4 linh lực mỗi lần bạn hành động.",
+  "price": 600,
+  "mpRegen": 4
+ },
+ {
+  "id": "kim_cuong",
+  "name": "Kim Cương Trận",
+  "desc": "Thủ +20%, nhưng Tốc độ -8%.",
+  "price": 800,
+  "defMul": 1.2,
+  "spdMul": 0.92
+ },
+ {
+  "id": "phi_phong",
+  "name": "Phi Phong Trận",
+  "desc": "Tốc độ +12%, Thủ -5%: đi nhiều lượt hơn.",
+  "price": 800,
+  "spdMul": 1.12,
+  "defMul": 0.95
+ },
+ {
+  "id": "huyet_sat",
+  "name": "Huyết Sát Trận",
+  "desc": "Công +15% nhưng nhận thêm 10% sát thương.",
+  "price": 1000,
+  "atkMul": 1.15,
+  "takenMul": 1.1
+ },
+ {
+  "id": "thai_cuc",
+  "name": "Thái Cực Trận",
+  "desc": "Hồi 3% HP tối đa mỗi lần bạn hành động; Công -5%.",
+  "price": 1200,
+  "hpRegenPct": 0.03,
+  "atkMul": 0.95
+ }
+]

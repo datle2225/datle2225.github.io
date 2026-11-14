@@ -4,6 +4,7 @@ import { Rng } from './rng';
 import { availableSkills, companionStats } from './session';
 import { computeStats } from './stats';
 import { tamMaFactor } from './progression';
+import { formationFx, lawPerks } from './advanced';
 import type { PlayerState } from './types';
 
 /** Dựng trận đấu từ trạng thái người chơi (dùng chung cho game và mô phỏng cân bằng). */
@@ -31,7 +32,18 @@ export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withPa
       units.push(makeUnit(id, 'Tâm Ma', 'enemy', ms, availableSkills(p).map((s) => s.id), 'none'));
     } else units.push(makeUnit(id, e.name, 'enemy', e.stats, e.skills, e.element, e.phases, e.tempoResist));
   });
-  return { battle: new Battle(units, rng), player, enemyUnitIds };
+  // trận pháp (cả đội) và pháp tắc (chỉ bản thân) — chỉ áp dụng cho phe người chơi
+  const fx = formationFx(p);
+  for (const u of units.filter((x) => x.side === 'player')) {
+    u.stats = { ...u.stats, atk: Math.round(u.stats.atk * fx.atkMul), def: Math.round(u.stats.def * fx.defMul), spd: Math.round(u.stats.spd * fx.spdMul) };
+    if (fx.takenMul !== 1) u.takenMul = fx.takenMul;
+    if (fx.hpRegenPct) u.hpRegenPct = fx.hpRegenPct;
+  }
+  const lp = lawPerks(p);
+  if (Object.keys(lp).length) player.perks = { softcap: lp.softcap, healOnKill: lp.healOnKill, dodge: lp.dodge, elemBonus: lp.elemBonus, critDmg: lp.critDmg };
+  const battle = new Battle(units, rng);
+  battle.mpRegen += fx.mpRegen;
+  return { battle, player, enemyUnitIds };
 }
 
 /** Tự đánh cả trận bằng AI (cho cả hai phe). Trả về kết quả và số hành động. */
