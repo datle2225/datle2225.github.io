@@ -20,6 +20,11 @@ export interface Skill {
   bonus?: number;
   heal?: number;
   lifesteal?: number;
+  cd?: number; // hồi chiêu: số lần hành động của chính người dùng trước khi dùng lại
+  summon?: string; // id linh thú triệu hồi (Ngự Thú Tu)
+  pick?: 'beast'; // chiêu 'ally' nhắm vào linh thú
+  advance?: number; // kéo lượt hành động của mục tiêu (đồng đội) lên sớm
+  delay?: number; // đẩy lượt hành động của đối thủ lùi lại
   hpCost?: number; // hy sinh % HP tối đa khi dùng (Ma Tu)
   desc: string;
 }
@@ -32,6 +37,8 @@ export interface StatusDef {
   defMul?: number;
   spdMul?: number;
   dotPct?: number;
+  dotAtk?: number; // DoT theo Công của người gây (không phình theo HP mục tiêu → không bẻ cân bằng boss)
+  trapAtk?: number;
   damageTakenMul?: number;
   trapPct?: number; // bẫy: nổ khi chủ thể hành động, gây % HP tối đa
   trapDelay?: number; // và đẩy lượt kế tiếp lùi thêm
@@ -44,6 +51,7 @@ export interface Realm {
   lifespan: number;
   expPerStage: number[];
   statMul: number;
+  bottlenecks?: number[];
   tribulation: null | { waves: number; boltPower: number; recommendedPower: number; name: string };
   unlocks: string[];
 }
@@ -68,6 +76,7 @@ export interface PlayerState {
   name: string;
   rootId: string;
   branchId: string | null;
+  subBranchId: string | null; // nhánh phụ (học thêm từ Kết Đan / Nguyên Anh)
   realmIndex: number;
   stage: number; // 1..stages
   exp: number;
@@ -86,6 +95,9 @@ export interface PlayerState {
   flags: Record<string, boolean | number | string>;
   chapter: number;
   playtime: number;
+  auction: { bids: Record<string, number>; news: string[] }; // giá đặt tối đa đang giữ cọc, tin kết quả
+  med: { energy: number; at: number }; // tâm lực (0..100) và mốc thời gian hồi
+  seclusion: { startedAt: number; aura: number } | null; // bế quan (tu luyện khi rời game)
   mapId: string;
   pos: { x: number; y: number } | null;
   rep: Record<string, number>; // danh vọng phe: chinh_dao, ma_dao, tan_tu

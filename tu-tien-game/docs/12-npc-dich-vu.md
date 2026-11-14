@@ -66,3 +66,12 @@ Chiết khấu quan hệ: ≥30 → -5%, ≥60 → -10%, ≥90 → -15% (áp lê
 2. Thêm NPC vào `maps/<map>.json → npcs` với `vendor` và các `talk` rule.
 3. Thêm hội thoại `*_1` (lần đầu) và `*_menu` vào `dialogues.json`.
 Không cần sửa code.
+
+## Hội Đấu Giá (đã làm; thay thế cho đấu giá giữa người chơi)
+Đấu giá **giữa người chơi cần máy chủ**, game hiện là trang tĩnh nên làm **đấu giá với thương nhân NPC** (không cần mạng):
+- **Mỗi ngày game một phiên** gồm 4 lô (trang bị phẩm chất cao 50%, đan hiếm 35%, nguyên liệu 15%), sinh theo seed `ngày` nên ổn định trong ngày. Phiên kết thúc lúc **08:00** sáng.
+- Người chơi đặt **giá tối đa** và **bị giữ cọc ngay**. Tăng giá lại phải **≥ +10%**. Rút giá bị **phí 10%**.
+- Hết ngày, hệ thống xét: nếu giá bạn **cao hơn mức các thương nhân NPC chịu trả** (ẩn với người chơi) thì **thắng**, và chỉ trả **mức NPC +5%** (giống đấu giá "người trả cao thứ hai"), **hoàn phần dư**; nhận hàng ngay. Thua thì **hoàn đủ**.
+- Kết quả hiện ở thẻ "Kết quả" và thông báo khi đang đi ngoài bản đồ.
+- NPC Chủ Trì Đấu Giá ở Phường Thị, **đi ngủ ban đêm** như các tiệm khác.
+- **Giới hạn:** chưa có cạnh tranh với người chơi thật. Khi có máy chủ có thể thay bộ xét giá bằng giá do người chơi khác đặt mà không đổi giao diện.

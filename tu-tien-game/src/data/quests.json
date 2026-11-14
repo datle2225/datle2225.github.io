@@ -122,5 +122,132 @@
    "linh_thach": 60,
    "exp": 80
   }
+ },
+ {
+  "id": "m2_1",
+  "type": "main",
+  "chapter": 6,
+  "title": "Huyết Nguyệt Bí Cảnh",
+  "desc": "Thiên Cơ Các tiết lộ Độc Thủ Tiên Sinh ẩn trong bí cảnh Huyết Nguyệt (phía nam Phường Thị). Tiến sâu vào bí cảnh.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "bi_canh_sau"
+   }
+  ],
+  "reward": {
+   "exp": 400
+  },
+  "unlocks": [
+   "m2_2"
+  ]
+ },
+ {
+  "id": "m2_2",
+  "type": "main",
+  "chapter": 6,
+  "title": "Kẻ thù thứ hai",
+  "desc": "Hạ Độc Thủ Tiên Sinh, kẻ thứ hai trong Huyết Thư.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "doc_thu_tien_sinh"
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 200
+  },
+  "unlocks": [
+   "m2_3"
+  ]
+ },
+ {
+  "id": "m2_3",
+  "type": "main",
+  "chapter": 7,
+  "title": "Mặc Gia Gia Chủ",
+  "desc": "Chứng cứ trên người Độc Thủ chỉ về Mặc Gia ở Hoang Mạc Xích Hỏa (phía đông Phường Thị). Đối chất với Gia Chủ.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "mac_gia_trai"
+   },
+   {
+    "kind": "battle",
+    "target": "mac_gia_chu"
+   }
+  ],
+  "reward": {
+   "exp": 2500,
+   "linh_thach": 300
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m3_1",
+  "type": "main",
+  "chapter": 8,
+  "title": "Băng Nguyên Cực Bắc",
+  "desc": "Thiên Cơ Các báo: Huyết Ảnh Môn Chủ ẩn náu ở Tổng Đàn phía bắc Băng Nguyên. Đi sâu vào Băng Nguyên.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "bang_nguyen_sau"
+   }
+  ],
+  "reward": {
+   "exp": 3000
+  },
+  "unlockChapter": 8,
+  "unlocks": [
+   "m3_2"
+  ]
+ },
+ {
+  "id": "m3_2",
+  "type": "main",
+  "chapter": 8,
+  "title": "Huyết Ảnh Tổng Đàn",
+  "desc": "Tiến vào Tổng Đàn, hạ Huyết Ảnh Môn Chủ, kẻ thứ tư trong Huyết Thư.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "tong_dan_sau"
+   },
+   {
+    "kind": "battle",
+    "target": "huyet_anh_mon_chu"
+   }
+  ],
+  "reward": {
+   "exp": 9000,
+   "linh_thach": 600
+  },
+  "unlocks": [
+   "m3_3"
+  ]
+ },
+ {
+  "id": "m3_3",
+  "type": "main",
+  "chapter": 8,
+  "title": "Kẻ cầm cán",
+  "desc": "Bức thư tay trên người Môn Chủ chỉ về Thiên Kiếp Đài. Đối mặt Lục Vân Sinh.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "thien_kiep_dai"
+   },
+   {
+    "kind": "battle",
+    "target": "luc_van_sinh"
+   }
+  ],
+  "reward": {
+   "exp": 15000,
+   "linh_thach": 1000
+  },
+  "unlocks": []
  }
 ]

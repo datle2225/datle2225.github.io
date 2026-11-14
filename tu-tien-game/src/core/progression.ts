@@ -19,10 +19,30 @@ export function atStageCap(p: PlayerState): boolean {
   return p.stage >= REALMS[p.realmIndex].stages && p.exp >= expNeeded(p);
 }
 
+export const btFlag = (p: PlayerState) => `bt_${REALMS[p.realmIndex].id}_${p.stage}`;
+
+/** Bình cảnh: tầng nằm trong `bottlenecks` của cảnh giới, chưa được "phá" bằng cơ duyên / Phá Cảnh Đan. */
+export function isBottleneckStage(p: PlayerState): boolean {
+  return p.stage < REALMS[p.realmIndex].stages && (REALMS[p.realmIndex].bottlenecks ?? []).includes(p.stage) && !p.flags[btFlag(p)];
+}
+
+/** Đủ tu vi nhưng đang bị bình cảnh chặn. */
+export function isBottlenecked(p: PlayerState): boolean {
+  return isBottleneckStage(p) && p.exp >= expNeeded(p);
+}
+
+/** Phá bình cảnh (ngộ đạo / Phá Cảnh Đan). Trả về số tầng lên được ngay sau đó. */
+export function clearBottleneck(p: PlayerState): number {
+  if (!isBottleneckStage(p)) return 0;
+  p.flags[btFlag(p)] = true;
+  return levelUpStages(p);
+}
+
 export function levelUpStages(p: PlayerState): number {
   let ups = 0;
   const realm = REALMS[p.realmIndex];
   while (p.stage < realm.stages && p.exp >= expNeeded(p)) {
+    if (isBottleneckStage(p)) { p.exp = Math.min(p.exp, expNeeded(p)); break; } // bị chặn: không tích trữ vượt trần
     p.exp -= expNeeded(p);
     p.stage++;
     ups++;
@@ -50,11 +70,23 @@ export function tribulationFor(p: PlayerState) {
   return next ? next.tribulation : REALMS[p.realmIndex].tribulation;
 }
 
+/** Tâm ma kiếp: từ Kết Đan trở lên phải vượt qua trước lôi kiếp. */
+export const tamMaFlag = (p: PlayerState) => `tam_ma_${REALMS[p.realmIndex + 1]?.id ?? 'x'}`;
+export function needsTamMa(p: PlayerState): boolean {
+  const next = REALMS[p.realmIndex + 1];
+  return !!next && p.realmIndex + 1 >= 2 && !p.flags[tamMaFlag(p)];
+}
+/** Tâm ma là bản sao của chính bạn: đạo tâm càng thấp càng mạnh (đạo tâm 50 = ngang bạn). */
+export function tamMaFactor(p: PlayerState): number {
+  return 0.8 + (100 - p.daoHeart) / 250;
+}
+
 /** Kiểm tra điều kiện "khí tức". Chưa đủ → không phạt, chỉ bảo quay về tu thêm. */
 export function tribulationReadiness(p: PlayerState): { ready: boolean; ratio: number; reason?: string } {
   const trib = tribulationFor(p);
   if (!trib) return { ready: false, ratio: 1, reason: 'Cảnh giới này không cần độ kiếp.' };
   if (!atStageCap(p)) return { ready: false, ratio: 0, reason: 'Tu vi chưa đầy tầng cuối.' };
+  if (needsTamMa(p)) return { ready: false, ratio: 1, reason: 'Cần vượt qua TÂM MA KIẾP trước khi độ lôi kiếp.' };
   const ratio = power(computeStats(p)) / trib.recommendedPower;
   if (ratio < 0.7) return { ready: false, ratio, reason: 'Khí tức chưa ổn, thiên lôi sẽ nghiền nát ngươi. Hãy tu luyện thêm.' };
   return { ready: true, ratio };

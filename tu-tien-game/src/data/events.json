@@ -60,5 +60,14 @@
   "chance": 0.3,
   "cooldown": 300,
   "dialogue": "ev_ma_tu"
+ },
+ {
+  "id": "ngo_dao",
+  "if": {
+   "bottleneck": true
+  },
+  "chance": 0.6,
+  "cooldown": 90,
+  "dialogue": "ev_ngo_dao"
  }
 ]

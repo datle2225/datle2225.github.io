@@ -10,7 +10,7 @@ TILESET = [(t, s == 'true') for t, s in TEXS]
 IDX = {t: i for i, (t, _) in enumerate(TILESET)}
 CH = {'g': 'grass', 'G2': 'grass2', 'p': 'path', 't': 'tree', 'r': 'rock', 'w': 'water', 'R': 'ruin', 'W': 'well', 'D': 'gate', 'h': 'house',
       'f': 'floor', 'k': 'wood', 'S': 'sect_roof', 'M': 'sect_wall', 'P': 'pillar', 'y': 'dummy', 'l': 'lantern', 'x': 'flower', 'n': 'fence',
-      'c': 'carpet', 'b': 'bridge', 's': 'sand'}
+      'c': 'carpet', 'b': 'bridge', 's': 'sand', 'C': 'cactus', 'V': 'lava', 'o': 'bones', 'X': 'dungeon_wall', 'd': 'dungeon_floor', 'q': 'sand_rock', 'N': 'snow', 'I': 'ice', 'Y': 'pine', 'K': 'snow_rock'}
 
 def hrand(x, y, salt=0):
     h = math.sin((x + salt) * 12.9898 + y * 78.233) * 43758.5453
@@ -49,7 +49,7 @@ class Grid:
         return [IDX[CH[c]] + 1 for row in self.g for c in row]
 
 def P(name, value, typ=None):
-    if typ is None: typ = 'int' if isinstance(value, int) and not isinstance(value, bool) else 'bool' if isinstance(value, bool) else 'string'
+    if typ is None: typ = 'float' if isinstance(value, float) else 'int' if isinstance(value, int) and not isinstance(value, bool) else 'bool' if isinstance(value, bool) else 'string'
     return {'name': name, 'type': typ, 'value': value}
 
 def J(v): return json.dumps(v, ensure_ascii=False, separators=(',', ':'))
@@ -90,7 +90,7 @@ def write(id, grid, O, props):
         if CH[grid.g[y][x]] in solid: grid.put(x, y, 'g')
     layers = [{'id': 1, 'name': 'ground', 'type': 'tilelayer', 'x': 0, 'y': 0, 'width': grid.w, 'height': grid.h, 'opacity': 1, 'visible': True, 'data': grid.data()}]
     lid = 2
-    for name in ['npcs', 'signs', 'enemies', 'herbs', 'zones', 'portals', 'spawns']:
+    for name in ['npcs', 'signs', 'enemies', 'herbs', 'zones', 'portals', 'auras', 'spawns']:
         layers.append({'id': lid, 'name': name, 'type': 'objectgroup', 'draworder': 'topdown', 'opacity': 1, 'visible': True, 'x': 0, 'y': 0, 'objects': O.layers.get(name, [])}); lid += 1
     tiles = [{'id': i, 'properties': [P('tex', t), P('solid', s, 'bool')]} for i, (t, s) in enumerate(TILESET)]
     m = {'type': 'map', 'version': '1.10', 'tiledversion': '1.10.2', 'orientation': 'orthogonal', 'renderorder': 'right-down', 'infinite': False,
@@ -146,10 +146,11 @@ def thanh_ha():
     O.add('zones', 'thanh_van_mon', 55, 19, [P('r', 2), P('if', J({'questActive': 'm1_3'})), P('deny', 'Cổng Thanh Vân Tông đóng chặt. Hãy hoàn thành "Cổ Đỉnh" trước.')])
     portal(O, 'to_thanh_van_tong', 57, 18, 1, 3, 'thanh_van_tong', 'from_thanh_ha', {'questDone': 'm1_3'}, 'Cổng Thanh Vân Tông chưa mở. Hãy xin nhập môn trước.')
     portal(O, 'to_phuong_thi', 62, 12, 1, 3, 'phuong_thi', 'from_thanh_ha', {'minChapter': 2}, 'Đường đến Phường Thị Vân Hải rất xa. Hãy gia nhập tông môn rồi hẵng đi.')
+    O.add('auras', 'linh_mach', 10, 14, [P('r', 4), P('value', 1.8), P('label', 'Linh mạch giếng cổ')])
     O.add('spawns', 'spawn', 10, 10)
     O.add('spawns', 'from_thanh_van_tong', 59, 19)
     O.add('spawns', 'from_phuong_thi', 60, 13)
-    write('thanh_ha', g, O, {'name': 'Thanh Hà Thôn & Hắc Lâm', 'music': 'overworld'})
+    write('thanh_ha', g, O, {'name': 'Thanh Hà Thôn & Hắc Lâm', 'music': 'overworld', 'aura': 1.0})
 
 # ═════════ Thanh Vân Tông ═════════
 def thanh_van_tong():
@@ -178,9 +179,10 @@ def thanh_van_tong():
     O.add('signs', 'Luyện Võ', 14, 12, [P('text', 'Võ Trường')])
     for x, y in [(6, 18), (40, 20), (10, 27), (38, 27)]: O.add('herbs', 'linh_thao', x, y)
     portal(O, 'to_thanh_ha', 22, 33, 4, 1, 'thanh_ha', 'from_thanh_van_tong')
+    O.add('auras', 'linh_mach', 24, 8, [P('r', 5), P('value', 2.2), P('label', 'Linh mạch chính điện')])
     O.add('spawns', 'spawn', 24, 31)
     O.add('spawns', 'from_thanh_ha', 24, 31)
-    write('thanh_van_tong', g, O, {'name': 'Thanh Vân Tông', 'music': 'sect'})
+    write('thanh_van_tong', g, O, {'name': 'Thanh Vân Tông', 'music': 'sect', 'aura': 1.5})
 
 # ═════════ Phường Thị Vân Hải ═════════
 def phuong_thi():
@@ -199,25 +201,175 @@ def phuong_thi():
     g.rect(40, 28, 52, 33, 'w'); g.rect(44, 28, 45, 33, 'b')
     g.rect(0, 34, 55, 35, 't')
     g.border('t'); g.rect(0, 17, 1, 19, 'p')
+    g.rect(27, 32, 29, 35, 'p'); g.rect(54, 17, 55, 19, 'p'); g.rect(27, 0, 29, 9, 'p')
     for (x, y) in [(3, 18), (12, 14), (20, 14), (29, 15), (14, 21), (24, 28), (47, 30), (30, 30)]:
         if g.g[y][x] in 'trw': g.put(x, y, 'g')
     O = Objs()
     npc(O, 'thiet_phong', 'Chủ Thiết Phong Lâu (Thợ Rèn)', 'npc_smith', 11, 14, [{'if': {'notFlag': 'met_thiet_phong'}, 'id': 'thiet_phong_1'}, {'id': 'thiet_phong_menu'}], 'thiet_phong', DAY(11, 14, 11, 10))
     npc(O, 'van_duoc', 'Đan Sư Vạn Dược Đường', 'npc_alch', 19, 14, [{'if': {'notFlag': 'met_van_duoc'}, 'id': 'van_duoc_1'}, {'id': 'van_duoc_menu'}], 'van_duoc', DAY(19, 14, 19, 10))
-    npc(O, 'thien_co', 'Thiên Cơ Các (Tin Tức)', 'npc_sage', 29, 14, [{'id': '@rumor'}], schedule=DAY(29, 14, 29, 10))
+    npc(O, 'thien_co', 'Thiên Cơ Các (Tin Tức)', 'npc_sage', 29, 14, [{'if': {'minRealm': 2, 'noQuest': 'm2_1'}, 'id': 'thien_co_m2'}, {'if': {'minRealm': 3, 'flag': 'enemy3_dead', 'noQuest': 'm3_1'}, 'id': 'thien_co_m3'}, {'if': {'questDone': 'm2_2', 'notFlag': 'mac_gia_known'}, 'id': 'thien_co_m2b'}, {'id': '@rumor'}], schedule=DAY(29, 14, 29, 10))
+    npc(O, 'dau_gia', 'Chủ Trì Đấu Giá', 'npc_clerk', 45, 14, [{'id': 'dau_gia_1'}], 'dau_gia', DAY(45, 14, 45, 10))
     npc(O, 've_phuong_thi', 'Vệ Binh Phường Thị', 'npc_guard', 3, 16, [{'id': 'guard_phuong_thi'}])
     npc(O, 'thuong_gia', 'Thương Gia Thạch', 'npc_merchant', 38, 14, [{'id': 'thuong_gia_1'}], 'thuong_nhan', DAY(38, 14, 38, 10))
     O.add('signs', 'Phuong', 28, 9, [P('text', 'Phường Thị Vân Hải')])
     O.add('signs', 'Ren', 12, 10, [P('text', 'Thiết Phong Lâu')])
     O.add('signs', 'Dan', 20, 10, [P('text', 'Vạn Dược Đường')])
+    O.add('signs', 'Dg', 45, 10, [P('text', 'Hội Đấu Giá')])
     for grp, tex, x, y, mr in [(['cuop_duong'], 'wolf', 14, 30, None), (['cuop_duong', 'cuop_duong'], 'cultist', 30, 31, None), (['ma_tu_lang_thang'], 'cultist', 8, 31, 1), (['soi_hoang', 'soi_hoang'], 'wolf', 50, 22, None)]:
         foe(O, grp, tex, x, y, mr)
     for x, y in [(5, 22), (50, 12), (20, 30), (35, 32), (3, 28)]: O.add('herbs', 'linh_thao', x, y)
     portal(O, 'to_thanh_ha', 1, 17, 1, 3, 'thanh_ha', 'from_phuong_thi')
+    portal(O, 'to_huyet_nguyet', 27, 35, 3, 1, 'huyet_nguyet', 'from_phuong_thi', {'minRealm': 2}, 'Bí cảnh Huyết Nguyệt rất nguy hiểm. Cần ít nhất cảnh giới Kết Đan.')
+    portal(O, 'to_hoang_mac', 55, 17, 1, 3, 'hoang_mac', 'from_phuong_thi', {'flag': 'mac_gia_known'}, 'Hoang Mạc Xích Hỏa quá nguy hiểm khi chưa có manh mối. Hãy hỏi Thiên Cơ Các.')
+    portal(O, 'to_bang_nguyen', 27, 0, 3, 1, 'bang_nguyen', 'from_phuong_thi', {'flag': 'hoi3_open'}, 'Băng Nguyên Cực Bắc quá khắc nghiệt. Hãy hỏi Thiên Cơ Các khi đã sẵn sàng (Nguyên Anh).')
+    O.add('spawns', 'from_bang_nguyen', 28, 3)
+    O.add('spawns', 'from_huyet_nguyet', 28, 31)
+    O.add('spawns', 'from_hoang_mac', 52, 18)
     O.add('spawns', 'spawn', 4, 18)
     O.add('spawns', 'from_thanh_ha', 4, 18)
-    write('phuong_thi', g, O, {'name': 'Phường Thị Vân Hải', 'music': 'market'})
+    write('phuong_thi', g, O, {'name': 'Phường Thị Vân Hải', 'music': 'market', 'aura': 0.7})
+
+# ═════════ Băng Nguyên Cực Bắc ═════════
+def bang_nguyen():
+    g = Grid(60, 36, 'N')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 33)
+            if r > 0.92: g.put(x, y, 'Y')
+            elif r > 0.89: g.put(x, y, 'K')
+    for y in range(g.h):
+        for x in range(g.w):
+            if (x - 18) ** 2 / 30 + (y - 14) ** 2 / 14 < 1: g.put(x, y, 'I')
+            if (x - 44) ** 2 / 24 + (y - 24) ** 2 / 12 < 1: g.put(x, y, 'I')
+    g.rect(29, 3, 30, 34, 'I'); g.rect(30, 17, 57, 18, 'I')     # đường băng
+    g.border('Y'); g.rect(28, 34, 31, 35, 'I'); g.rect(28, 0, 31, 2, 'I'); g.rect(58, 16, 59, 19, 'I')
+    O = Objs()
+    for grp, tex, x, y in [(['bang_lang', 'bang_lang'], 'wolf', 22, 26), (['bang_yeu'], 'snake', 36, 24), (['bang_lang', 'bang_yeu'], 'wolf', 40, 10), (['bang_lang'], 'wolf', 14, 8), (['bang_yeu', 'bang_yeu'], 'snake', 50, 30), (['huyet_ve'], 'cultist', 26, 6), (['huyet_ve', 'bang_lang'], 'cultist', 46, 14)]:
+        foe(O, grp, tex, x, y, 3)
+    for x, y in [(8, 30), (50, 8), (22, 20), (38, 30)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'bang_nguyen_sau', 30, 12, [P('r', 3)])
+    O.add('auras', 'linh_mach', 18, 14, [P('r', 5), P('value', 2.0), P('label', 'Hồ băng linh khí')])
+    portal(O, 'to_phuong_thi', 28, 34, 4, 1, 'phuong_thi', 'from_bang_nguyen')
+    portal(O, 'to_huyet_anh_dan', 28, 1, 4, 1, 'huyet_anh_dan', 'from_bang_nguyen', {'minChapter': 8}, 'Tổng Đàn Huyết Ảnh bị phong ấn bằng trận băng. Hãy nhận tin từ Thiên Cơ Các trước.')
+    portal(O, 'to_thien_kiep_dai', 58, 16, 1, 4, 'thien_kiep_dai', 'from_bang_nguyen', {'flag': 'enemy4_dead'}, 'Con đường đến Thiên Kiếp Đài chưa mở. Hãy hạ Huyết Ảnh Môn Chủ trước.')
+    O.add('signs', 'bn', 30, 33, [P('text', 'Băng Nguyên Cực Bắc')])
+    O.add('spawns', 'spawn', 30, 32)
+    O.add('spawns', 'from_phuong_thi', 30, 32)
+    O.add('spawns', 'from_huyet_anh_dan', 30, 4)
+    O.add('spawns', 'from_thien_kiep_dai', 56, 17)
+    write('bang_nguyen', g, O, {'name': 'Băng Nguyên Cực Bắc', 'music': 'tribulation', 'aura': 1.6, 'respawn': 30})
+
+# ═════════ Huyết Ảnh Tổng Đàn ═════════
+def huyet_anh_dan():
+    g = Grid(48, 34, 'X')
+    g.rect(20, 28, 27, 32, 'd'); g.rect(23, 20, 24, 27, 'd')
+    g.rect(8, 17, 17, 24, 'd'); g.rect(17, 21, 23, 21, 'd')
+    g.rect(30, 17, 39, 24, 'd'); g.rect(24, 21, 30, 21, 'd')
+    g.rect(23, 12, 24, 19, 'd'); g.rect(13, 3, 34, 11, 'd')
+    for (x, y) in [(14, 4), (33, 4), (14, 10), (33, 10)]: g.put(x, y, 'P')
+    for x0 in (17, 29): g.rect(x0, 6, x0 + 1, 8, 'V')
+    g.rect(22, 5, 25, 8, 'V')
+    for (x, y) in [(10, 18), (11, 23), (36, 18), (37, 23), (20, 4), (27, 10), (22, 30), (26, 29)]: g.put(x, y, 'o')
+    for (x, y) in [(20, 3), (27, 3), (9, 17), (38, 17)]: g.put(x, y, 'l')
+    g.rect(12, 20, 13, 21, 'V'); g.rect(34, 20, 35, 21, 'V')
+    g.border('X')
+    O = Objs()
+    for grp, tex, x, y in [(['huyet_ve', 'huyet_ve'], 'cultist', 12, 19), (['huyet_ve', 'bang_yeu'], 'cultist', 35, 19), (['huyet_ve'], 'cultist', 23, 15), (['huyet_ve', 'huyet_ve'], 'cultist', 24, 25), (['huyet_ve', 'huyet_ve'], 'cultist', 19, 9)]:
+        foe(O, grp, tex, x, y, 3)
+    foe(O, ['huyet_anh_mon_chu'], 'elder_boss', 24, 4, 3, 3)
+    for x, y in [(9, 22), (37, 22)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'tong_dan_sau', 23, 14, [P('r', 3)])
+    O.add('auras', 'linh_mach', 24, 7, [P('r', 5), P('value', 3.0), P('label', 'Huyết trì linh mạch')])
+    portal(O, 'to_bang_nguyen', 22, 32, 4, 1, 'bang_nguyen', 'from_huyet_anh_dan')
+    O.add('signs', 'td', 24, 30, [P('text', 'Huyết Ảnh Tổng Đàn')])
+    O.add('spawns', 'spawn', 23, 30)
+    O.add('spawns', 'from_bang_nguyen', 23, 30)
+    write('huyet_anh_dan', g, O, {'name': 'Huyết Ảnh Tổng Đàn', 'music': 'boss', 'aura': 2.0, 'respawn': 25})
+
+# ═════════ Thiên Kiếp Đài ═════════
+def thien_kiep_dai():
+    g = Grid(40, 30, 'N')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 51)
+            if r > 0.93: g.put(x, y, 'Y')
+            elif r > 0.9: g.put(x, y, 'K')
+    g.rect(8, 6, 31, 25, 'f'); g.rect(19, 4, 20, 29, 'c')
+    for (x, y) in [(9, 7), (30, 7), (9, 24), (30, 24), (9, 15), (30, 15)]: g.put(x, y, 'P')
+    for y in (8, 12, 16, 20):
+        g.put(17, y, 'l'); g.put(22, y, 'l')
+    g.border('Y'); g.rect(18, 29, 21, 29, 'c'); g.rect(0, 14, 7, 16, 'I')
+    O = Objs()
+    npc(O, 'luc_van_sinh', 'Lục Vân Sinh', 'npc_sage', 20, 8, [{'if': {'flag': 'enemy5_dead'}, 'id': 'luc_final_after'}, {'if': {'flag': 'enemy5_spared'}, 'id': 'luc_final_after'}, {'if': {'questActive': 'm3_3'}, 'id': 'luc_final'}, {'id': 'luc_final_after'}])
+    O.add('zones', 'thien_kiep_dai', 20, 14, [P('r', 4)])
+    O.add('auras', 'linh_mach', 20, 15, [P('r', 6), P('value', 3.5), P('label', 'Thiên Kiếp Đài')])
+    portal(O, 'to_bang_nguyen', 18, 29, 4, 1, 'bang_nguyen', 'from_thien_kiep_dai')
+    portal(O, 'to_bang_nguyen_w', 0, 14, 1, 3, 'bang_nguyen', 'from_thien_kiep_dai')
+    O.add('signs', 'tk', 20, 27, [P('text', 'Thiên Kiếp Đài')])
+    O.add('spawns', 'spawn', 20, 27)
+    O.add('spawns', 'from_bang_nguyen', 20, 27)
+    write('thien_kiep_dai', g, O, {'name': 'Thiên Kiếp Đài', 'music': 'sect', 'aura': 2.5})
+
+# ═════════ Huyết Nguyệt Bí Cảnh ═════════
+def huyet_nguyet():
+    g = Grid(44, 32, 'X')
+    g.rect(18, 26, 25, 30, 'd'); g.rect(21, 18, 22, 25, 'd')
+    g.rect(6, 16, 15, 22, 'd'); g.rect(15, 19, 21, 19, 'd')
+    g.rect(28, 16, 37, 22, 'd'); g.rect(22, 19, 28, 19, 'd')
+    g.rect(21, 11, 22, 17, 'd'); g.rect(12, 3, 31, 10, 'd')
+    for (x, y) in [(13, 4), (30, 4), (13, 9), (30, 9)]: g.put(x, y, 'P')
+    for x0 in (15, 28):
+        g.rect(x0, 5, x0 + 1, 6, 'V')
+    for (x, y) in [(8, 17), (9, 21), (34, 17), (36, 21), (18, 5), (25, 8), (20, 27), (23, 28)]: g.put(x, y, 'o')
+    for (x, y) in [(18, 3), (25, 3), (7, 16), (36, 16)]: g.put(x, y, 'l')
+    g.rect(8, 19, 9, 20, 'V'); g.rect(34, 19, 35, 20, 'V')
+    g.border('X')
+    O = Objs()
+    for grp, tex, x, y in [(['huyet_quai', 'doc_trung'], 'cultist', 10, 18), (['huyet_quai', 'huyet_quai'], 'cultist', 32, 18), (['doc_trung'], 'snake', 21, 14), (['huyet_quai'], 'cultist', 21, 22), (['doc_trung', 'doc_trung'], 'snake', 24, 7)]:
+        foe(O, grp, tex, x, y, 2)
+    foe(O, ['doc_thu_tien_sinh'], 'elder_boss', 22, 5, 2, 3)
+    for x, y in [(7, 21), (36, 17), (14, 8)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'bi_canh_sau', 21, 12, [P('r', 3)])
+    O.add('auras', 'linh_mach', 22, 6, [P('r', 5), P('value', 2.8), P('label', 'Huyết Nguyệt linh mạch')])
+    portal(O, 'to_phuong_thi', 19, 30, 4, 1, 'phuong_thi', 'from_huyet_nguyet')
+    O.add('signs', 'bc', 22, 28, [P('text', 'Huyết Nguyệt Bí Cảnh')])
+    O.add('spawns', 'spawn', 21, 28)
+    O.add('spawns', 'from_phuong_thi', 21, 28)
+    write('huyet_nguyet', g, O, {'name': 'Huyết Nguyệt Bí Cảnh', 'music': 'tribulation', 'aura': 2.0, 'respawn': 20})
+
+# ═════════ Hoang Mạc Xích Hỏa ═════════
+def hoang_mac():
+    g = Grid(60, 36, 's')
+    for y in range(g.h):
+        for x in range(g.w):
+            r = hrand(x, y, 21)
+            if r > 0.93: g.put(x, y, 'C')
+            elif r > 0.89: g.put(x, y, 'q')
+    g.rect(0, 18, 40, 18, 'p'); g.rect(40, 18, 40, 27, 'p'); g.rect(38, 27, 52, 27, 'p')
+    for y in range(g.h):
+        for x in range(g.w):
+            if (x - 14) ** 2 / 20 + (y - 27) ** 2 / 8 < 1: g.put(x, y, 'w')
+            if (x - 47) ** 2 / 16 + (y - 9) ** 2 / 10 < 1: g.put(x, y, 'V')
+    for (x, y) in [(10, 25), (18, 25), (12, 30), (17, 30)]: g.put(x, y, 't')
+    g.rect(38, 23, 54, 31, 'k')                      # doanh trại Mặc Gia
+    g.house(40, 20, 5, 2); g.house(48, 20, 5, 2); g.house(42, 29, 5, 2); g.house(50, 29, 4, 2)
+    g.rect(40, 27, 40, 27, 'p')
+    g.border('C'); g.rect(0, 17, 1, 19, 'p')
+    O = Objs()
+    npc(O, 'mac_gia_chu', 'Mặc Gia Gia Chủ', 'npc_sage', 46, 26, [{'if': {'questActive': 'm2_3'}, 'id': 'mac_gia_chu_1'}, {'if': {'flag': 'enemy3_dead'}, 'id': 'mac_gia_chu_after'}, {'id': 'mac_gia_chu_idle'}])
+    npc(O, 'mac_ho_ve', 'Hộ Vệ Mặc Gia', 'npc_guard', 42, 25, [{'id': 'mac_ho_ve'}])
+    npc(O, 'lu_khach', 'Lữ Khách Hoang Mạc', 'npc_merchant', 16, 23, [{'id': 'lu_khach'}], 'thuong_nhan')
+    O.add('signs', 'mg', 44, 24, [P('text', 'Mặc Gia Thương Hội')])
+    for grp, tex, x, y in [(['xich_hoa_thu'], 'wolf', 20, 12), (['xich_hoa_thu', 'sa_trung'], 'snake', 28, 22), (['sa_trung', 'sa_trung'], 'snake', 30, 8), (['xich_hoa_thu', 'xich_hoa_thu'], 'wolf', 34, 30), (['sa_trung'], 'snake', 8, 10)]:
+        foe(O, grp, tex, x, y, 2)
+    for x, y in [(12, 22), (20, 28), (6, 28), (30, 15)]: O.add('herbs', 'linh_thao', x, y)
+    O.add('zones', 'mac_gia_trai', 44, 26, [P('r', 4)])
+    O.add('auras', 'linh_mach', 14, 27, [P('r', 4), P('value', 1.8), P('label', 'Ốc đảo linh khí')])
+    portal(O, 'to_phuong_thi', 1, 17, 1, 3, 'phuong_thi', 'from_hoang_mac')
+    O.add('spawns', 'spawn', 4, 18)
+    O.add('spawns', 'from_phuong_thi', 4, 18)
+    write('hoang_mac', g, O, {'name': 'Hoang Mạc Xích Hỏa', 'music': 'overworld', 'aura': 1.3})
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    thanh_ha(); thanh_van_tong(); phuong_thi()
+    thanh_ha(); thanh_van_tong(); phuong_thi(); huyet_nguyet(); hoang_mac(); bang_nguyen(); huyet_anh_dan(); thien_kiep_dai()

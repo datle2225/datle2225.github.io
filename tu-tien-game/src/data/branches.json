@@ -49,7 +49,7 @@
   "name": "Đan Tu",
   "role": "Hỗ trợ, độc, hồi phục",
   "mainStat": "hp",
-  "unlockRealm": "truc_co",
+  "unlockRealm": "ket_dan",
   "playable": true,
   "gear": [
    "dan_lo",
@@ -63,7 +63,7 @@
   "name": "Phù Trận Tu",
   "role": "Khống chế chiến trường",
   "mainStat": "mp",
-  "unlockRealm": "truc_co",
+  "unlockRealm": "ket_dan",
   "playable": true,
   "gear": [
    "phu_but",
@@ -78,7 +78,7 @@
   "role": "Triệu hồi, đồng đội",
   "mainStat": "hp",
   "unlockRealm": "nguyen_anh",
-  "playable": false,
+  "playable": true,
   "gear": [
    "thu_boi",
    "linh_thu_hoan"
@@ -91,7 +91,7 @@
   "name": "Ma Tu",
   "role": "Hy sinh máu lấy sức mạnh",
   "mainStat": "atk",
-  "unlockRealm": "truc_co",
+  "unlockRealm": "nguyen_anh",
   "playable": true,
   "gear": [
    "ma_dao",
@@ -106,7 +106,7 @@
   "role": "Buff, debuff, nhịp điệu",
   "mainStat": "mp",
   "unlockRealm": "nguyen_anh",
-  "playable": false,
+  "playable": true,
   "gear": [
    "co_cam",
    "tieu_sao"

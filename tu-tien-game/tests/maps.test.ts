@@ -7,8 +7,8 @@ import { enemyMap, vendorMap, questMap } from '../src/core/data';
 import { newPlayer } from '../src/core/save';
 
 describe('bản đồ Tiled', () => {
-  it('3 bản đồ được nạp và có spawn hợp lệ', () => {
-    expect(allMapIds().sort()).toEqual(['phuong_thi', 'thanh_ha', 'thanh_van_tong']);
+  it('8 bản đồ được nạp và có spawn hợp lệ', () => {
+    expect(allMapIds().sort()).toEqual(['bang_nguyen', 'hoang_mac', 'huyet_anh_dan', 'huyet_nguyet', 'phuong_thi', 'thanh_ha', 'thanh_van_tong', 'thien_kiep_dai']);
     for (const id of allMapIds()) {
       const m = loadMap(id);
       expect(m.w * m.h).toBe(m.tiles.length);

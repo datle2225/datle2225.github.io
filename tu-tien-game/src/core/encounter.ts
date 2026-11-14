@@ -3,12 +3,14 @@ import { companionMap, enemyMap } from './data';
 import { Rng } from './rng';
 import { availableSkills, companionStats } from './session';
 import { computeStats } from './stats';
+import { tamMaFactor } from './progression';
 import type { PlayerState } from './types';
 
 /** Dựng trận đấu từ trạng thái người chơi (dùng chung cho game và mô phỏng cân bằng). */
 export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
   const stats = computeStats(p);
   const player = makeUnit('player', p.name, 'player', stats, availableSkills(p).map((s) => s.id), 'none');
+  if (p.unlockedSystems.includes('thoat_xac')) player.reviveFrac = 0.3; // Nguyên Anh: thoát xác, mạng thứ hai
   const units: Unit[] = [player];
   if (withParty) {
     for (const cid of p.party) {
@@ -22,7 +24,12 @@ export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withPa
     const e = enemyMap.get(eid);
     const id = `e${i}`;
     enemyUnitIds.push(id);
-    units.push(makeUnit(id, e.name, 'enemy', e.stats, e.skills, e.element, e.phases));
+    if (eid === 'tam_ma') {
+      // bản sao của người chơi: cùng chiêu thức, chỉ số theo đạo tâm
+      const f = tamMaFactor(p);
+      const ms = { hp: Math.round(stats.hp * f), mp: stats.mp, atk: Math.round(stats.atk * f), def: Math.round(stats.def * f), spd: stats.spd, crit: stats.crit };
+      units.push(makeUnit(id, 'Tâm Ma', 'enemy', ms, availableSkills(p).map((s) => s.id), 'none'));
+    } else units.push(makeUnit(id, e.name, 'enemy', e.stats, e.skills, e.element, e.phases, e.tempoResist));
   });
   return { battle: new Battle(units, rng), player, enemyUnitIds };
 }
