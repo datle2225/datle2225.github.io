@@ -1,0 +1,22 @@
+[
+ {
+  "id": "nguyet_nhi",
+  "name": "Liễu Nguyệt Nhi",
+  "tex": "npc_girl",
+  "element": "moc",
+  "stats": {
+   "hp": 90,
+   "mp": 60,
+   "atk": 9,
+   "def": 4,
+   "spd": 105,
+   "crit": 0.05
+  },
+  "skills": [
+   "phap_bang_chu",
+   "moc_tri_lieu",
+   "phap_hoa_cau"
+  ],
+  "desc": "Thánh nữ Vạn Dược Cốc, am hiểu trị liệu."
+ }
+]

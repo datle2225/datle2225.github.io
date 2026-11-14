@@ -1,0 +1,1225 @@
+{
+ "intro": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Thanh Hà thôn, đêm đó lửa cháy ngút trời...",
+    "next": "b"
+   },
+   "b": {
+    "text": "Diệp gia, ba mươi sáu mạng người. Chỉ còn mình ngươi.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Linh căn bị coi là phế vật, nhưng ngươi sống để báo thù.",
+    "next": "d"
+   },
+   "d": {
+    "text": "Hãy tìm Lão Ngư bên con đường phía nam tàn tích.",
+    "next": null
+   }
+  }
+ },
+ "lao_ngu_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lão Ngư",
+    "text": "Ngươi là con cháu Diệp gia? Còn sống sao...",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Ngư",
+    "text": "Thủ phạm là Huyết Ảnh Môn. Nhưng sau lưng chúng còn có người của một tông môn chính đạo.",
+    "next": "c"
+   },
+   "c": {
+    "who": "Lão Ngư",
+    "text": "Đi xem tàn tích nhà ngươi, rồi xuống giếng cổ phía nam. Cha ngươi để lại thứ gì đó ở đấy.",
+    "do": [
+     {
+      "event": {
+       "kind": "talk",
+       "target": "lao_ngu"
+      }
+     },
+     {
+      "flag": "met_laongu"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Ta sẽ báo thù. Bằng mọi giá.",
+      "goto": "d1",
+      "do": [
+       {
+        "dao": -2
+       }
+      ]
+     },
+     {
+      "text": "Trước hết ta cần biết sự thật.",
+      "goto": "d2",
+      "do": [
+       {
+        "dao": 2
+       }
+      ]
+     }
+    ]
+   },
+   "d1": {
+    "who": "Lão Ngư",
+    "text": "Thù hận làm ngươi sống, nhưng cũng sẽ làm ngươi mù. Hãy nhớ điều đó.",
+    "next": null
+   },
+   "d2": {
+    "who": "Lão Ngư",
+    "text": "Tốt. Người biết hỏi mới sống được lâu trong thế giới này.",
+    "next": null
+   }
+  }
+ },
+ "lao_ngu_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lão Ngư",
+    "text": "Giếng cổ phía nam, trên đường mòn. Đừng quên mang theo vũ khí, mấy con sói đói lắm.",
+    "choices": [
+     {
+      "text": "Ông còn biết gì về Huyết Ảnh Môn?",
+      "goto": "b",
+      "if": {
+       "questDone": "m1_2"
+      }
+     },
+     {
+      "text": "Cảm ơn lão.",
+      "goto": null
+     }
+    ]
+   },
+   "b": {
+    "who": "Lão Ngư",
+    "text": "Chúng có một trưởng lão ở Hắc Lâm phía đông. Đợi ngươi Trúc Cơ rồi hãy đi, bây giờ đi là chết.",
+    "next": null
+   }
+  }
+ },
+ "ba_ly_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Lý",
+    "text": "Đàn gà của lão thân bị sói tha mất rồi! Cậu đánh giúp ba con sói được không?",
+    "choices": [
+     {
+      "text": "Được, để ta lo.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "s1_1"
+       },
+       {
+        "rel": {
+         "ba_ly": 5
+        }
+       }
+      ]
+     },
+     {
+      "text": "Ta không rảnh.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Bà Lý",
+    "text": "Cảm ơn cậu nhiều! Sói hay quanh quẩn phía đông đường đất.",
+    "next": null
+   }
+  }
+ },
+ "ba_ly_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Lý",
+    "text": "Cậu cứ đi đường đất phía đông, sói ở đó.",
+    "next": null
+   }
+  }
+ },
+ "ba_ly_choice": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Lý",
+    "text": "Ôi, gà an toàn rồi! ... Cậu thấy con sói mẹ lúc nãy chứ? Nó chỉ đang đi tìm thức ăn cho đàn con.",
+    "choices": [
+     {
+      "text": "Ta sẽ không làm khó đàn sói mẹ con nó.",
+      "goto": "spare",
+      "do": [
+       {
+        "flag": "wolf_spared"
+       },
+       {
+        "flag": "wolf_resolved"
+       },
+       {
+        "dao": 4
+       },
+       {
+        "rep": {
+         "tan_tu": 2
+        }
+       },
+       {
+        "rel": {
+         "ba_ly": 10
+        }
+       }
+      ]
+     },
+     {
+      "text": "Sói là mối họa, ta đã diệt cả ổ.",
+      "goto": "kill",
+      "do": [
+       {
+        "flag": "wolf_killed"
+       },
+       {
+        "flag": "wolf_resolved"
+       },
+       {
+        "dao": -3
+       },
+       {
+        "gold": 20
+       }
+      ]
+     }
+    ]
+   },
+   "spare": {
+    "who": "Bà Lý",
+    "text": "Cậu có tấm lòng tốt. Lão thân không có gì quý, nhưng cậu cứ ghé nhà, bà nấu cơm cho.",
+    "next": null
+   },
+   "kill": {
+    "who": "Bà Lý",
+    "text": "À... ừ. Cảm ơn cậu. Đây là chút tiền thưởng của làng.",
+    "next": null
+   }
+  }
+ },
+ "ba_ly_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Bà Lý",
+    "text": "Dạo này Huyết Ảnh Môn lảng vảng quanh đây, cậu cẩn thận nhé.",
+    "next": null
+   }
+  }
+ },
+ "gate_closed": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Đệ tử Thanh Vân",
+    "text": "Tông môn chưa mở cửa cho người lạ. Hãy hoàn thành nhiệm vụ của ngươi trước.",
+    "next": null
+   }
+  }
+ },
+ "gate_open": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Đệ tử Thanh Vân",
+    "text": "Ngươi có linh căn gì? ... Tàn Căn? Haha, phế vật cũng muốn nhập môn?",
+    "next": "b"
+   },
+   "b": {
+    "who": "Đệ tử Thanh Vân",
+    "text": "Thôi, vào đi. Tông môn thu nhận cả người như ngươi để làm tạp dịch.",
+    "choices": [
+     {
+      "text": "(Nhẫn nhịn) Đa tạ.",
+      "goto": null,
+      "do": [
+       {
+        "dao": 3
+       },
+       {
+        "event": {
+         "kind": "talk",
+         "target": "gate"
+        }
+       }
+      ]
+     },
+     {
+      "text": "Hôm nay ngươi khinh ta, ngày mai ngươi sẽ nhớ cái tên Diệp Thanh.",
+      "goto": null,
+      "do": [
+       {
+        "dao": -2
+       },
+       {
+        "flag": "swore_to_gate"
+       },
+       {
+        "event": {
+         "kind": "talk",
+         "target": "gate"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "tho_ren_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lão Thiết",
+    "text": "Hừm, ngươi mang mùi lò rèn đấy. Đồ của lão không bán rẻ, nhưng không bán dở.",
+    "do": [
+     {
+      "flag": "met_tho_ren"
+     },
+     {
+      "rel": {
+       "tho_ren": 3
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Thiết",
+    "text": "Muốn mua đồ có sẵn, thuê lão rèn, hay tự mượn lò của lão cũng được. Lão chỉ lấy tiền công.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_ren"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tho_ren_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lão Thiết",
+    "text": "Đồ của lão thiết không bán rẻ, nhưng không bán dở. Cần gì?",
+    "choices": [
+     {
+      "text": "Xem hàng / Thuê rèn / Tự rèn",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tho_ren"
+       }
+      ]
+     },
+     {
+      "text": "Rèn đồ khó học lắm không?",
+      "goto": "b"
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   },
+   "b": {
+    "who": "Lão Thiết",
+    "text": "Nguyên liệu tốt, nhịp búa đều, và đừng nóng. Tự rèn thì có thể ra món xịn hơn lão, nhưng cũng dễ hỏng hơn.",
+    "next": null
+   }
+  }
+ },
+ "dan_su_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lục Dược Sư",
+    "text": "Ồ, ngươi là người mới đến phường? Ta là đan sư của Vạn Dược Cốc.",
+    "do": [
+     {
+      "flag": "met_dan_su"
+     },
+     {
+      "rel": {
+       "dan_su": 3
+      }
+     },
+     {
+      "recipe": "hoi_huyet_dan"
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Lục Dược Sư",
+    "text": "Đây, tặng ngươi phương Hồi Huyết Đan. Còn đan khác, ngươi có thể mua đan có sẵn hoặc thuê ta luyện. Ta biết nhiều phương hơn ngươi đấy.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "dan_su"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "dan_su_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lục Dược Sư",
+    "text": "Dược liệu tốt là một nửa của đan dược. Ngươi cần gì?",
+    "choices": [
+     {
+      "text": "Xem hàng / Thuê luyện / Tự luyện",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "dan_su"
+       }
+      ]
+     },
+     {
+      "text": "Ta cần đan hộ kiếp.",
+      "goto": "b",
+      "if": {
+       "minRealm": 0
+      }
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   },
+   "b": {
+    "who": "Lục Dược Sư",
+    "text": "Trúc Cơ Đan giảm sát thương lôi kiếp. Ta luyện được, nhưng nguyên liệu không rẻ: Huyết Sâm ba cây và Linh Thảo sáu cây.",
+    "next": null
+   }
+  }
+ },
+ "tap_hoa_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Tiền",
+    "text": "Khách quan cần gì cứ nói, hàng của ta đủ cả! Mua bán nguyên liệu, đan sẵn, thời trang...",
+    "do": [
+     {
+      "flag": "met_tap_hoa"
+     },
+     {
+      "system": "cua_hang"
+     }
+    ],
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tap_hoa"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "tap_hoa_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chưởng Quầy Tiền",
+    "text": "Hôm nay giá cả ổn định, khách quan cần gì?",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "tap_hoa"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "nguyet_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Ngươi là Diệp Thanh? Lão Ngư có nhắc đến ngươi... Ta là Liễu Nguyệt Nhi, đệ tử Vạn Dược Cốc.",
+    "do": [
+     {
+      "flag": "nguyet_met"
+     },
+     {
+      "rel": {
+       "nguyet_nhi": 5
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Trên người ngươi có khí tức rất lạ... Không giống Tàn Căn chút nào.",
+    "choices": [
+     {
+      "text": "Cô nhìn ra được gì?",
+      "goto": "c",
+      "do": [
+       {
+        "rel": {
+         "nguyet_nhi": 3
+        }
+       }
+      ]
+     },
+     {
+      "text": "Đừng nói chuyện này với ai.",
+      "goto": "d",
+      "do": [
+       {
+        "flag": "nguyet_secret"
+       }
+      ]
+     }
+    ]
+   },
+   "c": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Ta chưa chắc. Nhưng nếu ngươi cần một người trị liệu theo cùng, ta sẵn lòng đi một đoạn.",
+    "next": null
+   },
+   "d": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Ta giữ bí mật. Nhưng nếu cần một người trị liệu, cứ nhờ ta.",
+    "next": null
+   }
+  }
+ },
+ "nguyet_join": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Ngươi định đi lịch luyện à? Một mình nguy hiểm lắm.",
+    "choices": [
+     {
+      "text": "Cô đi cùng ta nhé?",
+      "goto": "yes",
+      "do": [
+       {
+        "join": "nguyet_nhi"
+       },
+       {
+        "rel": {
+         "nguyet_nhi": 5
+        }
+       }
+      ]
+     },
+     {
+      "text": "Ta tự lo được.",
+      "goto": null
+     }
+    ]
+   },
+   "yes": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Được. Ta sẽ lo hồi phục cho ngươi. Đừng liều mạng quá nhé.",
+    "next": null
+   }
+  }
+ },
+ "nguyet_party": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Ta đang đi cùng ngươi. Có gì cần cứ nói.",
+    "choices": [
+     {
+      "text": "Cô nghỉ ở đây đi, ta đi một mình.",
+      "goto": "leave",
+      "do": [
+       {
+        "leave": "nguyet_nhi"
+       }
+      ]
+     },
+     {
+      "text": "Không có gì.",
+      "goto": null
+     }
+    ]
+   },
+   "leave": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Được. Khi nào cần, ta ở phường thị.",
+    "next": null
+   }
+  }
+ },
+ "nguyet_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Liễu Nguyệt Nhi",
+    "text": "Thế giới tu tiên khắc nghiệt lắm. Ngươi cẩn thận.",
+    "next": null
+   }
+  }
+ },
+ "co_dinh": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Cổ Đỉnh",
+    "text": "Cổ Đỉnh rung lên. Một giọng nói già nua vang trong đầu ngươi: \"Hậu bối... linh căn của ngươi không phải phế vật.\"",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "\"Nó bị ta phong ấn để tránh bị kẻ khác nhòm ngó. Từ giờ, hãy ngồi thiền, ta sẽ chỉ cho ngươi cách hấp thụ linh khí.\"",
+    "do": [
+     {
+      "toast": "Mở khóa: Tu luyện (nhấn M)"
+     }
+    ],
+    "next": null
+   }
+  }
+ },
+ "m1_3_done": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Cổng Thanh Vân Tông mở ra. Ánh mắt khinh thường của các đệ tử dõi theo ngươi, nhưng ngươi đã bước qua.",
+    "do": [
+     {
+      "chapter": 2
+     }
+    ],
+    "next": null
+   }
+  }
+ },
+ "shop_closed": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Biển treo cửa",
+    "text": "Tiệm đã đóng cửa nghỉ đêm. Quay lại vào ban ngày (6:00 – 22:00).",
+    "next": null
+   }
+  }
+ },
+ "ev_thuong_nhan": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Trong bóng tối ven đường, một thương nhân trùm áo choàng vẫy tay: \"Này, khách quan, ta có hàng hiếm, giá hời.\"",
+    "choices": [
+     {
+      "text": "Xem hàng.",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thuong_nhan"
+       }
+      ]
+     },
+     {
+      "text": "Không, ta đi tiếp.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "ev_tan_tu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Một tán tu bị thương nằm bên đường, hơi thở yếu ớt: \"Cứu... cứu ta...\"",
+    "choices": [
+     {
+      "text": "Cho hắn một viên Hồi Huyết Đan.",
+      "goto": "help",
+      "if": {
+       "hasItem": {
+        "id": "hoi_huyet_dan",
+        "n": 1
+       }
+      },
+      "do": [
+       {
+        "item": {
+         "id": "hoi_huyet_dan",
+         "n": -1
+        }
+       },
+       {
+        "dao": 4
+       },
+       {
+        "rep": {
+         "tan_tu": 3
+        }
+       }
+      ]
+     },
+     {
+      "text": "Lục túi hắn lấy vài viên linh thạch.",
+      "goto": "rob",
+      "do": [
+       {
+        "gold": 15
+       },
+       {
+        "dao": -5
+       },
+       {
+        "rep": {
+         "tan_tu": -3
+        }
+       }
+      ]
+     },
+     {
+      "text": "Bỏ đi, không phải việc của ta.",
+      "goto": null
+     }
+    ]
+   },
+   "help": {
+    "text": "Tán tu thều thào cảm ơn, rồi đưa ngươi một mảnh ngọc: \"Trả ơn... mảnh này... hữu dụng.\"",
+    "do": [
+     {
+      "exp": 40
+     }
+    ],
+    "next": null
+   },
+   "rob": {
+    "text": "Ngươi lấy được ít linh thạch. Ánh mắt tán tu nhìn ngươi lần cuối đầy căm hận.",
+    "next": null
+   }
+  }
+ },
+ "ev_cuop_duong": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Cướp đường",
+    "text": "Đứng lại! Để lại linh thạch rồi muốn đi đâu thì đi!",
+    "choices": [
+     {
+      "text": "Ra tay.",
+      "goto": "fight",
+      "do": [
+       {
+        "battle": [
+         "cuop_duong",
+         "cuop_duong"
+        ]
+       }
+      ]
+     },
+     {
+      "text": "Đưa 20 linh thạch cho yên chuyện.",
+      "goto": "pay",
+      "if": {
+       "gold": 20
+      },
+      "do": [
+       {
+        "gold": -20
+       }
+      ]
+     }
+    ]
+   },
+   "fight": {
+    "text": "Bọn cướp rút đao xông lên!",
+    "next": null
+   },
+   "pay": {
+    "text": "Bọn cướp cười khẩy rồi biến mất vào rừng.",
+    "next": null
+   }
+  }
+ },
+ "ev_suoi": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Ngươi phát hiện một con suối nhỏ, linh khí quanh đó đậm đặc hơn hẳn.",
+    "choices": [
+     {
+      "text": "Ngồi thiền một lát.",
+      "goto": "med",
+      "do": [
+       {
+        "exp": 80
+       },
+       {
+        "toast": "Linh khí thấm vào kinh mạch."
+       }
+      ]
+     },
+     {
+      "text": "Lấy nước suối mang đi.",
+      "goto": null,
+      "do": [
+       {
+        "item": {
+         "id": "linh_thao",
+         "n": 2
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "med": {
+    "text": "Sau một lúc, ngươi thấy tinh thần sảng khoái, tu vi tăng lên.",
+    "next": null
+   }
+  }
+ },
+ "ev_ma_tu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Ma Tu",
+    "text": "Hô hô, tu sĩ Trúc Cơ à? Máu của ngươi hẳn rất bổ cho công pháp của ta!",
+    "choices": [
+     {
+      "text": "Ta không sợ ngươi.",
+      "goto": "fight",
+      "do": [
+       {
+        "battle": [
+         "ma_tu_lang_thang"
+        ]
+       }
+      ]
+     },
+     {
+      "text": "Tránh đi.",
+      "goto": null
+     }
+    ]
+   },
+   "fight": {
+    "text": "Ma Tu cười điên dại rồi lao tới!",
+    "next": null
+   }
+  }
+ },
+ "mac_tran_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Mặc Trần",
+    "text": "Ngươi chính là tên Tàn Căn mới nhập môn? Ta là Mặc Trần, đệ tử nội môn. Nhớ cho kỹ tên ta.",
+    "do": [
+     {
+      "flag": "mac_tran_met"
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Mặc Trần",
+    "text": "Phế vật thì phải biết thân biết phận. Tạp dịch ở phía nam, đừng bén mảng đến Võ Trường của bọn ta.",
+    "choices": [
+     {
+      "text": "Ngươi cứ chờ xem.",
+      "goto": "c1",
+      "do": [
+       {
+        "dao": -1
+       },
+       {
+        "rel": {
+         "mac_tran": 3
+        }
+       }
+      ]
+     },
+     {
+      "text": "(Cúi đầu) Đã rõ.",
+      "goto": "c2",
+      "do": [
+       {
+        "dao": 2
+       }
+      ]
+     },
+     {
+      "text": "Ta nghe nói người giỏi thì không cần chê người khác.",
+      "goto": "c3",
+      "do": [
+       {
+        "rel": {
+         "mac_tran": 5
+        }
+       },
+       {
+        "dao": 1
+       }
+      ]
+     }
+    ]
+   },
+   "c1": {
+    "who": "Mặc Trần",
+    "text": "Hừ, ta đợi. Đừng để ta phải chờ lâu.",
+    "next": null
+   },
+   "c2": {
+    "who": "Mặc Trần",
+    "text": "Tốt. Biết điều thì sống lâu.",
+    "next": null
+   },
+   "c3": {
+    "who": "Mặc Trần",
+    "text": "...Ngươi cũng có chút gan. Nhưng gan thôi chưa đủ.",
+    "next": null
+   }
+  }
+ },
+ "mac_tran_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Mặc Trần",
+    "text": "Còn đứng đây làm gì? Ta nghe nói ngươi vừa qua một trận khó. Hừ, may mắn thôi.",
+    "next": null
+   }
+  }
+ },
+ "quan_su_offer": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Tạp Dịch",
+    "text": "Đệ tử mới à? Ngoại môn cần Linh Thảo để pha dược tắm. Hái giúp ta 5 cây, ta trả công.",
+    "choices": [
+     {
+      "text": "Nhận việc.",
+      "goto": "ok",
+      "do": [
+       {
+        "quest": "s2_1"
+       }
+      ]
+     },
+     {
+      "text": "Để sau.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "who": "Quản Sự Tạp Dịch",
+    "text": "Thảo dược mọc ở rìa sân và ngoài rừng. Đừng đi quá xa.",
+    "next": null
+   }
+  }
+ },
+ "quan_su_wait": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Tạp Dịch",
+    "text": "Chưa đủ 5 cây Linh Thảo à? Cứ từ từ, đừng làm hỏng rễ.",
+    "next": null
+   }
+  }
+ },
+ "quan_su_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Quản Sự Tạp Dịch",
+    "text": "Việc tạp dịch của ngươi làm khá. Có việc cần nữa ta sẽ gọi.",
+    "next": null
+   }
+  }
+ },
+ "luc_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lục Vân Sinh",
+    "text": "Ồ, đứa trẻ nhà Diệp... Ta nghe nói về chuyện của gia đình ngươi. Thật đáng tiếc.",
+    "do": [
+     {
+      "flag": "luc_met"
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Lục Vân Sinh",
+    "text": "Thanh Vân Tông sẽ che chở cho ngươi. Cứ yên tâm tu luyện, chuyện báo thù để ta lo.",
+    "choices": [
+     {
+      "text": "Đa tạ trưởng lão.",
+      "goto": "c",
+      "do": [
+       {
+        "rep": {
+         "chinh_dao": 3
+        }
+       }
+      ]
+     },
+     {
+      "text": "(Quan sát ánh mắt ông ta kỹ hơn)",
+      "goto": "d",
+      "do": [
+       {
+        "flag": "luc_suspect"
+       },
+       {
+        "dao": 1
+       }
+      ]
+     }
+    ]
+   },
+   "c": {
+    "who": "Lục Vân Sinh",
+    "text": "Tốt, tốt. Cứ chăm chỉ.",
+    "next": null
+   },
+   "d": {
+    "text": "Nụ cười của ông ta hiền từ, nhưng bàn tay giấu trong tay áo hơi siết lại khi nhắc đến chữ \"Diệp\". Ngươi ghi nhớ điều đó.",
+    "next": null
+   }
+  }
+ },
+ "luc_2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lục Vân Sinh",
+    "text": "Cố gắng tu luyện nhé. Con đường dài lắm.",
+    "next": null
+   }
+  }
+ },
+ "guard_phuong_thi": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Vệ Binh",
+    "text": "Phường Thị Vân Hải, cấm đánh nhau trong phố. Muốn mua bán thì cứ vào, ban đêm nhiều tiệm đóng cửa.",
+    "next": null
+   }
+  }
+ },
+ "thuong_gia_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thương Gia Thạch",
+    "text": "Hàng hiếm đây, từ Hoang Mạc Xích Hỏa! Ngươi có muốn xem không?",
+    "choices": [
+     {
+      "text": "Xem hàng.",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thuong_nhan"
+       }
+      ]
+     },
+     {
+      "text": "Để sau.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "thiet_phong_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Thiết Phong Lâu",
+    "text": "Khách quan từ thôn quê lên à? Đồ của Thiết Phong Lâu ở Vân Hải này là hàng đầu, tay nghề thợ của ta hơn hẳn mấy lò làng.",
+    "do": [
+     {
+      "flag": "met_thiet_phong"
+     },
+     {
+      "rel": {
+       "thiet_phong": 3
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Chủ Thiết Phong Lâu",
+    "text": "Có đồ sẵn, hoặc thuê rèn theo mẫu. Giá cao hơn một chút, nhưng đáng.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thiet_phong"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "thiet_phong_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Thiết Phong Lâu",
+    "text": "Cần rèn gì?",
+    "choices": [
+     {
+      "text": "Xem hàng / Thuê rèn / Tự rèn",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thiet_phong"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "van_duoc_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Đan Sư Vạn Dược Đường",
+    "text": "Người của Vạn Dược Cốc? Không, ngươi chỉ là khách. Nhưng không sao, đan dược của ta bán cho mọi người.",
+    "do": [
+     {
+      "flag": "met_van_duoc"
+     },
+     {
+      "rel": {
+       "van_duoc": 3
+      }
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Đan Sư Vạn Dược Đường",
+    "text": "Ta luyện được hầu hết đan phương. Tay nghề hơn đan sư thôn quê kia nhiều.",
+    "choices": [
+     {
+      "text": "Giao dịch",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "van_duoc"
+       }
+      ]
+     },
+     {
+      "text": "Để sau",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "van_duoc_menu": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Đan Sư Vạn Dược Đường",
+    "text": "Cần đan gì?",
+    "choices": [
+     {
+      "text": "Xem hàng / Thuê luyện / Tự luyện",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "van_duoc"
+       }
+      ]
+     },
+     {
+      "text": "Đi đây.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ }
+}

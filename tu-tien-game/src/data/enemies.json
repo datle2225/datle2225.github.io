@@ -1,0 +1,190 @@
+[
+ {
+  "id": "soi_hoang",
+  "name": "Sói Hoang",
+  "realm": "luyen_khi",
+  "element": "none",
+  "stats": {
+   "hp": 60,
+   "mp": 10,
+   "atk": 11,
+   "def": 4,
+   "spd": 110,
+   "crit": 0.05
+  },
+  "skills": [
+   "kiem_co_ban"
+  ],
+  "exp": 14,
+  "drops": [
+   {
+    "id": "da_soi",
+    "chance": 0.6
+   },
+   {
+    "id": "linh_thao",
+    "chance": 0.3
+   }
+  ]
+ },
+ {
+  "id": "yeu_xa",
+  "name": "Xà Yêu Con",
+  "realm": "luyen_khi",
+  "element": "moc",
+  "stats": {
+   "hp": 55,
+   "mp": 15,
+   "atk": 15,
+   "def": 3,
+   "spd": 140,
+   "crit": 0.08
+  },
+  "skills": [
+   "kiem_co_ban",
+   "kiem_nhat_thiem"
+  ],
+  "exp": 18,
+  "drops": [
+   {
+    "id": "linh_thao",
+    "chance": 0.5
+   }
+  ]
+ },
+ {
+  "id": "huyet_anh_do_de",
+  "name": "Đệ Tử Huyết Ảnh Môn",
+  "realm": "luyen_khi",
+  "element": "hoa",
+  "stats": {
+   "hp": 120,
+   "mp": 30,
+   "atk": 20,
+   "def": 8,
+   "spd": 100,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_hoa_cau",
+   "kiem_co_ban"
+  ],
+  "exp": 40,
+  "drops": [
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "boss_huyet_anh_truong_lao",
+  "name": "Huyết Ảnh Trưởng Lão",
+  "realm": "truc_co",
+  "element": "hoa",
+  "boss": true,
+  "stats": {
+   "hp": 640,
+   "mp": 100,
+   "atk": 44,
+   "def": 20,
+   "spd": 120,
+   "crit": 0.12
+  },
+  "skills": [
+   "yeu_hoa_cau",
+   "yeu_loi_phat",
+   "yeu_kiem_cuong"
+  ],
+  "exp": 300,
+  "drops": [
+   {
+    "id": "huyet_anh_lenh",
+    "chance": 1
+   }
+  ],
+  "phases": [
+   {
+    "at": 0.7,
+    "text": "Trưởng lão gầm lên, huyết khí bốc cao!",
+    "skills": [
+     "yeu_hoa_cau",
+     "yeu_loi_phat",
+     "yeu_kiem_cuong",
+     "yeu_kiem_nhat"
+    ],
+    "atkMul": 1.15
+   },
+   {
+    "at": 0.35,
+    "text": "Trưởng lão đốt tinh huyết, sức mạnh tăng vọt!",
+    "skills": [
+     "yeu_loi_phat",
+     "yeu_kiem_cuong",
+     "yeu_kiem_tam"
+    ],
+    "atkMul": 1.3,
+    "spdMul": 1.2,
+    "heal": 0.1
+   }
+  ]
+ },
+ {
+  "id": "ma_tu_lang_thang",
+  "name": "Ma Tu Lang Thang",
+  "realm": "truc_co",
+  "element": "hoa",
+  "stats": {
+   "hp": 260,
+   "mp": 60,
+   "atk": 30,
+   "def": 12,
+   "spd": 115,
+   "crit": 0.1
+  },
+  "skills": [
+   "ma_huyet_tram",
+   "ma_hien_te",
+   "ma_cong"
+  ],
+  "exp": 120,
+  "drops": [
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   },
+   {
+    "id": "huyet_tham",
+    "chance": 0.4
+   }
+  ]
+ },
+ {
+  "id": "cuop_duong",
+  "name": "Cướp Đường",
+  "realm": "luyen_khi",
+  "element": "none",
+  "stats": {
+   "hp": 90,
+   "mp": 10,
+   "atk": 16,
+   "def": 6,
+   "spd": 105,
+   "crit": 0.08
+  },
+  "skills": [
+   "kiem_co_ban"
+  ],
+  "exp": 30,
+  "drops": [
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   },
+   {
+    "id": "da_soi",
+    "chance": 0.3
+   }
+  ]
+ }
+]
