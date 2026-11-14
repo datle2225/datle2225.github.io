@@ -7,6 +7,7 @@ export function newPlayer(name = 'Diệp Thanh'): PlayerState {
     name,
     rootId: 'tan_can',
     branchId: null,
+    subBranchId: null,
     realmIndex: 0,
     stage: 1,
     exp: 0,

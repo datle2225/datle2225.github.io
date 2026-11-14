@@ -1,4 +1,4 @@
-import { REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
+import { BRANCHES, REALMS, SKILLS, QUESTS, questMap, CHAPTERS, ENEMIES, companionMap } from './data';
 import { gainExp, levelUpStages } from './progression';
 import type { PlayerState, Skill, Stats } from './types';
 
@@ -8,7 +8,7 @@ export function availableSkills(p: PlayerState): Skill[] {
     const r = REALMS.findIndex((x) => x.id === s.unlockRealm);
     const reached = p.realmIndex > r || (p.realmIndex === r && p.stage >= s.unlockStage);
     if (!reached) return false;
-    if (p.branchId) return s.branch === p.branchId;
+    if (p.branchId) return s.branch === p.branchId || (!!p.subBranchId && s.branch === p.subBranchId);
     return s.id === 'kiem_co_ban'; // trước khi chọn nhánh chỉ có đòn cơ bản
   });
 }
@@ -64,6 +64,7 @@ export function completeQuest(p: PlayerState, id: string) {
   if (r.item) p.inventory[r.item] = (p.inventory[r.item] ?? 0) + (r.n ?? 1);
   if (r.recipe && !p.knownRecipes.includes(r.recipe)) p.knownRecipes.push(r.recipe);
   if (q.unlockSystem) unlockSystem(p, q.unlockSystem);
+  if (q.unlockChapter) enterChapter(p, q.unlockChapter);
   for (const next of q.unlocks ?? []) if (!p.quests.active.includes(next) && !p.quests.done.includes(next)) p.quests.active.push(next);
 }
 
@@ -85,4 +86,26 @@ export function companionStats(p: PlayerState, id: string): Stats | null {
   const mul = REALMS[p.realmIndex].statMul * (1 + (p.stage - 1) * 0.04);
   const s = def.stats as Stats;
   return { hp: Math.round(s.hp * mul), mp: Math.round(s.mp * mul), atk: Math.round(s.atk * mul), def: Math.round(s.def * mul), spd: s.spd, crit: s.crit };
+}
+
+/** Nhánh chọn khi Trúc Cơ: chỉ các nhánh mở ở Trúc Cơ (Kiếm, Thể, Pháp). Còn lại học làm nhánh phụ về sau. */
+export function mainBranchChoices(): any[] {
+  return BRANCHES.filter((b: any) => b.playable && b.unlockRealm === 'truc_co');
+}
+
+export const SUB_BRANCH_COST = 1000;
+
+/** Nhánh phụ có thể học: đã tới cảnh giới mở nhánh, khác nhánh chính, chỉ được một nhánh phụ. */
+export function eligibleSubBranches(p: PlayerState): any[] {
+  if (!p.branchId || p.subBranchId) return [];
+  return BRANCHES.filter((b: any) => b.playable && b.id !== p.branchId && REALMS.findIndex((r) => r.id === b.unlockRealm) <= p.realmIndex && b.unlockRealm !== 'truc_co');
+}
+
+export function learnSubBranch(p: PlayerState, id: string): { ok: boolean; msg: string } {
+  const b = eligibleSubBranches(p).find((x: any) => x.id === id);
+  if (!b) return { ok: false, msg: 'Chưa thể học nhánh này.' };
+  if (p.gold < SUB_BRANCH_COST) return { ok: false, msg: `Cần ${SUB_BRANCH_COST} linh thạch để học nhánh phụ.` };
+  p.gold -= SUB_BRANCH_COST;
+  p.subBranchId = id;
+  return { ok: true, msg: `Đã học nhánh phụ ${b.name}. Chiêu của nhánh này mở dần theo cảnh giới.` };
 }

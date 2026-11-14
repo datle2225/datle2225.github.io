@@ -26,17 +26,18 @@ npm run build    # build ra play/
 | Xem FPS (debug) | F | – |
 
 ## Đã có
-- **5 bản đồ nối nhau** (Thanh Hà → Thanh Vân Tông / Phường Thị → Huyết Nguyệt Bí Cảnh / Hoang Mạc Xích Hỏa), định dạng **Tiled**; ngày–đêm, NPC ngủ ban đêm, sự kiện ngẫu nhiên, tin đồn.
-- Chiến đấu **timeline (CTB)**; **8 nhánh** (Kiếm / Thể / Pháp / Đan / Phù Trận / Ma / **Ngự Thú** / **Âm Tu**) với cơ chế riêng (khiên, độc, bẫy, hy sinh máu, **linh thú**, **đảo nhịp**); **boss nhiều pha**; đồng hành Liễu Nguyệt Nhi.
+- **8 bản đồ nối nhau** (Thanh Hà → Thanh Vân Tông / Phường Thị → Huyết Nguyệt Bí Cảnh / Hoang Mạc Xích Hỏa / **Băng Nguyên → Huyết Ảnh Tổng Đàn / Thiên Kiếp Đài**), định dạng **Tiled**; ngày–đêm, NPC ngủ ban đêm, sự kiện ngẫu nhiên, tin đồn.
+- Chiến đấu **timeline (CTB)**; **nhánh chính (Kiếm/Thể/Pháp) + một nhánh phụ** trong 8 nhánh (Kiếm / Thể / Pháp / Đan / Phù Trận / Ma / **Ngự Thú** / **Âm Tu**) với cơ chế riêng (khiên, độc, bẫy, hy sinh máu, **linh thú**, **đảo nhịp**); **boss nhiều pha**; đồng hành Liễu Nguyệt Nhi.
 - **Tu luyện có giới hạn**: thiền tốn thời gian + tâm lực, hiệu quả theo linh khí vùng, cần nơi yên tĩnh, **bình cảnh** cần cơ duyên / Phá Cảnh Đan, **bế quan** tu luyện cả khi rời game.
 - **Lôi kiếp điện ảnh** + **tâm ma kiếp** (đấu bản sao của chính bạn, mạnh yếu theo đạo tâm).
+- **Hồi 3 và kết thúc phần 1**: Băng Nguyên, Tổng Đàn (Huyết Ảnh Môn Chủ), Thiên Kiếp Đài (**Lục Vân Sinh**); ba tuyến trận cuối (đánh / vạch trần / hợp tác) và **5 kết cục**; Nguyên Anh có **thoát xác** (hồi sinh một lần mỗi trận).
 - **Hồi 2 trọn vẹn**: bí cảnh Huyết Nguyệt (boss Độc Thủ Tiên Sinh), Hoang Mạc (Mặc Gia Gia Chủ: đánh hoặc vạch trần), **gỡ phong ấn Hỗn Độn Căn**, kết cục theo đạo tâm, Huyết Thư.
 - Rèn đồ, luyện đan, **NPC dịch vụ** (mua · bán · thuê · tự làm bằng mini-game), **Hội Đấu Giá** (với thương nhân NPC), thời trang.
 - Hội thoại có lựa chọn → đạo tâm, danh vọng, quan hệ.
 - Nhạc chiptune theo khu vực, **PWA**, **xuất/nhập save**, joystick ảo.
-- **115 unit test** và **mô phỏng cân bằng** (`npm run sim`).
+- **131 unit test** và **mô phỏng cân bằng** (`npm run sim`).
 
-Trên màn hình chính có ba nút thử nhanh: **Bắt đầu mới**, **Thử nhanh: Trúc Cơ + Kiếm Tu**, và **Thử nhanh: Kết Đan (Hồi 2)** (xuất hiện ở Phường Thị, đủ điều kiện vào bí cảnh).
+Trên màn hình chính có các nút thử nhanh: **Trúc Cơ + Kiếm Tu**, **Kết Đan (Hồi 2)**, **Nguyên Anh (Hồi 3)** (đứng ở Phường Thị, đã hạ 3 kẻ thù, nói chuyện với Thiên Cơ Các để mở Băng Nguyên).
 
 ## Công cụ
 `npm run dev` · `npm test` · `npm run build` · `npm run sim` (cân bằng) · `npm run maps` (sinh map Tiled) · `npm run tileset`. Hướng dẫn thay art và chỉnh bản đồ: [`docs/13-art-guide.md`](docs/13-art-guide.md).

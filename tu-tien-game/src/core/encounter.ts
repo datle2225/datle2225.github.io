@@ -10,6 +10,7 @@ import type { PlayerState } from './types';
 export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
   const stats = computeStats(p);
   const player = makeUnit('player', p.name, 'player', stats, availableSkills(p).map((s) => s.id), 'none');
+  if (p.unlockedSystems.includes('thoat_xac')) player.reviveFrac = 0.3; // Nguyên Anh: thoát xác, mạng thứ hai
   const units: Unit[] = [player];
   if (withParty) {
     for (const cid of p.party) {

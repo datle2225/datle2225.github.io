@@ -76,6 +76,7 @@ export interface PlayerState {
   name: string;
   rootId: string;
   branchId: string | null;
+  subBranchId: string | null; // nhánh phụ (học thêm từ Kết Đan / Nguyên Anh)
   realmIndex: number;
   stage: number; // 1..stages
   exp: number;

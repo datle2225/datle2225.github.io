@@ -157,7 +157,7 @@ export class ShopScene extends Phaser.Scene {
     const rows: Row[] = [{ text: `Thuê ${v.name} làm giúp: tay nghề ${v.skill}/10. Tự đem nguyên liệu thì rẻ hơn; "Tinh phẩm" dùng nguyên liệu tốt hơn và tay nghề cẩn thận hơn.` }];
     if (v.type === 'smith') {
       for (const b of ITEMS.bases as any[]) {
-        if (p.branchId && b.branch !== p.branchId) continue;
+        if (p.branchId && b.branch !== p.branchId && b.branch !== p.subBranchId) continue;
         const q = quoteForge(p, this.vendorId, b.id, 'normal');
         rows.push({
           text: `${b.name} [${b.slot}] ${Object.entries(b.base).map(([k, val]) => `${k}${val}`).join(' ')}`,
@@ -192,7 +192,7 @@ export class ShopScene extends Phaser.Scene {
     const rows: Row[] = [{ text: v.type === 'smith' ? `Mượn lò rèn (phí ${FORGE_FEE_PER_ORE} LT/Huyền Thiết). Mini-game búa: bấm đúng nhịp để rèn món tốt hơn.` : 'Mượn lò đan. Mini-game hỏa hầu: giữ nhiệt trong vùng xanh. Chỉ luyện được phương bạn đã học.' }];
     if (v.type === 'smith') {
       for (const b of ITEMS.bases as any[]) {
-        if (p.branchId && b.branch !== p.branchId) continue;
+        if (p.branchId && b.branch !== p.branchId && b.branch !== p.subBranchId) continue;
         const fee = b.ore * FORGE_FEE_PER_ORE;
         const ok = (p.inventory.huyen_thiet ?? 0) >= b.ore && p.gold >= fee;
         rows.push({ text: `${b.name} — cần ${b.ore} Huyền Thiết + ${fee} LT`, sub: `Bạn có ${p.inventory.huyen_thiet ?? 0} Huyền Thiết`, btns: [{ label: 'Tự rèn', enabled: ok, fn: () => this.selfForge(b) }] });

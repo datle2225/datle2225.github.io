@@ -48,6 +48,21 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
+    button(this, bx, 290, 180, 34, 'Thử nhanh: Nguyên Anh (Hồi 3)', () => {
+      startNew();
+      const p = game.p;
+      p.rootId = 'hon_don'; p.realmIndex = 3; p.stage = 5; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 4000; p.daoHeart = 60;
+      p.inventory = { hoi_huyet_dan: 8, linh_thao: 20, huyet_tham: 10, huyen_thiet: 12 };
+      p.knownRecipes = ['hoi_huyet_dan', 'hoi_linh_dan', 'tu_khi_dan'];
+      p.comboPresets = [['kiem_nhat_thiem', 'kiem_phong_cuong', 'kiem_tam_ho', 'kiem_van_ly'], [], []];
+      p.quests = { active: [], done: ['m1_1', 'm1_2', 'm1_3', 'm2_1', 'm2_2', 'm2_3'], progress: {} };
+      p.flags = { intro: true, met_laongu: true, enemy1_dead: true, enemy2_dead: true, enemy3_dead: true, mac_gia_known: true, unsealed: true, luc_hint: true };
+      for (const c of [1, 2, 3, 4, 6, 7]) enterChapter(p, c);
+      for (const sy of ['tu_luyen', 'luyen_dan', 'thoat_xac', 'hon_don']) unlockSystem(p, sy);
+      p.mapId = 'phuong_thi';
+      persist();
+      this.scene.start('Overworld');
+    });
     label(this, W / 2, H - 22, 'WASD / phím mũi tên / chạm để di chuyển · E hoặc chạm NPC để nói chuyện · M: menu', { fontSize: '9px', color: '#6b7391' }).setOrigin(0.5);
   }
 }

@@ -69,23 +69,26 @@ Triển khai: GitHub Pages phục vụ nhánh này, game ở `/tu-tien-game/play
 - Tự lưu mỗi 30 giây, khi thoát menu, sau trận, sau nhiệm vụ.
 - Kế hoạch: xuất/nhập file save (JSON) + đồng bộ cloud.
 
-## Kiểm thử đã có (115 test, `npm test`)
+## Kiểm thử đã có (131 test, `npm test`)
 - **Chiến đấu**: Tốc Độ, giới hạn 3 hành động liền, softcap, khắc hệ, combo tag, đồng đội, **hy sinh máu, bẫy, độc, boss nhiều pha, linh thú (triệu hồi, một con/lần, Thú Tâm, Hiệu Lệnh), đảo nhịp (kháng của boss, chỉ kéo sớm)**.
 - **Rèn / đan / cửa hàng / thuê NPC / mini-game / hội thoại / lôi kiếp**: xem 12.
 - **Thiền**: tốn tâm lực & thời gian, ~8 lần liên tiếp rồi cạn, thời gian thiền không hồi tâm lực, cần yên tĩnh, linh khí nhân hiệu quả, Tàn Căn ×0.3; **bình cảnh** chặn lên tầng và không tích tu vi vượt trần, phá bằng ngộ đạo / Phá Cảnh Đan; **bế quan** (10 phút = 1 đơn vị, 50%, trần 8 giờ, không vượt bình cảnh).
 - **Hồi 2**: chuỗi nhiệm vụ Thiên Cơ → bí cảnh → Độc Thủ → Mặc Gia (cả hai tuyến), gỡ phong ấn đổi linh căn, kết cục theo đạo tâm, dữ liệu boss/map hợp lệ.
+- **Hồi 3**: chuỗi nhiệm vụ 3 bước, khóa/mở cổng đúng điều kiện, ba tuyến trận cuối (đánh / vạch trần cần Thư Tay / hợp tác), 5 kết cục đặt cờ `game_complete`, boss đủ pha; **thoát xác** hồi sinh đúng một lần, chỉ người đã mở hệ, và làm tăng tỉ lệ thắng trùm cuối.
+- **Nhánh chính + phụ**: chỉ Kiếm/Thể/Pháp làm nhánh chính, nhánh phụ đúng cảnh giới/giá/số lượng, kỹ năng gộp.
 - **Tâm ma**: chỉ từ Kết Đan, hệ số theo đạo tâm, mô phỏng đạo tâm cao thắng dễ hơn.
 - **Đấu giá**: lô ổn định theo ngày, cọc & tăng giá ≥10%, phí rút, thắng trả giá NPC+5% và hoàn dư, thua hoàn đủ, lô trang bị vào túi đúng chỉ số, không đặt lô cũ.
 - **Giờ game, sự kiện, tin đồn, save xuất/nhập**.
 - **Bản đồ (5 map)**: tileset khớp, tham chiếu hợp lệ, **mọi NPC/thảo dược/cổng đến được (BFS)**, cổng nối hai chiều.
 - **Cân bằng (mô phỏng)**: 8 nhánh × từng mốc (xem 04).
 
-Test phát hiện lỗi thật khi làm: `clock` của timeline sai làm "kéo lượt sớm" vô hiệu; sự kiện kích hoạt ở thời điểm 0 bỏ qua hồi chiêu; vật phẩm đặt vào ô vật cản; hồi máu %HP và DoT %HP phá cân bằng boss.
+Test/smoke phát hiện lỗi thật khi làm: **quest hoàn thành ngay trong trận không báo về bản đồ nên đoạn thoại kích hoạt theo quest (gỡ phong ấn, kết cục) không chạy** (đã sửa); `clock` của timeline sai làm "kéo lượt sớm" vô hiệu; sự kiện kích hoạt ở thời điểm 0 bỏ qua hồi chiêu; vật phẩm đặt vào ô vật cản; hồi máu %HP và DoT %HP phá cân bằng boss.
 
 ## Lộ trình (milestone)
 | MS | Mục tiêu | Nội dung | Tiêu chí hoàn thành |
 |---|---|---|---|
 | **M0 ✅** | Khung | GDD, dự án, core, 5 scene, dữ liệu mẫu, test | Chạy được, build được |
+| **M1.0 ✅** | Phần 1 | Hồi 3: Băng Nguyên, Tổng Đàn, Thiên Kiếp Đài, 2 boss, 5 kết cục, thoát xác, nhánh chính/phụ | **Chơi từ đầu đến kết cục** |
 | **M0.9 ✅** | Hồi 2 | Thiền có giới hạn, tâm ma, 8 nhánh, bí cảnh, Hoang Mạc, 2 boss, gỡ phong ấn, đấu giá NPC | Chơi được hết Hồi 2 |
 | **M0.7 ✅** | Thế giới | 3 map Tiled, ngày–đêm, lịch NPC, sự kiện, tin đồn, 6 nhánh, boss nhiều pha, mô phỏng cân bằng | Có thể đi lại giữa các khu và chơi vòng lặp dài |
 | **M0.5 ✅** | Hệ thống | NPC dịch vụ, mini-game, hội thoại, đồng hành, lôi kiếp điện ảnh, âm thanh, PWA | Chơi thử được các vòng lặp chính |
@@ -107,19 +110,16 @@ Test phát hiện lỗi thật khi làm: `clock` của timeline sai làm "kéo l
 
 ## Backlog
 **Đã xong (tích lũy)**
-- [x] Bản đồ Tiled + 5 map nối bằng cổng; ngày–đêm, lịch NPC, sự kiện ngẫu nhiên, tin đồn.
-- [x] **Thiền có giới hạn** (tâm lực, thời gian, linh khí vùng, yên tĩnh), **bình cảnh**, **bế quan offline**.
-- [x] **8 nhánh chơi được** (thêm **Ngự Thú** với linh thú thật trong trận, **Âm Tu** đảo nhịp), boss nhiều pha, cân bằng bằng mô phỏng.
-- [x] **Tâm ma kiếp** (bản sao của người chơi, theo đạo tâm) và **kết cục Hồi 2 theo đạo tâm**.
-- [x] **Hồi 2**: bí cảnh Huyết Nguyệt, Hoang Mạc Xích Hỏa, boss #2 Độc Thủ Tiên Sinh, boss #3 Mặc Gia Gia Chủ (2 tuyến), **gỡ phong ấn Hỗn Độn Căn**, Huyết Thư.
-- [x] **Hội Đấu Giá** với thương nhân NPC.
-- [x] Xuất/nhập save, thay art bằng manifest, nhạc theo khu vực, PWA, joystick.
+- [x] Bản đồ Tiled + **8 map** nối bằng cổng; ngày–đêm, lịch NPC, sự kiện, tin đồn.
+- [x] Thiền có giới hạn, bình cảnh, bế quan; tâm ma kiếp; đấu giá NPC; xuất/nhập save; PWA; thay art bằng manifest.
+- [x] **8 nhánh** + **nhánh chính/phụ theo thiết kế gốc**; boss nhiều pha; cân bằng bằng mô phỏng.
+- [x] **Hồi 1–3 trọn vẹn**: 5 kẻ thù trong Huyết Thư, gỡ phong ấn Hỗn Độn Căn, **thoát xác** Nguyên Anh, **5 kết cục**.
 
 **Chưa làm — và lý do**
 - [ ] **Art pixel do họa sĩ vẽ**: cần người vẽ (cơ chế thay art sẵn sàng).
 - [ ] **Nhạc/SFX do nhà soạn nhạc làm** (hiện chiptune tổng hợp, 9 bài ngắn).
-- [ ] **Đồng bộ save lên cloud, đấu giá giữa người chơi thật**: cần máy chủ & tài khoản (game là trang tĩnh). Đã làm xuất/nhập save và đấu giá với NPC thay thế.
+- [ ] **Đồng bộ save lên cloud, đấu giá giữa người chơi thật**: cần máy chủ & tài khoản. Đã có xuất/nhập save và đấu giá NPC.
 - [ ] **Thử trên điện thoại thật** và đo hiệu năng thiết bị thật: chỉ giả lập được trong trình duyệt headless.
-- [ ] **Hồi 3** (Nguyên Anh+): boss #4 Huyết Ảnh Môn Chủ, #5 Lục Vân Sinh, kết cục cuối, phi thăng; cần thêm map, nhánh chiêu cao cấp, lôi kiếp cao hơn.
-- [ ] Khóa lại thời điểm mở nhánh theo thiết kế gốc (hiện cả 8 nhánh mở ở Trúc Cơ để dễ thử).
+- [ ] **Phi thăng, Đại Thừa, Hóa Thần trở lên, Tiên Giới (phần 2)**: nội dung lớn (thêm cảnh giới 5–8, map, nhánh chiêu cao cấp, lôi kiếp cao hơn); game hiện khép lại ở *HẾT PHẦN 1*.
+- [ ] Các hệ mở ở Nguyên Anh khác ngoài thoát xác (**trận pháp**, **thế lực**) chưa làm.
 - [ ] Cân bằng thêm với **người chơi thật** (AI mô phỏng thô, không dùng đan/trang bị/combo thủ công).

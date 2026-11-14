@@ -112,7 +112,7 @@ export class OverworldScene extends Phaser.Scene {
     this.time.addEvent({ delay: 500, loop: true, callback: () => this.tick() });
     this.time.addEvent({ delay: 600, loop: true, callback: () => this.waters.forEach((w) => w.setTexture(w.texture.key === 'water' ? 'water2' : 'water')) });
 
-    const onBattleEnd = (r: { won: boolean; fled?: boolean; lost?: boolean; foeIndex: number }) => {
+    const onBattleEnd = (r: { won: boolean; fled?: boolean; lost?: boolean; foeIndex: number; completed?: string[] }) => {
       this.busy = false;
       this.immuneUntil = this.time.now + 3000;
       const f = this.foes[r.foeIndex];
@@ -120,6 +120,7 @@ export class OverworldScene extends Phaser.Scene {
       if (r.lost) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
       this.refreshHud();
       audio.music(this.map.music);
+      if (r.completed?.length) this.time.delayedCall(300, () => this.progress(r.completed!)); // quest hoàn thành ngay trong trận
     };
     const onResume = () => { this.refreshHud(); this.refreshFoeVisibility(); audio.music(this.map.music); };
     this.events.on('battle-end', onBattleEnd);
@@ -361,6 +362,7 @@ export class OverworldScene extends Phaser.Scene {
       audio.sfx('levelup');
       if (id === 'm1_2') this.startDialogue('co_dinh');
       if (id === 'm1_3') this.startDialogue('m1_3_done');
+      if (id === 'm3_3') this.time.delayedCall(400, () => { const e = pickDialogue(game.p, [{ if: { flag: 'ending_join' }, id: 'end_dark' }, { if: { flag: 'route_expose' }, id: 'end_expose' }, { if: { minDao: 65 }, id: 'end_chinh' }, { if: { maxDao: 35 }, id: 'end_ma' }, { id: 'end_tan' }]); if (e) this.startDialogue(e); });
       if (id === 'm2_3') this.startDialogue('unseal', () => { const e = pickDialogue(game.p, [{ if: { minDao: 65 }, id: 'hoi2_end_chinh' }, { if: { maxDao: 35 }, id: 'hoi2_end_ma' }, { id: 'hoi2_end_tan' }]); if (e) this.time.delayedCall(300, () => this.startDialogue(e)); });
     }
     persist();

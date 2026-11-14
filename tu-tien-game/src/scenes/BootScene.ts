@@ -102,6 +102,10 @@ export class BootScene extends Phaser.Scene {
     px('dungeon_wall', 16, (g) => { R(g, 0x2a2438, 0, 0, 16, 16); R(g, 0x3a3250, 0, 0, 16, 7); R(g, 0x1a1428, 0, 7, 16, 1); R(g, 0x3a3250, 8, 8, 8, 7); R(g, 0x1a1428, 8, 8, 1, 8); R(g, 0x5a2a3a, 2, 3, 3, 1); });
     px('dungeon_floor', 16, (g) => { R(g, 0x4a3a52, 0, 0, 16, 16); R(g, 0x3e3046, 0, 0, 16, 1); R(g, 0x3e3046, 0, 8, 16, 1); R(g, 0x3e3046, 8, 0, 1, 8); R(g, 0x58486a, 3, 3, 3, 2); R(g, 0x6a2a3a, 11, 11, 2, 2); });
     px('sand_rock', 16, (g) => { R(g, 0xd8c48a, 0, 0, 16, 16); R(g, 0x8a8f9c, 2, 5, 12, 9); R(g, 0xaab0be, 4, 6, 5, 3); R(g, 0x6a6f7c, 9, 11, 4, 2); });
+    px('snow', 16, (g) => { R(g, 0xe8f0f8, 0, 0, 16, 16); R(g, 0xd0dcec, 3, 4, 3, 1); R(g, 0xffffff, 10, 10, 3, 1); R(g, 0xc0d0e4, 7, 13, 2, 1); });
+    px('ice', 16, (g) => { R(g, 0xa8d4f0, 0, 0, 16, 16); R(g, 0xc8e8ff, 2, 3, 6, 1); R(g, 0x88b8e0, 8, 9, 6, 1); R(g, 0xffffff, 11, 3, 2, 1); });
+    px('pine', 16, (g) => { R(g, 0xe8f0f8, 0, 0, 16, 16); R(g, 0x5a3a1e, 7, 11, 2, 5); R(g, 0x1f5a3a, 3, 7, 10, 5); R(g, 0x2c7a4a, 4, 4, 8, 4); R(g, 0x3a9a5a, 6, 1, 4, 4); R(g, 0xffffff, 5, 6, 3, 1); R(g, 0xffffff, 7, 3, 2, 1); });
+    px('snow_rock', 16, (g) => { R(g, 0xe8f0f8, 0, 0, 16, 16); R(g, 0x7a7f8c, 2, 5, 12, 9); R(g, 0x9aa0ae, 4, 6, 5, 3); R(g, 0xffffff, 3, 5, 10, 2); });
     px('herb', 16, (g) => { R(g, 0x2fb04a, 6, 6, 4, 8); R(g, 0x6aeb7a, 4, 5, 3, 3); R(g, 0x6aeb7a, 9, 4, 3, 3); R(g, 0xffd84a, 7, 3, 2, 2); });
     px('spark', 4, (g) => { R(g, 0xfff3a0, 0, 0, 4, 4); });
 

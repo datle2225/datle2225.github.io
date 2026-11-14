@@ -1571,5 +1571,312 @@
     ]
    }
   }
+ },
+ "thien_co_m3": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Cơ Các",
+    "text": "Nguyên Anh rồi, lại hạ cả Mặc Gia. Nay ta bán cho ngươi tin cuối cùng. Huyết Ảnh Môn Chủ, kẻ thứ tư, đang ở Tổng Đàn phía bắc Băng Nguyên.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Thiên Cơ Các",
+    "text": "Còn kẻ thứ năm... ta chỉ nói một điều: trên người Môn Chủ có thứ ngươi cần. Hãy lấy nó.",
+    "do": [
+     {
+      "flag": "hoi3_open"
+     },
+     {
+      "quest": "m3_1"
+     },
+     {
+      "toast": "Lối lên Băng Nguyên ở rìa phía bắc Phường Thị."
+     }
+    ],
+    "next": null
+   }
+  }
+ },
+ "luc_final": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lục Vân Sinh",
+    "text": "Ngươi đến rồi. Ta đã chờ ngươi từ đêm Diệp gia bị diệt. Không ngờ đứa trẻ năm ấy lại đi được xa như vậy.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lục Vân Sinh",
+    "text": "Ta cần Hỗn Độn Căn để phá cảnh giới Đại Thừa. Cha ngươi biết chuyện, nên ông ta phải chết. Ngươi có thể hận ta, nhưng hãy nghe điều kiện của ta trước khi rút kiếm.",
+    "choices": [
+     {
+      "text": "Đã đủ. Ra tay đi.",
+      "goto": "fight",
+      "do": [
+       {
+        "flag": "route_fight"
+       },
+       {
+        "dao": -1
+       },
+       {
+        "battle": [
+         "luc_van_sinh"
+        ]
+       }
+      ]
+     },
+     {
+      "text": "Thư tay này chính là bằng chứng. Ta sẽ phơi bày trước thiên hạ.",
+      "goto": "expose",
+      "if": {
+       "hasItem": {
+        "id": "luc_chung_cu",
+        "n": 1
+       }
+      },
+      "do": [
+       {
+        "item": {
+         "id": "luc_chung_cu",
+         "n": -1
+        }
+       },
+       {
+        "flag": "route_expose"
+       },
+       {
+        "flag": "enemy5_dead"
+       },
+       {
+        "dao": 6
+       },
+       {
+        "rep": {
+         "chinh_dao": 10
+        }
+       },
+       {
+        "event": {
+         "kind": "battle",
+         "target": "luc_van_sinh"
+        }
+       }
+      ]
+     },
+     {
+      "text": "...Điều kiện của ông là gì?",
+      "goto": "join",
+      "do": [
+       {
+        "flag": "ending_join"
+       },
+       {
+        "flag": "enemy5_spared"
+       },
+       {
+        "dao": -15
+       },
+       {
+        "rep": {
+         "ma_dao": 10
+        }
+       },
+       {
+        "event": {
+         "kind": "battle",
+         "target": "luc_van_sinh"
+        }
+       }
+      ]
+     },
+     {
+      "text": "Chưa đến lúc.",
+      "goto": null
+     }
+    ]
+   },
+   "fight": {
+    "who": "Lục Vân Sinh",
+    "text": "Tốt. Xem ngươi có xứng với thứ trong người mình không!",
+    "next": null
+   },
+   "expose": {
+    "who": "Lục Vân Sinh",
+    "text": "Ngươi... Trước thiên hạ? ... Hừ, thế thì cho ngươi thấy cái giá của sự thật!",
+    "do": [
+     {
+      "flag": "luc_exposed"
+     }
+    ],
+    "next": "fight"
+   },
+   "join": {
+    "who": "Lục Vân Sinh",
+    "text": "Hợp tác. Ta đưa ngươi lên Đại Thừa, ngươi cho ta mượn Hỗn Độn Căn. Cả hai cùng phi thăng. Ngươi sẽ có tất cả, quyền lực, trường sinh, kể cả báo thù theo cách ngươi muốn.",
+    "next": null
+   }
+  }
+ },
+ "luc_final_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Kiếp Đài",
+    "text": "Gió lạnh thổi qua sân đài vắng. Mọi chuyện ở đây đã xong.",
+    "next": null
+   }
+  }
+ },
+ "end_chinh": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "KẾT CỤC: CHÍNH ĐẠO CHÂN NHÂN",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi đã hạ kẻ cầm cán mà vẫn giữ được chữ nghĩa. Thiên hạ nhớ tên ngươi như một người báo thù không bị thù hận nuốt chửng.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Thanh Vân Tông cúi đầu. Ngươi bước lên Thiên Kiếp Đài, nơi con đường phi thăng đang chờ.",
+    "do": [
+     {
+      "flag": "game_complete"
+     },
+     {
+      "flag": "ending_end_chinh"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT PHẦN 1: TÀN CĂN NGHỊCH THIÊN ===\nPhi thăng, Đại Thừa và Tiên Giới sẽ là hành trình tiếp theo. Cảm ơn bạn đã chơi!",
+    "next": null
+   }
+  }
+ },
+ "end_ma": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "KẾT CỤC: MA ĐẠO CHI CHỦ",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi thắng, nhưng thứ ngươi trở thành đã giống hệt kẻ ngươi vừa giết. Sức mạnh của ngươi lớn, và bóng của nó cũng lớn.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Không ai dám đến gần Thiên Kiếp Đài khi ngươi đứng đó. Tiếng sấm xa xa dường như đang gọi tên ngươi, và không có ý tốt.",
+    "do": [
+     {
+      "flag": "game_complete"
+     },
+     {
+      "flag": "ending_end_ma"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT PHẦN 1: TÀN CĂN NGHỊCH THIÊN ===\nPhi thăng, Đại Thừa và Tiên Giới sẽ là hành trình tiếp theo. Cảm ơn bạn đã chơi!",
+    "next": null
+   }
+  }
+ },
+ "end_tan": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "KẾT CỤC: TÁN TU TIÊU DAO",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi báo xong thù, nhưng chẳng thuộc chính cũng chẳng thuộc ma. Có lẽ đó là con đường tự do nhất.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Ngươi bước ra khỏi Thiên Kiếp Đài, không ai biết ngươi sẽ đi về đâu. Chính ngươi cũng chưa biết.",
+    "do": [
+     {
+      "flag": "game_complete"
+     },
+     {
+      "flag": "ending_end_tan"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT PHẦN 1: TÀN CĂN NGHỊCH THIÊN ===\nPhi thăng, Đại Thừa và Tiên Giới sẽ là hành trình tiếp theo. Cảm ơn bạn đã chơi!",
+    "next": null
+   }
+  }
+ },
+ "end_expose": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "KẾT CỤC: SỰ THẬT PHƠI BÀY",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Thư tay trước thiên hạ: Thanh Vân Tông rúng động, chính đạo bị lột mặt nạ. Ngươi không chỉ báo thù mà còn thay đổi cả cục diện tu giới.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Người đời gọi ngươi là kẻ phá vỡ lời dối trá ngàn năm. Ngươi lặng lẽ nhìn lên Thiên Kiếp Đài.",
+    "do": [
+     {
+      "flag": "game_complete"
+     },
+     {
+      "flag": "ending_end_expose"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT PHẦN 1: TÀN CĂN NGHỊCH THIÊN ===\nPhi thăng, Đại Thừa và Tiên Giới sẽ là hành trình tiếp theo. Cảm ơn bạn đã chơi!",
+    "next": null
+   }
+  }
+ },
+ "end_dark": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "KẾT CỤC: HAI KẺ CÙNG PHI THĂNG",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi đã chọn con đường ngắn nhất. Thù cha vẫn còn đó, và Lục Vân Sinh đang mỉm cười bên cạnh ngươi.",
+    "next": "c"
+   },
+   "c": {
+    "text": "Hai bóng người cùng bước lên Thiên Kiếp Đài. Ngươi không biết ai đang dùng ai, và Lão Đỉnh im lặng rất lâu.",
+    "do": [
+     {
+      "flag": "game_complete"
+     },
+     {
+      "flag": "ending_end_dark"
+     }
+    ],
+    "next": "z"
+   },
+   "z": {
+    "text": "=== HẾT PHẦN 1: TÀN CĂN NGHỊCH THIÊN ===\nPhi thăng, Đại Thừa và Tiên Giới sẽ là hành trình tiếp theo. Cảm ơn bạn đã chơi!",
+    "next": null
+   }
+  }
  }
 }

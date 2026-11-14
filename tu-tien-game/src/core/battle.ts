@@ -22,6 +22,8 @@ export interface Unit {
   /** Boss nhiều pha: khi HP dưới ngưỡng `at` (tỉ lệ) sẽ đổi chiêu / tăng sức mạnh. */
   phases?: Phase[];
   phaseIdx?: number;
+  reviveFrac?: number; // thoát xác: hồi sinh một lần mỗi trận với tỉ lệ HP này
+  revived?: boolean;
   tempoResist?: number; // 0..1: nhân với độ trễ bị đẩy lùi (boss kháng đảo nhịp)
   cooldowns?: Record<string, number>; // chiêu → số lần hành động còn lại để dùng lại
   master?: string; // id chủ nhân (linh thú)
@@ -31,7 +33,7 @@ export interface Unit {
 export interface Phase { at: number; text: string; skills?: string[]; atkMul?: number; spdMul?: number; heal?: number }
 
 export interface BattleEvent {
-  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap' | 'trap' | 'phase' | 'summon' | 'tempo';
+  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap' | 'trap' | 'phase' | 'summon' | 'tempo' | 'revive';
   actor?: string;
   target?: string;
   value?: number;
@@ -222,8 +224,7 @@ export class Battle {
         ev.push({ type: 'hit', actor: actor.id, target: foe.id, value: dmg, crit, text: `${actor.name} dùng ${sk.name} gây ${dmg} sát thương${crit ? ' (bạo kích)' : ''}.` });
         if (sk.lifesteal) actor.hp = Math.min(actor.stats.hp, actor.hp + Math.round(dmg * sk.lifesteal));
         if (foe.hp <= 0) {
-          this.markDead(foe);
-          ev.push({ type: 'status', target: foe.id, text: `${foe.name} gục ngã.` });
+          if (this.markDead(foe, ev)) ev.push({ type: 'status', target: foe.id, text: `${foe.name} gục ngã.` });
         }
       }
       if (sk.delay && foe.alive) {
@@ -255,9 +256,18 @@ export class Battle {
     return this.units.find((x) => x.alive && x.master === u.id);
   }
 
-  private markDead(u: Unit) {
+  /** Trả về true nếu thật sự chết; false nếu thoát xác (Nguyên Anh) hồi sinh một lần mỗi trận. */
+  private markDead(u: Unit, ev?: BattleEvent[]): boolean {
+    if (u.reviveFrac && !u.revived) {
+      u.revived = true;
+      u.hp = Math.max(1, Math.round(u.stats.hp * u.reviveFrac));
+      u.statuses = [];
+      ev?.push({ type: 'revive', target: u.id, value: u.hp, text: `${u.name} thoát xác Nguyên Anh, hồi sinh với ${u.hp} sinh lực!` });
+      return false;
+    }
     u.alive = false;
     if (u.master) { const m = this.units.find((x) => x.id === u.master); if (m) this.removeStatus(m, 'thu_tam'); }
+    return true;
   }
 
   /** Triệu hồi linh thú: chỉ số theo tỉ lệ so với chủ nhân. */
@@ -286,7 +296,7 @@ export class Battle {
       delay += def.trapDelay ?? 0;
       this.removeStatus(u, s.id);
       ev.push({ type: 'trap', target: u.id, value: d, text: `${def.name} phát nổ dưới chân ${u.name}, gây ${d} sát thương!` });
-      if (u.hp <= 0) { this.markDead(u); ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` }); break; }
+      if (u.hp <= 0) { if (this.markDead(u, ev)) ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` }); break; }
     }
     return delay;
   }
@@ -328,8 +338,7 @@ export class Battle {
         u.hp = Math.max(0, u.hp - d);
         ev.push({ type: 'dot', target: u.id, value: d, text: `${u.name} chịu ${d} sát thương từ ${def.name}.` });
         if (u.hp <= 0) {
-          this.markDead(u);
-          ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` });
+          if (this.markDead(u, ev)) ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` });
         }
       }
       s.left--;

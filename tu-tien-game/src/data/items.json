@@ -41,6 +41,12 @@
    "name": "Chứng Cứ Mặc Gia",
    "kind": "quest",
    "price": 0
+  },
+  {
+   "id": "luc_chung_cu",
+   "name": "Thư Tay Lục Vân Sinh",
+   "kind": "quest",
+   "price": 0
   }
  ],
  "bases": [

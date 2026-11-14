@@ -196,6 +196,16 @@ describe('cân bằng (mô phỏng tự động)', () => {
       expect(rates.reduce((a, b) => a + b, 0) / rates.length, `${name} trung bình`).toBeLessThanOrEqual(0.95);
     }
   });
+  it('Nguyên Anh: quái thường ≥ 85%; Môn Chủ mọi nhánh ≥ 25%; Lục Vân Sinh (trùm cuối) mọi nhánh ≥ 15% và trung bình ≤ 85%', () => {
+    const trash = SCENARIOS.find((s) => s.name.startsWith('NA3'))!;
+    for (const b of branches) expect(winRate(b, trash, 50).win, `${b} vs quái NA`).toBeGreaterThanOrEqual(0.85);
+    const chu = SCENARIOS.find((s) => s.name === 'NA5 vs Môn Chủ')!;
+    for (const b of branches) expect(winRate(b, chu, 50).win, `${b} vs Môn Chủ`).toBeGreaterThanOrEqual(0.25);
+    const luc = SCENARIOS.find((s) => s.name === 'NA7 vs Lục Vân Sinh')!;
+    const rates = branches.map((b) => winRate(b, luc, 50).win);
+    for (let i = 0; i < rates.length; i++) expect(rates[i], `Lục Vân Sinh: ${branches[i]}`).toBeGreaterThanOrEqual(0.15);
+    expect(rates.reduce((a, b) => a + b, 0) / rates.length).toBeLessThanOrEqual(0.85);
+  });
   it('Trúc Cơ 9 vượt tầng thì thắng boss dễ hơn rõ rệt', () => {
     const tc5 = SCENARIOS.find((s) => s.name === 'TC5 vs Boss')!;
     const tc9 = SCENARIOS.find((s) => s.name === 'TC9 vs Boss')!;
@@ -271,5 +281,39 @@ describe('Âm Tu: đảo nhịp', () => {
     const before = n.nextAt;
     bt.act(a, 'am_co_vu', n);
     expect(n.nextAt).toBeLessThan(before);
+  });
+});
+
+describe('khóa nhánh theo thiết kế: nhánh chính + một nhánh phụ', () => {
+  it('chọn nhánh chính ở Trúc Cơ chỉ gồm Kiếm / Thể / Pháp', async () => {
+    const { mainBranchChoices } = await import('../src/core/session');
+    expect(mainBranchChoices().map((b: any) => b.id).sort()).toEqual(['kiem_tu', 'phap_tu', 'the_tu']);
+  });
+  it('nhánh phụ chỉ học được khi đủ cảnh giới, tốn 1000 LT, và chỉ một nhánh', async () => {
+    const { eligibleSubBranches, learnSubBranch, SUB_BRANCH_COST } = await import('../src/core/session');
+    const p = newPlayer(); p.branchId = 'kiem_tu'; p.realmIndex = 1; p.gold = 5000;
+    expect(eligibleSubBranches(p)).toEqual([]); // Trúc Cơ chưa có nhánh phụ
+    p.realmIndex = 2;
+    expect(eligibleSubBranches(p).map((b: any) => b.id).sort()).toEqual(['dan_tu', 'phu_tran_tu']);
+    p.gold = 10; expect(learnSubBranch(p, 'dan_tu').ok).toBe(false);
+    p.gold = 5000; expect(learnSubBranch(p, 'ma_tu').ok).toBe(false); // Ma Tu mở ở Nguyên Anh
+    expect(learnSubBranch(p, 'dan_tu').ok).toBe(true);
+    expect(p.gold).toBe(5000 - SUB_BRANCH_COST);
+    expect(eligibleSubBranches(p)).toEqual([]);
+    p.realmIndex = 3;
+    expect(learnSubBranch(p, 'ma_tu').ok).toBe(false); // đã có nhánh phụ
+  });
+  it('kỹ năng gộp cả nhánh chính và nhánh phụ', () => {
+    const p = newPlayer(); p.branchId = 'kiem_tu'; p.realmIndex = 2; p.stage = 5;
+    const only = availableSkills(p).length;
+    p.subBranchId = 'dan_tu';
+    const both = availableSkills(p);
+    expect(both.length).toBeGreaterThan(only);
+    expect(both.some((s) => s.branch === 'dan_tu') && both.some((s) => s.branch === 'kiem_tu')).toBe(true);
+  });
+  it('Nguyên Anh mới học được Ma Tu / Ngự Thú / Âm Tu làm nhánh phụ', async () => {
+    const { eligibleSubBranches } = await import('../src/core/session');
+    const p = newPlayer(); p.branchId = 'phap_tu'; p.realmIndex = 3;
+    expect(eligibleSubBranches(p).map((b: any) => b.id).sort()).toEqual(['am_tu', 'dan_tu', 'ma_tu', 'ngu_thu_tu', 'phu_tran_tu']);
   });
 });

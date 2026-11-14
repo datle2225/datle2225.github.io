@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 import { game, persist } from '../state';
 import { ListPanel, type Row } from '../ui/ListPanel';
 import { fmtAffixes, fmtItem } from '../ui/format';
-import { BRANCHES, RECIPES, REALMS, branchMap, companionMap, materialMap, questMap, recipeMap, rootMap, skillMap } from '../core/data';
+import { RECIPES, REALMS, branchMap, companionMap, materialMap, questMap, recipeMap, rootMap, skillMap } from '../core/data';
 import { computeStats, power } from '../core/stats';
 import { atStageCap, clearBottleneck, expNeeded, gainExp, isBottlenecked, levelUpStages, needsTamMa, tamMaFactor, tamMaFlag, tribulationFor, tribulationReadiness } from '../core/progression';
 import { MED, canMeditate, cancelSeclusion, claimSeclusion, energyNow, meditate, seclusionUnits, startSeclusion } from '../core/meditation';
-import { availableSkills, ownsSystem } from '../core/session';
+import { availableSkills, eligibleSubBranches, learnSubBranch, mainBranchChoices, ownsSystem, SUB_BRANCH_COST } from '../core/session';
 import { audio } from '../audio';
 import { getSettings, setSettings } from '../settings';
 import { exportSave, importSave, writeSave } from '../core/save';
@@ -94,15 +94,18 @@ export class MenuScene extends Phaser.Scene {
     const rows: Row[] = [
       { text: `${p.name} · ${r.name} tầng ${p.stage}/${r.stages} · Thọ nguyên ${r.lifespan} năm` },
       { text: `Linh căn: ${root?.name}`, sub: root?.desc },
-      { text: `Nhánh tu: ${p.branchId ? branchMap.get(p.branchId)?.name : 'Chưa chọn'} · Đạo tâm ${p.daoHeart}/100 · Lực chiến ${power(s)}` },
+      { text: `Nhánh tu: ${p.branchId ? branchMap.get(p.branchId)?.name : 'Chưa chọn'}${p.subBranchId ? ` + phụ ${branchMap.get(p.subBranchId)?.name}` : ''} · Đạo tâm ${p.daoHeart}/100 · Lực chiến ${power(s)}` },
       { text: `HP ${s.hp} · MP ${s.mp} · Công ${s.atk} · Thủ ${s.def} · Tốc ${Math.round(s.spd)} · Bạo ${(s.crit * 100).toFixed(0)}%` },
       { text: `Linh thạch ${p.gold} · Chương ${p.chapter} · Chơi ${Math.round(p.playtime / 60)} phút` },
     ];
     if (ownsSystem(p, 'chon_nhanh') && !p.branchId) {
       rows.push({ text: 'Đã Trúc Cơ! Hãy chọn nhánh tu (không đổi được miễn phí):' });
-      for (const b of BRANCHES.filter((x: any) => x.playable)) {
+      for (const b of mainBranchChoices()) {
         rows.push({ text: `${b.name} — ${b.role}`, sub: b.desc, btns: [{ label: 'Chọn', fn: () => { p.branchId = b.id; p.comboPresets[0] = [availableSkills(p)[0]?.id].filter(Boolean) as string[]; this.note(`Đã chọn ${b.name}.`); } }] });
       }
+    }
+    for (const b of eligibleSubBranches(p)) {
+      rows.push({ text: `Học nhánh phụ: ${b.name} (${SUB_BRANCH_COST} LT)`, sub: `${b.desc} Chỉ được một nhánh phụ, dùng chung ô combo với nhánh chính.`, btns: [{ label: 'Học', enabled: p.gold >= SUB_BRANCH_COST, fn: () => this.note(learnSubBranch(p, b.id).msg) }] });
     }
     rows.push({ text: 'Lưu game (tự lưu mỗi 30 giây và khi thoát menu)', btns: [{ label: 'Lưu', fn: () => this.note(persist() ? 'Đã lưu.' : 'Không lưu được (trình duyệt chặn).') }] });
     return rows;

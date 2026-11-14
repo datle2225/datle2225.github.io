@@ -72,6 +72,22 @@ Mỗi nhiệm vụ lớn có **ít nhất một lựa chọn có hậu quả nh�
 Hoàn thành `m2_3` kích hoạt: **gỡ phong ấn** (Tàn Căn → **Hỗn Độn Căn**: tu luyện ×1.6, mọi chỉ số +15%, không bị khắc chế), thưởng tu vi, và **đoạn kết Hồi 2 theo đạo tâm** (chính đạo / ma đạo / tán tu). Huyết Thư (Menu) liệt kê 5 kẻ thù; kẻ 4–5 mở manh mối dần (nếu chọn "Ai là kẻ cầm cán?" sẽ đặt cờ `luc_hint` hé lộ Lục Vân Sinh).
 **Chưa làm:** Hồi 3 (kẻ thù #4 Huyết Ảnh Môn Chủ, #5 Lục Vân Sinh), Nguyên Anh trở lên.
 
+## Hồi 3 đã có trong game (Nguyên Anh): kết thúc phần 1
+Điều kiện mở: **Nguyên Anh** + đã hạ Mặc Gia Gia Chủ → hỏi Thiên Cơ Các (Phường Thị) → mở lối bắc.
+
+| Nhiệm vụ | Nội dung | Kết quả |
+|---|---|---|
+| `m3_1` Băng Nguyên Cực Bắc | Đi sâu vào Băng Nguyên (hồ băng linh khí, quái Băng Lang / Băng Yêu / Huyết Vệ) | Mở chương 8 và cổng Tổng Đàn |
+| `m3_2` Huyết Ảnh Tổng Đàn | Dungeon: hạ **Huyết Ảnh Môn Chủ** (kẻ #4, boss 4 pha: sen đỏ → tế huyết nhục → huyết trì sôi sục) | Rơi **Thư Tay Lục Vân Sinh**, mở Thiên Kiếp Đài |
+| `m3_3` Kẻ cầm cán | **Thiên Kiếp Đài**: đối mặt **Lục Vân Sinh** (kẻ #5, boss 4 pha, kháng đảo nhịp) | Kết cục |
+
+**Ba tuyến ở trận cuối** (thật sự khác nhau, không chỉ cảnh phim):
+1. **Đánh** → kết cục theo đạo tâm (chính đạo ≥ 65 / ma đạo ≤ 35 / tán tu).
+2. **Vạch trần** (cần Thư Tay từ Môn Chủ, +6 đạo tâm, +10 danh vọng chính đạo): không phải đánh bại ông ta trong trận, kết cục *"Sự thật phơi bày"*.
+3. **Hợp tác** với Lục Vân Sinh (−15 đạo tâm, +10 danh vọng ma đạo): kết cục *"Hai kẻ cùng phi thăng"*, với dư âm mờ ám.
+
+5 kết cục: **Chính đạo chân nhân · Ma đạo chi chủ · Tán tu tiêu dao · Sự thật phơi bày · Hai kẻ cùng phi thăng**. Mỗi kết cục đặt cờ `game_complete` và khép lại *phần 1*; **phi thăng, Đại Thừa và Tiên Giới để dành cho phần tiếp theo** (chưa làm).
+
 ## Nhiệm vụ phụ (nguyên tắc)
 - Mỗi nhiệm vụ phụ phải có **câu chuyện nhỏ + một quyết định**, không chỉ "giết N con".
 - 5 loại: **Giải cứu** · **Điều tra** · **Thu thập có câu chuyện** · **Giao hàng/cạnh tranh buôn bán** · **Cơ duyên ẩn** (kích hoạt bởi hành vi, không có dấu chấm than).

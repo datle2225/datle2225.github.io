@@ -183,5 +183,71 @@
    "linh_thach": 300
   },
   "unlocks": []
+ },
+ {
+  "id": "m3_1",
+  "type": "main",
+  "chapter": 8,
+  "title": "Băng Nguyên Cực Bắc",
+  "desc": "Thiên Cơ Các báo: Huyết Ảnh Môn Chủ ẩn náu ở Tổng Đàn phía bắc Băng Nguyên. Đi sâu vào Băng Nguyên.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "bang_nguyen_sau"
+   }
+  ],
+  "reward": {
+   "exp": 3000
+  },
+  "unlockChapter": 8,
+  "unlocks": [
+   "m3_2"
+  ]
+ },
+ {
+  "id": "m3_2",
+  "type": "main",
+  "chapter": 8,
+  "title": "Huyết Ảnh Tổng Đàn",
+  "desc": "Tiến vào Tổng Đàn, hạ Huyết Ảnh Môn Chủ, kẻ thứ tư trong Huyết Thư.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "tong_dan_sau"
+   },
+   {
+    "kind": "battle",
+    "target": "huyet_anh_mon_chu"
+   }
+  ],
+  "reward": {
+   "exp": 9000,
+   "linh_thach": 600
+  },
+  "unlocks": [
+   "m3_3"
+  ]
+ },
+ {
+  "id": "m3_3",
+  "type": "main",
+  "chapter": 8,
+  "title": "Kẻ cầm cán",
+  "desc": "Bức thư tay trên người Môn Chủ chỉ về Thiên Kiếp Đài. Đối mặt Lục Vân Sinh.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "thien_kiep_dai"
+   },
+   {
+    "kind": "battle",
+    "target": "luc_van_sinh"
+   }
+  ],
+  "reward": {
+   "exp": 15000,
+   "linh_thach": 1000
+  },
+  "unlocks": []
  }
 ]

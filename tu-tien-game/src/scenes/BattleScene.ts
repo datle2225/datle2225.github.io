@@ -11,7 +11,7 @@ import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
 
 interface Init { enemies: string[]; foeIndex: number; returnTo?: string }
-const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss', tam_ma: 'player', huyet_quai: 'cultist', doc_trung: 'snake', doc_thu_tien_sinh: 'elder_boss', xich_hoa_thu: 'wolf', sa_trung: 'snake', mac_gia_chu: 'npc_sage', cuop_duong: 'cultist', ma_tu_lang_thang: 'cultist' };
+const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss', tam_ma: 'player', huyet_quai: 'cultist', doc_trung: 'snake', doc_thu_tien_sinh: 'elder_boss', xich_hoa_thu: 'wolf', sa_trung: 'snake', mac_gia_chu: 'npc_sage', cuop_duong: 'cultist', bang_lang: 'wolf', huyet_ve: 'cultist', bang_yeu: 'snake', huyet_anh_mon_chu: 'elder_boss', luc_van_sinh: 'npc_sage', ma_tu_lang_thang: 'cultist' };
 
 export class BattleScene extends Phaser.Scene {
   private b!: Battle;
@@ -28,6 +28,7 @@ export class BattleScene extends Phaser.Scene {
   private locked = false;
   private player!: Unit;
   private enemyIds: string[] = [];
+  private completedQuests: string[] = [];
 
   constructor() { super('Battle'); }
 
@@ -176,6 +177,7 @@ export class BattleScene extends Phaser.Scene {
         if (bu) { this.addUnit(bu, 215, 175, bu.tex ?? 'wolf', 0x6affc8, 2); const sp = this.sprites.get(bu.id); if (sp) { sp.setAlpha(0); this.tweens.add({ targets: sp, alpha: 1, duration: 400 }); } audio.sfx('heal'); }
       }
       if (e.type === 'tempo') audio.sfx('combo');
+      if (e.type === 'revive') { audio.sfx('levelup'); this.cameras.main.flash(300, 160, 255, 220); if (e.target) this.floatText(e.target, 'THOÁT XÁC', '#9affd8'); }
       if (e.type === 'trap') { audio.sfx('crit'); if (e.target) this.floatText(e.target, `${e.value}`, '#ffb84a'); }
       if (e.type === 'phase') { audio.sfx('thunder'); this.cameras.main.shake(250, 0.01); this.cameras.main.flash(250, 255, 60, 60); const t = label(this, W / 2, 110, e.text, { fontSize: '13px', color: '#ff8a8a', backgroundColor: '#200a0acc', padding: { x: 6, y: 3 }, wordWrap: { width: 460 }, align: 'center' }).setOrigin(0.5); this.tweens.add({ targets: t, alpha: 0, y: 90, delay: 1500, duration: 600, onComplete: () => t.destroy() }); }
       if (e.type === 'hit' && e.target) {
@@ -221,6 +223,7 @@ export class BattleScene extends Phaser.Scene {
   private end(won: boolean, fled = false) {
     const p = game.p;
     let msg = '';
+    const completed: string[] = [];
     if (won) {
       let exp = 0;
       for (const eid of this.init0.enemies) {
@@ -230,7 +233,7 @@ export class BattleScene extends Phaser.Scene {
           if (id === 'linh_thach_ha') p.gold += n * 5; else p.inventory[id] = (p.inventory[id] ?? 0) + n;
           msg += `\n+${n} ${(materialMap.get(id) as any)?.name ?? id}`;
         }
-        questEvent(p, 'battle', eid, 1);
+        completed.push(...questEvent(p, 'battle', eid, 1));
         if (e.flagOnWin) p.flags[e.flagOnWin] = true;
       }
       const g = gainExp(p, exp);
@@ -243,6 +246,7 @@ export class BattleScene extends Phaser.Scene {
       p.gold = Math.floor(p.gold * 0.9);
       msg = 'Bại trận... Mất 10% linh thạch. Ngươi tỉnh lại ở nơi an toàn.';
     }
+    this.completedQuests = completed;
     persist();
     this.clearUi();
     const bg = this.add.rectangle(W / 2, H / 2, 380, 150, 0x0b1020, 0.97).setStrokeStyle(2, 0xffe38a);
@@ -252,7 +256,7 @@ export class BattleScene extends Phaser.Scene {
       const ow = this.scene.get(back);
       this.scene.stop();
       this.scene.resume(back);
-      ow.events.emit('battle-end', { won, fled, lost: !won && !fled, foeIndex: this.init0.foeIndex });
+      ow.events.emit('battle-end', { won, fled, lost: !won && !fled, foeIndex: this.init0.foeIndex, completed: this.completedQuests });
     });
     bg.setDepth(0);
   }

@@ -19,9 +19,15 @@
 | **Ma Tu** | Nguyên Anh | Hy sinh máu lấy sức | Công | Sát Khí | Rủi ro cao; ảnh hưởng đạo tâm |
 | **Âm Tu** | Nguyên Anh | Buff/debuff nhịp | MP | Âm Luật | Thao túng thứ tự hành động |
 
-`playable: true` trong `branches.json` cho các nhánh đã có chiêu: **cả 8 nhánh đều chơi được** (Kiếm, Thể, Pháp, Đan, Phù Trận, Ma, **Ngự Thú, Âm Tu**).
+`playable: true` trong `branches.json` cho các nhánh đã có chiêu: **cả 8 nhánh đều chơi được**, **mở theo thiết kế gốc** (xem bên dưới) (Kiếm, Thể, Pháp, Đan, Phù Trận, Ma, **Ngự Thú, Âm Tu**).
 
-> **Lưu ý:** theo thiết kế gốc Đan/Phù Trận mở ở Kết Đan và Ma Tu/Ngự Thú/Âm Tu ở Nguyên Anh; **bản hiện tại mở cả 8 nhánh ở Trúc Cơ** để dễ thử. Khi có đủ nội dung sẽ khóa lại theo bảng trên.
+### Nhánh chính + một nhánh phụ (đã làm)
+- **Trúc Cơ: chọn nhánh chính** trong 3 nhánh nền: **Kiếm, Thể, Pháp**.
+- **Kết Đan: học được một nhánh phụ** là **Đan Tu** hoặc **Phù Trận Tu**.
+- **Nguyên Anh: nhánh phụ mở rộng** thêm **Ma Tu, Ngự Thú Tu, Âm Tu**.
+- Chỉ **một** nhánh phụ, giá **1000 linh thạch**, chiêu của nhánh phụ mở dần theo cảnh giới và **dùng chung ô combo** với nhánh chính (vì vậy phải chọn).
+- Menu → Trạng thái hiện danh sách nhánh phụ có thể học. Thợ rèn bán/rèn đồ cho cả nhánh chính và nhánh phụ.
+- Các nút "Thử nhanh" ở màn hình chính đặt thẳng nhánh để dễ thử.
 
 ### Đan Tu (đã làm)
 Đan Châm (cơ bản) → Độc Đan Phi Xạ (gieo **Trúng Độc**) → Thanh Liên Hộ Thể (hồi + khiên) → **Bạo Đan** (cộng hưởng với Độc) → Hồi Xuân Đan Vũ (hồi đồng đội) → Vạn Độc Quy Tông (Kết Đan).

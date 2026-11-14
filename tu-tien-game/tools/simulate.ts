@@ -13,6 +13,9 @@ export const SCENARIOS: Scenario[] = [
   { name: 'TC9 vs Boss', realm: 1, stage: 9, enemies: ['boss_huyet_anh_truong_lao'] },
   { name: 'KĐ3 vs 2 Quái', realm: 2, stage: 3, enemies: ['huyet_quai', 'doc_trung'] },
   { name: 'KĐ5 vs Độc Thủ', realm: 2, stage: 5, enemies: ['doc_thu_tien_sinh'] },
+  { name: 'NA3 vs 2 Quái', realm: 3, stage: 3, enemies: ['huyet_ve', 'bang_lang'] },
+  { name: 'NA5 vs Môn Chủ', realm: 3, stage: 5, enemies: ['huyet_anh_mon_chu'] },
+  { name: 'NA7 vs Lục Vân Sinh', realm: 3, stage: 7, enemies: ['luc_van_sinh'] },
   { name: 'KĐ6 vs Mặc Gia', realm: 2, stage: 6, enemies: ['mac_gia_chu'] },
 ];
 
@@ -21,6 +24,7 @@ export function winRate(branch: string, sc: Scenario, n = 200): { win: number; h
   for (let i = 0; i < n; i++) {
     const p = newPlayer();
     p.rootId = 'kim'; p.realmIndex = sc.realm; p.stage = sc.stage; p.branchId = sc.realm === 0 ? null : branch; // trước Trúc Cơ chưa có nhánh
+    if (sc.realm >= 3) p.unlockedSystems.push('thoat_xac'); // Nguyên Anh: mạng thứ hai
     const r = autoBattle(p, sc.enemies, new Rng(1000 + i));
     if (r.won) { w++; hp += r.hpLeft; }
     act += r.actions;
