@@ -39,7 +39,7 @@ tu-tien-game/
 │  │                   #       services (NPC), dialogues, companions, systems, events, rumors, beasts, maps/*.json (Tiled)
 │  ├─ scenes/          # Boot, Title, Overworld, Battle, Menu, Shop, MiniGame, Tribulation
 │  └─ ui/              # widgets (nút, thanh), ListPanel (khung tab/trang), format
-├─ tools/              # make_maps.py (sinh map Tiled), simulate.ts + sim-cli.ts (cân bằng), export-tileset.cjs
+├─ tools/              # make_maps.py (sinh map Tiled), simulate.ts (thư viện cân bằng; báo cáo ở tests/sim.report.test.ts, chạy `npm run sim`), export-tileset.cjs
 ├─ tests/              # Vitest (core, services, systems, maps)
 └─ play/               # bản build cho GitHub Pages (sinh bởi `npm run build`)
 ```
