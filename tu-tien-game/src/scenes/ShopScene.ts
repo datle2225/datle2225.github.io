@@ -14,6 +14,7 @@ import { ownsSystem } from '../core/session';
 import { audio } from '../audio';
 import { abandonBounty, acceptBounty, activeBounties, bountiesForDay, MAX_ACTIVE_BOUNTIES } from '../core/bounty';
 import { getQuest } from '../core/session';
+import { bump } from '../core/achievements';
 import { checkCollect } from '../core/session';
 import { cancelBid, currentLots, minRaise, myBid, placeBid, settleAuctions } from '../core/auction';
 import { formatHour, gameHour } from '../core/time';
@@ -251,6 +252,7 @@ export class ShopScene extends Phaser.Scene {
       p.gold -= b.ore * FORGE_FEE_PER_ORE;
       const item = forge({ baseId: b.id, materialQuality: 0.55 + this.rng.range(0, 0.15), skillScore: score, smithLevel: level }, this.rng);
       p.gear.push(item);
+      bump(p, 'crafted');
       this.say({ ok: true, msg: `Rèn xong: ${fmtItem(item)}` });
     });
   }
@@ -258,6 +260,7 @@ export class ShopScene extends Phaser.Scene {
   private selfBrew(r: any) {
     this.launchMini({ mode: 'alchemy', param: { difficulty: r.difficulty } }, (score) => {
       const res = brew(game.p, r.id, score, this.rng);
+      if (res.ok) bump(game.p, 'crafted');
       this.say({ ok: res.ok, msg: res.ok ? `Luyện xong ${r.name} phẩm ${res.grade}, ${res.pillLines} đan văn (~${res.price} LT).` : (res.reason ?? '') });
     });
   }

@@ -3913,5 +3913,53 @@
     ]
    }
   }
+ },
+ "thap_linh_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Tháp Linh",
+    "text": "Vô Tận Tháp không có đỉnh. Mỗi tầng kẻ địch mạnh hơn một chút, cứ mười tầng có một thủ vệ. Thua thì chỉ phải xuống, không mất gì. Ngươi muốn leo từ đâu?",
+    "choices": [
+     {
+      "text": "Từ tầng 1.",
+      "goto": null,
+      "do": [
+       {
+        "tower": 1
+       }
+      ]
+     },
+     {
+      "text": "Từ tầng 6 (kỷ lục của ngươi từ 12 trở lên).",
+      "goto": null,
+      "if": {
+       "towerMin": 12
+      },
+      "do": [
+       {
+        "tower": 6
+       }
+      ]
+     },
+     {
+      "text": "Từ tầng 11 (kỷ lục của ngươi từ 22 trở lên).",
+      "goto": null,
+      "if": {
+       "towerMin": 22
+      },
+      "do": [
+       {
+        "tower": 11
+       }
+      ]
+     },
+     {
+      "text": "Chưa sẵn sàng.",
+      "goto": null
+     }
+    ]
+   }
+  }
  }
 }

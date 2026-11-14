@@ -7,11 +7,12 @@ import { buildBattle } from '../core/encounter';
 import { Rng } from '../core/rng';
 import { availableSkills, questEvent, rollDrops } from '../core/session';
 import { enemyMap, skillMap, materialMap, statusMap } from '../core/data';
-import { ELITE, applyDefeatPenalty, difficultyOf } from '../core/difficulty';
+import { ELITE, applyDefeatPenalty, difficultyOf, effectiveDifficulty } from '../core/difficulty';
+import { bump } from '../core/achievements';
 import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
 
-interface Init { enemies: string[]; foeIndex: number; returnTo?: string; elite?: boolean }
+interface Init { enemies: string[]; foeIndex: number; returnTo?: string; elite?: boolean; mult?: number }
 const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss', tam_ma: 'player', huyet_quai: 'cultist', doc_trung: 'snake', doc_thu_tien_sinh: 'elder_boss', xich_hoa_thu: 'wolf', sa_trung: 'snake', mac_gia_chu: 'npc_sage', cuop_duong: 'cultist', bang_lang: 'wolf', huyet_ve: 'cultist', bang_yeu: 'snake', huyet_anh_mon_chu: 'elder_boss', luc_van_sinh: 'npc_sage', ma_tu_lang_thang: 'cultist' };
 
 export class BattleScene extends Phaser.Scene {
@@ -43,7 +44,7 @@ export class BattleScene extends Phaser.Scene {
     this.add.rectangle(0, 200, W, 160, 0x1b2a4a).setOrigin(0);
 
     this.pillsLeft = difficultyOf(p).pills;
-    const built = buildBattle(p, this.init0.enemies, new Rng(), true, { elite: !!this.init0.elite });
+    const built = buildBattle(p, this.init0.enemies, new Rng(), true, { elite: !!this.init0.elite, mult: this.init0.mult });
     this.b = built.battle;
     this.player = built.player;
     this.enemyIds = built.enemyUnitIds;
@@ -155,6 +156,7 @@ export class BattleScene extends Phaser.Scene {
     const p = game.p;
     if ((p.inventory.hoi_huyet_dan ?? 0) <= 0 || this.pillsLeft <= 0) return;
     this.pillsLeft--;
+    bump(p, 'pills_used');
     p.inventory.hoi_huyet_dan--;
     this.player.hp = Math.min(this.player.stats.hp, this.player.hp + Math.round(this.player.stats.hp * 0.35));
     this.player.nextAt += 100;
@@ -230,7 +232,7 @@ export class BattleScene extends Phaser.Scene {
     const completed: string[] = [];
     if (won) {
       let exp = 0;
-      const mult = difficultyOf(p).reward * (this.init0.elite ? ELITE.reward : 1);
+      const mult = effectiveDifficulty(p).reward * (this.init0.elite ? ELITE.reward : 1);
       for (const eid of this.init0.enemies) {
         const e = enemyMap.get(eid);
         exp += Math.round(e.exp * mult);
@@ -239,6 +241,7 @@ export class BattleScene extends Phaser.Scene {
           msg += `\n+${n} ${(materialMap.get(id) as any)?.name ?? id}`;
         }
         completed.push(...questEvent(p, 'battle', eid, 1));
+        if (eid !== 'tam_ma') { bump(p, 'kills'); if (e.boss) bump(p, 'boss_kills'); }
         if (e.flagOnWin) p.flags[e.flagOnWin] = true;
       }
       const g = gainExp(p, exp);
@@ -248,9 +251,11 @@ export class BattleScene extends Phaser.Scene {
     } else if (fled) {
       msg = 'Ngươi chạy thoát.';
     } else {
-      const mirror = this.init0.enemies.includes('tam_ma');
+      const tower = this.init0.foeIndex === -2;
+      const mirror = this.init0.enemies.includes('tam_ma') || tower; // tâm ma / Vô Tận Tháp: không phạt
+      if (!mirror) bump(p, 'deaths');
       const lost = mirror ? { gold: 0, exp: 0 } : applyDefeatPenalty(p); // tâm ma: chỉ ảnh hưởng đạo tâm
-      msg = mirror ? 'Tâm ma thắng thế...' : `Bại trận... Mất ${lost.gold} linh thạch${lost.exp ? ` và ${lost.exp} tu vi` : ''}. Ngươi tỉnh lại ở nơi an toàn.`;
+      msg = tower ? 'Rơi khỏi tháp...' : mirror ? 'Tâm ma thắng thế...' : `Bại trận... Mất ${lost.gold} linh thạch${lost.exp ? ` và ${lost.exp} tu vi` : ''}. Ngươi tỉnh lại ở nơi an toàn.`;
     }
     this.completedQuests = completed;
     persist();

@@ -6,7 +6,9 @@ import { checkCollect, getQuest, questEvent } from '../core/session';
 import { ELITE } from '../core/difficulty';
 import { EVENTS, REALMS, enemyMap, vendorMap } from '../core/data';
 import { expNeeded } from '../core/progression';
-import { DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
+import { DIALOGUES, DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
+import { checkAchievements } from '../core/achievements';
+import { clearFloor, floorEnemies, floorMult, towerBossName } from '../core/tower';
 import { loadMap } from '../core/maps';
 import { isSolidTile, type MapDef, type MapNpc, type MapFoe } from '../core/tiled';
 import { TILESET } from '../core/tileset';
@@ -48,6 +50,7 @@ export class OverworldScene extends Phaser.Scene {
   private walked = 0;
   private fps?: Phaser.GameObjects.Text;
   private initData: { arrive?: string } = {};
+  private towerFloor = 0;
 
   // hội thoại
   private runner: DialogueRunner | null = null;
@@ -119,9 +122,10 @@ export class OverworldScene extends Phaser.Scene {
     const onBattleEnd = (r: { won: boolean; fled?: boolean; lost?: boolean; foeIndex: number; completed?: string[] }) => {
       this.busy = false;
       this.immuneUntil = this.time.now + 3000;
+      if (r.foeIndex === -2) { this.onTowerResult(r.won); audio.music(this.map.music); return; }
       const f = this.foes[r.foeIndex];
       if (r.won && f) { respawnAt.set(f.key, game.p.playtime + this.map.respawn); f.elite = this.rollElite(f.def); this.markElite(f); this.refreshFoeVisibility(); }
-      if (r.lost) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
+      if (r.lost && r.foeIndex !== -2) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
       this.refreshHud();
       audio.music(this.map.music);
       if (r.completed?.length) this.time.delayedCall(300, () => this.progress(r.completed!)); // quest hoàn thành ngay trong trận
@@ -199,6 +203,7 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private tick() {
+    for (const a of checkAchievements(game.p)) { this.toast(`★ Thành tựu: ${a.name} (+${a.reward?.gold ?? 0} LT)`); audio.sfx('levelup'); persist(); }
     const col = checkCollect(game.p);
     if (col.length) this.progress(col);
     if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
@@ -395,12 +400,12 @@ export class OverworldScene extends Phaser.Scene {
     this.launchBattle(this.foes[i].def.group, i, this.foes[i].elite);
   }
 
-  private launchBattle(group: string[], foeIndex: number, elite = false) {
+  private launchBattle(group: string[], foeIndex: number, elite = false, mult?: number) {
     this.busy = true;
     this.joyPtr = null; this.joyVec.set(0, 0);
     this.savePos();
     this.scene.pause();
-    this.scene.launch('Battle', { enemies: group, foeIndex, elite });
+    this.scene.launch('Battle', { enemies: group, foeIndex, elite, mult });
   }
 
   private openMenu() {
@@ -499,12 +504,42 @@ export class OverworldScene extends Phaser.Scene {
     this.showNode();
   }
 
+  /* ───────────── Vô Tận Tháp ───────────── */
+  private startTower(floor: number) {
+    this.towerFloor = floor;
+    this.runTowerFloor();
+  }
+
+  private runTowerFloor() {
+    const f = this.towerFloor;
+    const enemies = floorEnemies(game.p, f);
+    this.toast(`Vô Tận Tháp — tầng ${f}${f % 10 === 0 && towerBossName(game.p) ? ` (thủ vệ: ${towerBossName(game.p)})` : ''}`);
+    this.launchBattle(enemies, -2, false, floorMult(f));
+  }
+
+  private onTowerResult(won: boolean) {
+    const p = game.p;
+    const f = this.towerFloor;
+    if (!won) {
+      this.towerFloor = 0;
+      this.toast(`Rơi khỏi tháp ở tầng ${f}. Kỷ lục: tầng ${p.towerBest}.`);
+      persist();
+      return;
+    }
+    const r = clearFloor(p, f);
+    const reward = `${r.label}: +${r.gold} LT${r.item ? ` và ${r.item.n} ${r.item.id === 'huyet_tham' ? 'Huyết Sâm' : 'Phá Cảnh Đan'}` : ''}.`;
+    DIALOGUES.__tower = { start: 'a', nodes: { a: { who: 'Tháp Linh', text: `Vượt tầng ${f}! ${reward} Kỷ lục của ngươi: tầng ${p.towerBest}. Leo tiếp tầng ${f + 1}?`, choices: [{ text: `Leo tiếp lên tầng ${f + 1}.`, goto: null, do: [{ tower: f + 1 }] }, { text: 'Dừng ở đây, xuống tháp.', goto: null }] } } };
+    persist();
+    this.time.delayedCall(300, () => this.startDialogue('__tower'));
+  }
+
   private endDialogue() {
     this.clearDialogUi();
     const r = this.runner;
     this.runner = null;
     const shop = r?.out.openShop;
     const fight = r?.out.battle;
+    const tower = r?.out.tower;
     const after = this.afterDialog; this.afterDialog = undefined;
     after?.();
     const done = this.pendingProgress.splice(0);
@@ -512,7 +547,8 @@ export class OverworldScene extends Phaser.Scene {
     persist();
     this.refreshHud();
     this.syncFollowers();
-    if (fight?.length) this.launchBattle(fight, -1);
+    if (tower) this.startTower(tower);
+    else if (fight?.length) this.launchBattle(fight, -1);
     else if (shop) this.openShop(shop.vendor, shop.tab);
   }
 }

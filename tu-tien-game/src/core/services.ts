@@ -4,6 +4,7 @@ import { brew, canBrew, type AlchemyResult } from './alchemy';
 import { Rng } from './rng';
 import type { ItemInstance, PlayerState, ShopState, StatKey } from './types';
 import { factionPerks } from './advanced';
+import { bump } from './achievements';
 
 const RARITY_VALUE: Record<string, number> = { pham: 1, linh: 1.6, bao: 2.6, tien: 4.5 };
 const STAT_WEIGHT: Record<StatKey, number> = { atk: 4, def: 4, hp: 0.5, mp: 0.6, spd: 5, crit: 600 };
@@ -211,6 +212,7 @@ export function commissionForge(p: PlayerState, vendorId: string, baseId: string
     smithLevel: v.skill,
   }, rng);
   p.gear.push(item);
+  bump(p, 'crafted');
   p.relations[vendorId] = Math.min(100, (p.relations[vendorId] ?? 0) + 2);
   return { ok: true, msg: `${v.name} rèn xong (-${q.total} LT).`, item };
 }
@@ -245,6 +247,7 @@ export function commissionBrew(p: PlayerState, vendorId: string, recipeId: strin
   const chk = canBrew(p, recipeId, { byNpc: true, skipIngredients: true });
   if (!chk.ok) return { ok: false, msg: chk.reason ?? '' };
   const res = brew(p, recipeId, heat, rng, { byNpc: true, skipIngredients: true });
+  if (res.ok) bump(p, 'crafted');
   p.relations[vendorId] = Math.min(100, (p.relations[vendorId] ?? 0) + 2);
   return { ok: res.ok, msg: res.ok ? `${v.name} luyện xong ${r.name} phẩm ${res.grade} (${res.pillLines} đan văn).` : `${res.reason}`, result: res };
 }

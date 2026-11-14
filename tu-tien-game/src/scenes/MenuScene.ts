@@ -15,6 +15,10 @@ import { getSettings, setSettings } from '../settings';
 import { exportSave, importSave, writeSave } from '../core/save';
 import { check, type Cond } from '../core/story';
 import { FACTIONS, FORMATIONS, LAWS, factionMap } from '../core/data';
+import { ACHIEVEMENTS } from '../core/data';
+import { progressOf } from '../core/achievements';
+import { canStartNgPlus, startNewGamePlus } from '../core/ngplus';
+import { acceptFactionMission, abandonBounty, activeFactionMissions, factionMissions, MAX_ACTIVE_FACTION } from '../core/bounty';
 import { LAW_CHANGE_COST, canJoin, chooseLaw, claimStipend, donate, factionPerks, joinFaction, leaveFaction, learnFormation, pendingStipend, rankIndex, setFormation } from '../core/advanced';
 
 const SLOTS_BASE = 3;
@@ -56,6 +60,7 @@ export class MenuScene extends Phaser.Scene {
           { id: 'bag', name: 'Kho đồ', on: true },
           { id: 'inner', name: 'Nội tình', on: ownsSystem(p, 'tran_phap') || ownsSystem(p, 'the_luc') || ownsSystem(p, 'phap_tac') || ownsSystem(p, 'dich_chuyen') },
           { id: 'journal', name: 'Huyết Thư', on: true },
+          { id: 'achv', name: 'Thành tựu', on: true },
           { id: 'settings', name: 'Cài đặt', on: true },
         ];
       },
@@ -87,6 +92,7 @@ export class MenuScene extends Phaser.Scene {
       case 'bag': return this.rowsBag();
       case 'journal': return this.rowsJournal();
       case 'inner': return this.rowsInner();
+      case 'achv': return this.rowsAchv();
       default: return this.rowsSettings();
     }
   }
@@ -224,6 +230,13 @@ export class MenuScene extends Phaser.Scene {
         rows.push({ text: `${f.name}: ${f.ranks[r].name} · ${p.faction.points} điểm${next ? ` (chức kế: ${next.name} ở ${next.points})` : ' (cấp cao nhất)'}`, sub: `${perks} · Bổng lộc ${fp.stipend} LT/ngày` });
         const pend = pendingStipend(p);
         rows.push({ text: `Bổng lộc đang chờ: ${pend} LT (tích tối đa 3 ngày)`, btns: [{ label: 'Nhận', enabled: pend > 0, fn: () => this.note(claimStipend(p).msg) }] });
+        const act = activeFactionMissions(p).length;
+        rows.push({ text: `Nhiệm vụ thế lực hôm nay (đang nhận ${act}/${MAX_ACTIVE_FACTION}); bậc càng cao nhiệm vụ càng nguy hiểm, càng nhiều điểm`, sub: p.faction.id === 'thanh_van' || p.faction.id === 'huyet_anh' ? 'Làm nhiệm vụ cho phe này khiến phe đối địch ghét bạn thêm (−1 danh vọng).' : undefined });
+        for (const b of factionMissions(p)) {
+          const taken = !!p.bountyAccepted[b.id];
+          rows.push({ text: `${'★'.repeat(b.danger)} ${b.title}`, sub: `${b.desc} Thưởng ${b.reward.linh_thach} LT, ${b.reward.exp} tu vi, +${b.points} cống hiến`, btns: [{ label: taken ? 'Đã nhận' : 'Nhận', enabled: !taken && act < MAX_ACTIVE_FACTION, fn: () => this.note(acceptFactionMission(p, b).msg) }] });
+        }
+        for (const id of activeFactionMissions(p)) rows.push({ text: `Đang làm: ${p.dynQuests[id].title}`, btns: [{ label: 'Bỏ', color: 0x6a2a2a, fn: () => this.note(abandonBounty(p, id).msg) }] });
         rows.push({ text: 'Quyên góp lấy điểm cống hiến (10 LT = 1 điểm)', btns: [{ label: '100 LT', enabled: p.gold >= 100, fn: () => this.note(donate(p, 100).msg) }, { label: '1000 LT', enabled: p.gold >= 1000, fn: () => this.note(donate(p, 1000).msg) }, { label: 'Rời', color: 0x6a2a2a, fn: () => this.note(leaveFaction(p).msg) }] });
       } else {
         for (const f of FACTIONS) { const c = canJoin(p, f.id); rows.push({ text: f.name, sub: c.ok ? f.desc : `${f.desc} (${c.reason})`, btns: [{ label: 'Gia nhập', enabled: c.ok, fn: () => this.note(joinFaction(p, f.id).msg) }] }); }
@@ -247,6 +260,17 @@ export class MenuScene extends Phaser.Scene {
     if (ownsSystem(p, 'phap_tac')) {
       rows.push({ text: `— PHÁP TẮC — ${p.law ? (LAWS.find((x) => x.id === p.law) as any).name : 'chưa lĩnh ngộ'}  (đổi tốn ${LAW_CHANGE_COST} LT)` });
       for (const l of LAWS) rows.push({ text: l.name, sub: l.desc, btns: [{ label: p.law === l.id ? 'Đang tu' : 'Lĩnh ngộ', enabled: p.law !== l.id && p.gold >= (p.law ? LAW_CHANGE_COST : 0), fn: () => this.note(chooseLaw(p, l.id).msg) }] });
+    }
+    return rows;
+  }
+
+  private rowsAchv(): Row[] {
+    const p = game.p;
+    const { done, total } = progressOf(p);
+    const rows: Row[] = [{ text: `Thành tựu: ${done}/${total}`, sub: `Chu kỳ NG+: ${p.ngPlus} · Tầng cao nhất Vô Tận Tháp: ${p.towerBest} · Hạ ${p.counters.kills ?? 0} kẻ địch, ${p.counters.boss_kills ?? 0} boss · Thua ${p.counters.deaths ?? 0} lần` }];
+    for (const a of ACHIEVEMENTS) {
+      const got = p.achievements.includes(a.id);
+      rows.push({ text: `${got ? '★' : '☆'} ${a.name}${got ? '' : ` — thưởng ${a.reward?.gold ?? 0} LT`}`, sub: a.desc });
     }
     return rows;
   }
@@ -295,8 +319,16 @@ export class MenuScene extends Phaser.Scene {
       { text: `Joystick ảo (điện thoại): ${nm[st.joystick]} · vị trí: ${st.joyside === 'left' ? 'trái' : 'phải'}`, sub: 'Vòng tròn điều khiển ở góc dưới màn hình. Áp dụng khi vào lại bản đồ.', btns: [{ label: 'Đổi chế độ', fn: () => { setSettings({ joystick: next[st.joystick] }); this.note('Đã đổi. Áp dụng khi đổi bản đồ.'); } }, { label: 'Đổi bên', fn: () => { setSettings({ joyside: st.joyside === 'left' ? 'right' : 'left' }); this.note('Đã đổi bên. Áp dụng khi đổi bản đồ.'); } }] },
       { text: 'Sao lưu save', sub: 'Tải file .txt về máy, hoặc sao chép chuỗi save vào clipboard.', btns: [{ label: 'Tải file', fn: () => this.downloadSave() }, { label: 'Sao chép', fn: () => this.copySave() }] },
       { text: 'Khôi phục save', sub: 'Chọn file .txt đã sao lưu hoặc dán chuỗi. Sẽ GHI ĐÈ tiến trình hiện tại.', btns: [{ label: 'Chọn file', color: 0x6a3a3a, fn: () => this.pickSaveFile() }, { label: 'Dán chuỗi', color: 0x6a3a3a, fn: () => this.pasteSave() }] },
+      ...(canStartNgPlus(game.p) ? [{ text: `Chơi lại (NG+ cấp ${game.p.ngPlus + 1})`, sub: 'Bắt đầu lại với Hỗn Độn Căn, tu vi ×1.25 mỗi chu kỳ, giữ thành tựu và thời trang; kẻ địch mạnh thêm 15% mỗi chu kỳ. Tiến trình hiện tại sẽ BỊ THAY THẾ.', btns: [{ label: 'Bắt đầu', color: 0x7a2a2a, fn: () => this.startNgPlus() }] }] : []),
       { text: 'Phím tắt: WASD/Mũi tên đi · E/Space nói chuyện · 1-3 chọn · M menu · N tắt tiếng · F hiện FPS' },
     ];
+  }
+
+  private startNgPlus() {
+    if (!window.confirm('Chơi lại (NG+)? Tiến trình hiện tại sẽ bị thay thế (thành tựu và thời trang được giữ). Nên "Sao lưu save" trước.')) return;
+    game.p = startNewGamePlus(game.p);
+    persist();
+    this.scene.stop(); this.scene.stop('Overworld'); this.scene.start('Overworld');
   }
 
   private downloadSave() {
