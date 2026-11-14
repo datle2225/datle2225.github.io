@@ -7,7 +7,8 @@ export default defineConfig({
     outDir: 'play',
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
-      output: { manualChunks: { phaser: ['phaser'] } },
+      // Vite 8 (Rolldown) yêu cầu manualChunks là hàm
+      output: { manualChunks: (id: string) => (id.includes('node_modules/phaser') ? 'phaser' : undefined) },
     },
   },
   test: { include: ['tests/**/*.test.ts'] },
