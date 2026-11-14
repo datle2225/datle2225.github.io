@@ -11,6 +11,9 @@ export const SCENARIOS: Scenario[] = [
   { name: 'TC5 vs Ma Tu', realm: 1, stage: 5, enemies: ['ma_tu_lang_thang'] },
   { name: 'TC5 vs Boss', realm: 1, stage: 5, enemies: ['boss_huyet_anh_truong_lao'] },
   { name: 'TC9 vs Boss', realm: 1, stage: 9, enemies: ['boss_huyet_anh_truong_lao'] },
+  { name: 'KĐ3 vs 2 Quái', realm: 2, stage: 3, enemies: ['huyet_quai', 'doc_trung'] },
+  { name: 'KĐ5 vs Độc Thủ', realm: 2, stage: 5, enemies: ['doc_thu_tien_sinh'] },
+  { name: 'KĐ6 vs Mặc Gia', realm: 2, stage: 6, enemies: ['mac_gia_chu'] },
 ];
 
 export function winRate(branch: string, sc: Scenario, n = 200): { win: number; hp: number; actions: number } {

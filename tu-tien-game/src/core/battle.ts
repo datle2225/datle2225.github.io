@@ -1,4 +1,4 @@
-import { skillMap, statusMap } from './data';
+import { beastMap, skillMap, statusMap } from './data';
 import { Rng } from './rng';
 import type { Element, Skill, Stats } from './types';
 
@@ -17,17 +17,21 @@ export interface Unit {
   mp: number;
   skills: string[];
   nextAt: number;
-  statuses: { id: string; left: number }[];
+  statuses: { id: string; left: number; src?: number }[];
   alive: boolean;
   /** Boss nhiều pha: khi HP dưới ngưỡng `at` (tỉ lệ) sẽ đổi chiêu / tăng sức mạnh. */
   phases?: Phase[];
   phaseIdx?: number;
+  tempoResist?: number; // 0..1: nhân với độ trễ bị đẩy lùi (boss kháng đảo nhịp)
+  cooldowns?: Record<string, number>; // chiêu → số lần hành động còn lại để dùng lại
+  master?: string; // id chủ nhân (linh thú)
+  tex?: string; // texture hiển thị (linh thú)
 }
 
 export interface Phase { at: number; text: string; skills?: string[]; atkMul?: number; spdMul?: number; heal?: number }
 
 export interface BattleEvent {
-  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap' | 'trap' | 'phase';
+  type: 'hit' | 'heal' | 'status' | 'dot' | 'miss' | 'end' | 'combo' | 'cap' | 'trap' | 'phase' | 'summon' | 'tempo';
   actor?: string;
   target?: string;
   value?: number;
@@ -114,6 +118,9 @@ export class Battle {
     const s = skillMap.get(skillId);
     if (!s || !u.skills.includes(skillId) || u.mp < s.mp) return false;
     if (s.hpCost && u.hp <= Math.round(u.stats.hp * s.hpCost)) return false; // không tự sát bằng hiến tế
+    if ((u.cooldowns?.[skillId] ?? 0) > 0) return false;
+    if (s.summon && this.beastOf(u)) return false; // mỗi lần chỉ một linh thú
+    if (s.pick === 'beast' && !this.beastOf(u)) return false;
     return true;
   }
 
@@ -121,12 +128,12 @@ export class Battle {
     return u.statuses.some((s) => s.id === id);
   }
 
-  private addStatus(u: Unit, id: string) {
+  private addStatus(u: Unit, id: string, srcAtk?: number) {
     const def = statusMap.get(id);
     if (!def) return;
     const ex = u.statuses.find((s) => s.id === id);
-    if (ex) ex.left = def.duration;
-    else u.statuses.push({ id, left: def.duration });
+    if (ex) { ex.left = def.duration; if (srcAtk !== undefined) ex.src = Math.max(ex.src ?? 0, srcAtk); }
+    else u.statuses.push({ id, left: def.duration, src: srcAtk });
   }
 
   private removeStatus(u: Unit, id: string) {
@@ -158,6 +165,9 @@ export class Battle {
     const sk = skillMap.get(skillId);
     if (!sk || !actor.alive || this.winner) return ev;
     if (!this.canUse(actor, skillId)) return ev;
+    this.clock = Math.max(this.clock, actor.nextAt); // thời điểm hiện tại = lúc người này ra tay
+    for (const k of Object.keys(actor.cooldowns ?? {})) if (actor.cooldowns![k] > 0) actor.cooldowns![k]--; // mỗi lần hành động giảm hồi chiêu
+    if (sk.cd) (actor.cooldowns ??= {})[skillId] = sk.cd;
     actor.mp -= sk.mp;
     if (sk.hpCost) {
       const c = Math.round(actor.stats.hp * sk.hpCost);
@@ -180,14 +190,19 @@ export class Battle {
     const foe = target && target.alive && target.side === opp ? target : this.byNext(this.alive(opp))[0];
 
     if (sk.target === 'self' || sk.target === 'ally' || !foe) {
-      const subject = sk.target === 'ally' ? this.weakestAlly(actor, target) : actor;
+      const subject = sk.target === 'ally' ? (sk.pick === 'beast' ? (this.beastOf(actor) ?? actor) : this.weakestAlly(actor, target)) : actor;
+      if (sk.summon) this.summon(actor, sk.summon, ev);
+      if (sk.advance) {
+        subject.nextAt = Math.min(subject.nextAt, Math.max(this.clock, subject.nextAt - (sk.advance * 100) / unitSpeed(subject))); // chỉ kéo sớm, không bao giờ làm chậm
+        ev.push({ type: 'tempo', actor: actor.id, target: subject.id, text: `${subject.name} hành động sớm hơn!` });
+      }
       if (sk.heal) {
         const v = Math.round(subject.stats.hp * sk.heal);
         subject.hp = Math.min(subject.stats.hp, subject.hp + v);
         ev.push({ type: 'heal', actor: actor.id, target: subject.id, value: v, text: `${actor.name} dùng ${sk.name}${subject === actor ? '' : ` lên ${subject.name}`}, hồi ${v} sinh lực.` });
       }
       if (sk.gives) {
-        this.addStatus(subject, sk.gives);
+        this.addStatus(subject, sk.gives, actor.stats.atk);
         ev.push({ type: 'status', actor: actor.id, target: subject.id, text: `${subject.name} nhận ${statusMap.get(sk.gives)?.name}.` });
       }
     } else {
@@ -207,19 +222,22 @@ export class Battle {
         ev.push({ type: 'hit', actor: actor.id, target: foe.id, value: dmg, crit, text: `${actor.name} dùng ${sk.name} gây ${dmg} sát thương${crit ? ' (bạo kích)' : ''}.` });
         if (sk.lifesteal) actor.hp = Math.min(actor.stats.hp, actor.hp + Math.round(dmg * sk.lifesteal));
         if (foe.hp <= 0) {
-          foe.alive = false;
+          this.markDead(foe);
           ev.push({ type: 'status', target: foe.id, text: `${foe.name} gục ngã.` });
         }
       }
+      if (sk.delay && foe.alive) {
+        foe.nextAt += (sk.delay * (foe.tempoResist ?? 1) * 100) / unitSpeed(foe);
+        ev.push({ type: 'tempo', actor: actor.id, target: foe.id, text: `Nhịp của ${foe.name} bị đảo lộn, lượt của họ bị lùi lại!` });
+      }
       if (sk.gives && foe.alive) {
-        this.addStatus(foe, sk.gives);
+        this.addStatus(foe, sk.gives, actor.stats.atk);
         ev.push({ type: 'status', actor: actor.id, target: foe.id, text: `${foe.name} dính ${statusMap.get(sk.gives)?.name}.` });
       }
     }
 
     // đẩy lượt kế tiếp
     actor.nextAt += ((sk.cost + trapDelay) * 100) / unitSpeed(actor);
-    this.clock = Math.max(this.clock, actor.nextAt);
     if (this.streak >= MAX_CONSECUTIVE) {
       const others = this.alive(actor.side === 'player' ? 'enemy' : 'player');
       if (others.length) ev.push({ type: 'cap', text: `${actor.name} đã ra ${MAX_CONSECUTIVE} đòn liên tiếp, đối thủ kịp phản ứng.` });
@@ -233,18 +251,42 @@ export class Battle {
     return ev;
   }
 
+  beastOf(u: Unit): Unit | undefined {
+    return this.units.find((x) => x.alive && x.master === u.id);
+  }
+
+  private markDead(u: Unit) {
+    u.alive = false;
+    if (u.master) { const m = this.units.find((x) => x.id === u.master); if (m) this.removeStatus(m, 'thu_tam'); }
+  }
+
+  /** Triệu hồi linh thú: chỉ số theo tỉ lệ so với chủ nhân. */
+  private summon(master: Unit, beastId: string, ev: BattleEvent[]) {
+    const d = beastMap.get(beastId);
+    if (!d) return;
+    const r = d.ratio;
+    const stats = { hp: Math.round(master.stats.hp * r.hp), mp: Math.round(master.stats.mp * r.mp), atk: Math.round(master.stats.atk * r.atk), def: Math.round(master.stats.def * r.def), spd: d.spd, crit: 0.05 };
+    const u = makeUnit(`b_${master.id}_${beastId}`, d.name, master.side, stats, d.skills, d.element);
+    u.master = master.id;
+    u.tex = d.tex;
+    u.nextAt = master.nextAt + 5000 / unitSpeed(u);
+    this.units.push(u);
+    this.addStatus(master, 'thu_tam');
+    ev.push({ type: 'summon', actor: master.id, target: u.id, text: `${master.name} triệu hồi ${d.name}!` });
+  }
+
   /** Kích nổ mọi bẫy trên `u`. Trả về độ trễ cộng thêm cho lượt kế. */
   private triggerTraps(u: Unit, ev: BattleEvent[]): number {
     let delay = 0;
     for (const s of [...u.statuses]) {
       const def = statusMap.get(s.id);
       if (def?.kind !== 'trap') continue;
-      const d = Math.max(1, Math.round(u.stats.hp * (def.trapPct ?? 0.1)));
+      const d = Math.max(1, Math.round(def.trapAtk !== undefined ? (s.src ?? 20) * def.trapAtk : u.stats.hp * (def.trapPct ?? 0.1)));
       u.hp = Math.max(0, u.hp - d);
       delay += def.trapDelay ?? 0;
       this.removeStatus(u, s.id);
       ev.push({ type: 'trap', target: u.id, value: d, text: `${def.name} phát nổ dưới chân ${u.name}, gây ${d} sát thương!` });
-      if (u.hp <= 0) { u.alive = false; ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` }); break; }
+      if (u.hp <= 0) { this.markDead(u); ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` }); break; }
     }
     return delay;
   }
@@ -270,6 +312,7 @@ export class Battle {
   /** Chọn mục tiêu cho AI: ưu tiên kẻ yếu máu nhất (có chút ngẫu nhiên). */
   aiTarget(u: Unit, skillId: string): Unit | undefined {
     const sk = skillMap.get(skillId);
+    if (sk?.pick === 'beast') return this.beastOf(u);
     if (sk?.target === 'ally') return this.weakestAlly(u);
     const foes = this.alive(u.side === 'player' ? 'enemy' : 'player');
     if (!foes.length) return undefined;
@@ -280,12 +323,12 @@ export class Battle {
     if (!u.alive) return;
     for (const s of [...u.statuses]) {
       const def = statusMap.get(s.id);
-      if (def?.kind === 'dot' && def.dotPct) {
-        const d = Math.max(1, Math.round(u.stats.hp * def.dotPct));
+      if (def?.kind === 'dot' && (!!def.dotPct || !!def.dotAtk)) {
+        const d = Math.max(1, Math.round(def.dotAtk !== undefined ? (s.src ?? 20) * def.dotAtk : u.stats.hp * (def.dotPct ?? 0)));
         u.hp = Math.max(0, u.hp - d);
         ev.push({ type: 'dot', target: u.id, value: d, text: `${u.name} chịu ${d} sát thương từ ${def.name}.` });
         if (u.hp <= 0) {
-          u.alive = false;
+          this.markDead(u);
           ev.push({ type: 'status', target: u.id, text: `${u.name} gục ngã.` });
         }
       }
@@ -311,7 +354,9 @@ export class Battle {
     const scored = options.map((s) => {
       let w = s.power + 0.5;
       if (s.requires && foe && this.hasStatus(s.requiresOn === 'self' ? u : foe, s.requires)) w += (s.bonus ?? 1.5) * 2;
-      if (s.heal) w = lowAlly < 0.55 ? 3 + (1 - lowAlly) * 3 : 0.05;
+      if (s.summon) w = this.beastOf(u) ? 0 : 7;
+      else if (s.advance && !s.power && !s.heal) w = s.pick === 'beast' ? (this.beastOf(u) ? 1.2 : 0) : 0.9;
+      else if (s.heal) w = s.advance ? 0.8 : lowAlly < 0.55 ? 3 + (1 - lowAlly) * 3 : 0.05;
       else if (s.target === 'self' && u.statuses.length) w = 0.05;
       return { id: s.id, weight: w + this.rng.next() };
     });
@@ -319,6 +364,6 @@ export class Battle {
   }
 }
 
-export function makeUnit(id: string, name: string, side: 'player' | 'enemy', stats: Stats, skills: string[], element: Element = 'none', phases?: Phase[]): Unit {
-  return { id, name, side, element, stats: { ...stats }, hp: stats.hp, mp: stats.mp, skills, nextAt: 0, statuses: [], alive: true, phases, phaseIdx: 0 };
+export function makeUnit(id: string, name: string, side: 'player' | 'enemy', stats: Stats, skills: string[], element: Element = 'none', phases?: Phase[], tempoResist?: number): Unit {
+  return { id, name, side, element, stats: { ...stats }, hp: stats.hp, mp: stats.mp, skills, nextAt: 0, statuses: [], alive: true, phases, phaseIdx: 0, tempoResist };
 }

@@ -12,6 +12,8 @@ import {
 } from '../core/services';
 import { ownsSystem } from '../core/session';
 import { audio } from '../audio';
+import { cancelBid, currentLots, minRaise, myBid, placeBid, settleAuctions } from '../core/auction';
+import { formatHour, gameHour } from '../core/time';
 
 const FORGE_FEE_PER_ORE = 5;
 
@@ -25,12 +27,14 @@ export class ShopScene extends Phaser.Scene {
 
   init(d: { vendor: string; tab?: string }) { this.vendorId = d.vendor; this.initTab = d.tab; }
   private initTab?: string;
+  private pendingNews?: string;
 
   create() {
     const v = vendorMap.get(this.vendorId) as any;
-    ensureStock(game.p, this.vendorId);
+    const isAuction = v.type === 'auction';
+    if (isAuction) { const n = settleAuctions(game.p); if (n.length) this.pendingNews = n.join(' '); } else ensureStock(game.p, this.vendorId);
     this.panel = new ListPanel(this, {
-      tabs: () => [
+      tabs: () => isAuction ? [{ id: 'lots', name: 'Phiên hôm nay', on: true }, { id: 'news', name: 'Kết quả', on: true }] : [
         { id: 'buy', name: 'Mua', on: true },
         { id: 'sell', name: 'Bán', on: true },
         { id: 'hire', name: v.type === 'smith' ? 'Thuê rèn' : 'Thuê luyện', on: v.type !== 'general' },
@@ -41,8 +45,9 @@ export class ShopScene extends Phaser.Scene {
       onClose: () => this.close(),
       perPage: 6,
     });
+    if (isAuction) this.panel.tab = 'lots';
     if (this.initTab) this.panel.tab = this.initTab;
-    this.panel.note = `"${v.greeting}"`;
+    this.panel.note = this.pendingNews ?? `"${v.greeting}"`;
     this.panel.render();
     this.input.keyboard!.once('keydown-ESC', () => this.close());
   }
@@ -55,10 +60,41 @@ export class ShopScene extends Phaser.Scene {
   }
 
   private rows(tab: string): Row[] {
+    if (tab === 'lots') return this.rowsAuction();
+    if (tab === 'news') return this.rowsNews();
     if (tab === 'buy') return this.rowsBuy();
     if (tab === 'sell') return this.rowsSell();
     if (tab === 'hire') return this.rowsHire();
     return this.rowsCraft();
+  }
+
+  private rowsAuction(): Row[] {
+    const p = game.p;
+    const h = gameHour(p);
+    const left = ((8 - h) + 24) % 24; // phiên kết thúc lúc 8:00 sáng hôm sau
+    const rows: Row[] = [{ text: `Phiên kết thúc sau ${left.toFixed(1)} giờ game (lúc 08:00). Bây giờ ${formatHour(h)}.`, sub: 'Đặt giá TỐI ĐA: nếu cao hơn mức thương nhân chịu trả, bạn thắng và chỉ trả giá của họ +5%.' }];
+    for (const lot of currentLots(p)) {
+      const mine = myBid(p, lot.id);
+      const need = mine ? Math.ceil(mine * 1.1) : lot.start;
+      const detail = lot.item ? fmtAffixes(lot.item) + ' · ' : '';
+      rows.push({
+        text: `${lot.name}`,
+        sub: `${detail}Khởi điểm ${lot.start} LT${mine ? ` · Giá tối đa của bạn: ${mine} LT` : ''}`,
+        btns: [
+          { label: `Đặt ${need}`, enabled: p.gold >= need - mine, fn: () => this.say(placeBid(p, lot.id, need)) },
+          { label: `Đặt ${Math.round(need * 1.5)}`, enabled: p.gold >= Math.round(need * 1.5) - mine, color: 0x6a3a8c, fn: () => this.say(placeBid(p, lot.id, Math.round(need * 1.5))) },
+          ...(mine ? [{ label: 'Rút', color: 0x6a2a2a, fn: () => this.say(cancelBid(p, lot.id)) }] : []),
+        ],
+      });
+    }
+    void minRaise;
+    return rows;
+  }
+
+  private rowsNews(): Row[] {
+    const news = game.p.auction.news;
+    if (!news.length) return [{ text: 'Chưa có kết quả đấu giá nào. Đặt giá hôm nay, kết quả có vào sáng mai.' }];
+    return [...news].reverse().map((t) => ({ text: t }));
   }
 
   private rowsBuy(): Row[] {

@@ -19,9 +19,9 @@ export class TitleScene extends Phaser.Scene {
     this.input.keyboard!.once('keydown', () => { audio.unlock(); audio.music('title'); });
     const hasSave = !!load();
     const bx = W / 2 - 90;
-    button(this, bx, 140, 180, 34, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
-    button(this, bx, 182, 180, 34, hasSave ? 'Tiếp tục' : 'Tiếp tục (chưa có save)', () => { if (continueGame()) this.scene.start('Overworld'); }, { enabled: hasSave });
-    button(this, bx, 224, 180, 34, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
+    button(this, bx, 130, 180, 34, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
+    button(this, bx, 170, 180, 34, hasSave ? 'Tiếp tục' : 'Tiếp tục (chưa có save)', () => { if (continueGame()) this.scene.start('Overworld'); }, { enabled: hasSave });
+    button(this, bx, 210, 180, 34, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
       startNew();
       const p = game.p;
       p.rootId = 'kim'; p.realmIndex = 1; p.stage = 5; p.branchId = 'kiem_tu'; p.gold = 800;
@@ -30,6 +30,21 @@ export class TitleScene extends Phaser.Scene {
       p.comboPresets = [['kiem_nhat_thiem', 'kiem_phong_cuong', 'kiem_tam_ho'], [], []];
       for (const c of [1, 2, 3, 4]) enterChapter(p, c);
       unlockSystem(p, 'tu_luyen');
+      persist();
+      this.scene.start('Overworld');
+    });
+    button(this, bx, 250, 180, 34, 'Thử nhanh: Kết Đan (Hồi 2)', () => {
+      startNew();
+      const p = game.p;
+      p.rootId = 'kim'; p.realmIndex = 2; p.stage = 3; p.branchId = 'kiem_tu'; p.gold = 1500; p.daoHeart = 60;
+      p.inventory = { hoi_huyet_dan: 5, linh_thao: 15, huyet_tham: 8, huyen_thiet: 10 };
+      p.knownRecipes = ['hoi_huyet_dan', 'hoi_linh_dan', 'tu_khi_dan'];
+      p.comboPresets = [['kiem_nhat_thiem', 'kiem_phong_cuong', 'kiem_tam_ho', 'kiem_van_ly'], [], []];
+      p.quests = { active: [], done: ['m1_1', 'm1_2', 'm1_3'], progress: {} };
+      p.flags = { intro: true, met_laongu: true, enemy1_dead: true };
+      for (const c of [1, 2, 3, 4, 6]) enterChapter(p, c);
+      unlockSystem(p, 'tu_luyen'); unlockSystem(p, 'luyen_dan');
+      p.mapId = 'phuong_thi';
       persist();
       this.scene.start('Overworld');
     });

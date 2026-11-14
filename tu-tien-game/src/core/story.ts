@@ -1,9 +1,9 @@
 import dialogues from '../data/dialogues.json';
 import { enterChapter, questEvent, unlockSystem, completeQuest } from './session';
-import { gainExp, levelUpStages } from './progression';
+import { clearBottleneck, gainExp, isBottlenecked, levelUpStages } from './progression';
 import { gameHour, inHours } from './time';
 import rumors from '../data/rumors.json';
-import { companionMap, materialMap, recipeMap, systemName } from './data';
+import { companionMap, materialMap, recipeMap, rootMap, systemName } from './data';
 import type { PlayerState } from './types';
 
 export interface Cond {
@@ -19,6 +19,7 @@ export interface Cond {
   notHour?: [number, number];
   map?: string;
   hasItem?: { id: string; n: number };
+  bottleneck?: boolean;
 }
 
 export type Effect =
@@ -39,7 +40,9 @@ export type Effect =
   | { chapter: number }
   | { toast: string }
   | { openShop: string; tab?: string }
-  | { battle: string[] };
+  | { battle: string[] }
+  | { breakthrough: true }
+  | { root: string };
 
 export interface Choice { text: string; goto?: string | null; if?: Cond; do?: Effect[] }
 export interface Node { who?: string; text: string; next?: string | null; choices?: Choice[]; do?: Effect[] }
@@ -67,6 +70,7 @@ export function check(p: PlayerState, c?: Cond): boolean {
   if (c.hour && !inHours(gameHour(p), c.hour[0], c.hour[1])) return false;
   if (c.notHour && inHours(gameHour(p), c.notHour[0], c.notHour[1])) return false;
   if (c.map && p.mapId !== c.map) return false;
+  if (c.bottleneck !== undefined && isBottlenecked(p) !== c.bottleneck) return false;
   if (c.hasItem && (p.inventory[c.hasItem.id] ?? 0) < c.hasItem.n) return false;
   return true;
 }
@@ -95,6 +99,8 @@ export function applyEffects(p: PlayerState, effects: Effect[] | undefined, out:
     else if ('toast' in e) out.toasts.push(e.toast);
     else if ('openShop' in e) out.openShop = { vendor: e.openShop, tab: e.tab };
     else if ('battle' in e) out.battle = e.battle;
+    else if ('root' in e) { p.rootId = e.root; out.toasts.push(`Linh căn: ${(rootMap.get(e.root) as any)?.name ?? e.root}`); }
+    else if ('breakthrough' in e) { const u = clearBottleneck(p); out.toasts.push(u ? 'Ngộ đạo! Bình cảnh đã phá, lên tầng mới.' : 'Ngộ đạo, nhưng chưa có bình cảnh để phá.'); }
   }
   return out;
 }

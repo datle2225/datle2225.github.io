@@ -1221,5 +1221,355 @@
     ]
    }
   }
+ },
+ "ev_ngo_dao": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Giữa lúc đi đường, ngươi bỗng thấy một chiếc lá rơi xuống mặt nước, gợn sóng lan ra rất đều. Trong lòng như có thứ gì đó chạm vào bức tường bình cảnh.",
+    "choices": [
+     {
+      "text": "Đứng lặng quan sát, buông bỏ mọi suy nghĩ.",
+      "goto": "ok",
+      "do": [
+       {
+        "breakthrough": true
+       },
+       {
+        "dao": 2
+       }
+      ]
+     },
+     {
+      "text": "Gạt đi, đây không phải lúc.",
+      "goto": null
+     }
+    ]
+   },
+   "ok": {
+    "text": "Một luồng linh khí dâng lên từ đan điền rồi lặng xuống. Bức tường bình cảnh vỡ tan.",
+    "next": null
+   }
+  }
+ },
+ "thien_co_m2": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Cơ Các",
+    "text": "Kết Đan rồi sao? Vậy thì ta có thể bán cho ngươi một tin quan trọng. Độc Thủ Tiên Sinh, kẻ thứ hai trong danh sách của ngươi, đang ẩn trong bí cảnh Huyết Nguyệt phía nam.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Thiên Cơ Các",
+    "text": "Tin này miễn phí, coi như quà gặp mặt. Nhưng bí cảnh đó linh khí đậm mà độc khí cũng nồng, cẩn thận.",
+    "do": [
+     {
+      "quest": "m2_1"
+     },
+     {
+      "toast": "Cổng bí cảnh ở rìa phía nam Phường Thị."
+     }
+    ],
+    "next": null
+   }
+  }
+ },
+ "thien_co_m2b": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Thiên Cơ Các",
+    "text": "Ngươi hạ được Độc Thủ rồi? Trên người hắn có thứ gì chứ? ... Ồ, Chứng Cứ Mặc Gia. Vậy thì kẻ đứng sau Độc Thủ là Mặc Gia Gia Chủ ở Hoang Mạc Xích Hỏa.",
+    "do": [
+     {
+      "flag": "mac_gia_known"
+     },
+     {
+      "chapter": 7
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Thiên Cơ Các",
+    "text": "Cổng ra Hoang Mạc ở phía đông Phường Thị. Gia Chủ không phải kẻ dễ đối phó. Hắn là cha của Mặc Trần, người ngươi gặp ở Thanh Vân Tông.",
+    "do": [
+     {
+      "toast": "Cổng Hoang Mạc ở rìa phía đông Phường Thị."
+     }
+    ],
+    "next": null
+   }
+  }
+ },
+ "mac_gia_chu_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Ồ, đứa trẻ Diệp gia còn sống đến tận đây. Ta nên bảo thuộc hạ làm việc cho gọn hơn.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Ngươi đến để trả thù à? Ta chỉ thuê dao. Kẻ cầm cán thật sự còn cao hơn ta nhiều.",
+    "choices": [
+     {
+      "text": "Ta đã có chứng cứ. Để cả thương hội nhìn xem.",
+      "goto": "expose",
+      "if": {
+       "hasItem": {
+        "id": "mac_gia_chung_cu",
+        "n": 1
+       }
+      },
+      "do": [
+       {
+        "item": {
+         "id": "mac_gia_chung_cu",
+         "n": -1
+        }
+       },
+       {
+        "flag": "mac_route_expose"
+       },
+       {
+        "flag": "enemy3_dead"
+       },
+       {
+        "dao": 4
+       },
+       {
+        "rep": {
+         "chinh_dao": 5
+        }
+       },
+       {
+        "event": {
+         "kind": "battle",
+         "target": "mac_gia_chu"
+        }
+       }
+      ]
+     },
+     {
+      "text": "Đủ rồi. Ra tay đi!",
+      "goto": "fight",
+      "do": [
+       {
+        "flag": "mac_route_fight"
+       },
+       {
+        "dao": -2
+       },
+       {
+        "battle": [
+         "mac_gia_chu"
+        ]
+       }
+      ]
+     },
+     {
+      "text": "Ai là kẻ cầm cán?",
+      "goto": "ask",
+      "do": [
+       {
+        "flag": "mac_asked"
+       },
+       {
+        "flag": "luc_hint"
+       }
+      ]
+     }
+    ]
+   },
+   "ask": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Một người mà ngay cả Thanh Vân Tông cũng phải nể mặt. Nhưng ta không nói thêm, trừ khi ngươi thắng được ta.",
+    "next": "b"
+   },
+   "expose": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Hắn... hắn ghi chép lại hết sao? Các vị đừng nghe nó! ... Thôi, xong rồi. Mặc Gia đã hết đường. Ta nhận.",
+    "next": null
+   },
+   "fight": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Tốt! Cho ngươi thấy sức mạnh thật sự của Mặc Gia!",
+    "next": null
+   }
+  }
+ },
+ "mac_gia_chu_after": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Ngươi... ngươi thắng rồi. Kẻ đó sẽ không buông tha cho ngươi đâu.",
+    "next": null
+   }
+  }
+ },
+ "mac_gia_chu_idle": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Mặc Gia Gia Chủ",
+    "text": "Mặc Gia Thương Hội buôn bán khắp Hoang Mạc. Muốn mua gì thì hỏi người của ta.",
+    "next": null
+   }
+  }
+ },
+ "mac_ho_ve": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Hộ Vệ Mặc Gia",
+    "text": "Doanh trại Mặc Gia, người lạ đừng lại gần Gia Chủ.",
+    "next": null
+   }
+  }
+ },
+ "lu_khach": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lữ Khách Hoang Mạc",
+    "text": "Trời nóng thế này mà còn đi lại, ngươi cũng gan thật. Có muốn xem hàng không?",
+    "choices": [
+     {
+      "text": "Xem hàng.",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "thuong_nhan"
+       }
+      ]
+     },
+     {
+      "text": "Không.",
+      "goto": null
+     }
+    ]
+   }
+  }
+ },
+ "unseal": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi làm tốt. Kẻ thứ ba trong danh sách đã gục. Nhưng chuyện ta muốn nói không phải chuyện đó.",
+    "do": [
+     {
+      "exp": 0
+     }
+    ],
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Ngươi cảm thấy không? Dòng máu này, khi ngươi chiến đấu, có thứ gì đó đang đập trong đan điền.",
+    "next": "c"
+   },
+   "c": {
+    "who": "Lão Đỉnh",
+    "text": "Phụ thân ngươi phong ấn Hỗn Độn Căn để cứu ngươi khỏi những kẻ săn lùng nó. Nhưng bây giờ, ngươi đủ mạnh để bảo vệ chính mình. Ta sẽ gỡ phong ấn.",
+    "next": "d"
+   },
+   "d": {
+    "who": "Lão Đỉnh",
+    "text": "Một luồng khí tức mênh mông bùng lên từ đan điền. Mọi nguyên tố trong thiên địa như quay về phía ngươi.",
+    "do": [
+     {
+      "root": "hon_don"
+     },
+     {
+      "flag": "unsealed"
+     },
+     {
+      "system": "hon_don"
+     },
+     {
+      "exp": 3000
+     },
+     {
+      "dao": 3
+     }
+    ],
+    "next": "e"
+   },
+   "e": {
+    "text": "Tàn Căn đã chết. Hỗn Độn Căn thức tỉnh: tu luyện nhanh gấp 1.6 lần, mọi chỉ số tăng 15%, không bị khắc chế.",
+    "next": null
+   }
+  }
+ },
+ "hoi2_end_chinh": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Ngươi bước ra khỏi doanh trại Mặc Gia giữa lời ca tụng của tu sĩ Hoang Mạc. Họ gọi ngươi là kẻ biết giữ chữ nghĩa dù mang thù hận.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Thanh danh là con dao hai lưỡi. Nhưng với Lục Vân Sinh, thanh danh của ngươi sẽ là tấm khiên. Hồi tiếp theo: Huyết Ảnh Môn Chủ và Lục Vân Sinh.",
+    "next": null
+   }
+  }
+ },
+ "hoi2_end_ma": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Ngươi bước ra khỏi doanh trại giữa những ánh mắt sợ hãi. Người ta gọi ngươi là tên sát tinh của Hoang Mạc, thù hận đã nhuốm đen đạo tâm.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Sức mạnh có thể mua bằng thù hận, nhưng ngày nó quay lại cắn ngươi, chẳng ai cứu được. Hồi tiếp theo: Huyết Ảnh Môn Chủ và Lục Vân Sinh.",
+    "next": null
+   }
+  }
+ },
+ "hoi2_end_tan": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "text": "Ngươi rời doanh trại mà không ai biết phải gọi ngươi là gì: chính hay tà. Tán tu, đúng nghĩa của hai chữ ấy.",
+    "next": "b"
+   },
+   "b": {
+    "who": "Lão Đỉnh",
+    "text": "Con đường của ngươi chưa định. Rồi sẽ đến lúc phải chọn. Hồi tiếp theo: Huyết Ảnh Môn Chủ và Lục Vân Sinh.",
+    "next": null
+   }
+  }
+ },
+ "dau_gia_1": {
+  "start": "a",
+  "nodes": {
+   "a": {
+    "who": "Chủ Trì Đấu Giá",
+    "text": "Hội Đấu Giá Vân Hải mỗi ngày một phiên. Ngươi đặt giá tối đa, rạng sáng ta xét kết quả. Ngươi chỉ trả giá của thương nhân thắng ngươi, cộng 5%.",
+    "choices": [
+     {
+      "text": "Xem phiên hôm nay.",
+      "goto": null,
+      "do": [
+       {
+        "openShop": "dau_gia"
+       }
+      ]
+     },
+     {
+      "text": "Để sau.",
+      "goto": null
+     }
+    ]
+   }
+  }
  }
 }

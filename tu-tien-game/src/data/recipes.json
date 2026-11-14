@@ -133,5 +133,26 @@
   },
   "basePrice": 90,
   "difficulty": 3
+ },
+ {
+  "id": "pha_canh_dan",
+  "name": "Phá Cảnh Đan",
+  "branch": "all",
+  "needRealm": "luyen_khi",
+  "ingredients": [
+   {
+    "id": "huyet_tham",
+    "n": 4
+   },
+   {
+    "id": "linh_thao",
+    "n": 6
+   }
+  ],
+  "effect": {
+   "bottleneck": true
+  },
+  "basePrice": 300,
+  "difficulty": 4
  }
 ]

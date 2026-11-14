@@ -10,6 +10,8 @@ import { loadMap } from '../core/maps';
 import { isSolidTile, type MapDef, type MapNpc, type MapFoe } from '../core/tiled';
 import { TILESET } from '../core/tileset';
 import { formatHour, gameHour, nightAlpha } from '../core/time';
+import { auraAt, claimSeclusion, MED, seclusionUnits } from '../core/meditation';
+import { settleAuctions } from '../core/auction';
 import { audio } from '../audio';
 import { joystickEnabled, getSettings } from '../settings';
 
@@ -114,7 +116,7 @@ export class OverworldScene extends Phaser.Scene {
       this.busy = false;
       this.immuneUntil = this.time.now + 3000;
       const f = this.foes[r.foeIndex];
-      if (r.won && f) { respawnAt.set(f.key, game.p.playtime + 40); this.refreshFoeVisibility(); }
+      if (r.won && f) { respawnAt.set(f.key, game.p.playtime + this.map.respawn); this.refreshFoeVisibility(); }
       if (r.lost) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
       this.refreshHud();
       audio.music(this.map.music);
@@ -126,6 +128,7 @@ export class OverworldScene extends Phaser.Scene {
 
     audio.music(this.map.music);
     this.toast(this.map.name);
+    if (p.seclusion && seclusionUnits(p, Date.now()) >= 1) { const r = claimSeclusion(p, Date.now()); this.time.delayedCall(900, () => this.toast(r.msg)); persist(); }
     if (!p.flags.intro) { p.flags.intro = true; this.startDialogue('intro'); }
   }
 
@@ -177,6 +180,7 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private tick() {
+    if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
     this.refreshHud();
     this.syncFollowers();
     this.applySchedules(false);
@@ -357,6 +361,7 @@ export class OverworldScene extends Phaser.Scene {
       audio.sfx('levelup');
       if (id === 'm1_2') this.startDialogue('co_dinh');
       if (id === 'm1_3') this.startDialogue('m1_3_done');
+      if (id === 'm2_3') this.startDialogue('unseal', () => { const e = pickDialogue(game.p, [{ if: { minDao: 65 }, id: 'hoi2_end_chinh' }, { if: { maxDao: 35 }, id: 'hoi2_end_ma' }, { id: 'hoi2_end_tan' }]); if (e) this.time.delayedCall(300, () => this.startDialogue(e)); });
     }
     persist();
     this.refreshHud();
@@ -379,7 +384,10 @@ export class OverworldScene extends Phaser.Scene {
     this.busy = true;
     this.savePos();
     this.scene.pause();
-    this.scene.launch('Menu');
+    const tx = this.player.x / TS, ty = this.player.y / TS;
+    const calm = !this.foes.some((f) => this.foeAlive(f) && Math.hypot(f.spr.x - this.player.x, f.spr.y - this.player.y) < MED.calmRadiusTiles * TS);
+    const au = auraAt(this.map, tx, ty);
+    this.scene.launch('Menu', { calm, aura: au.value, auraLabel: au.label, area: this.map.name });
     this.scene.get('Menu').events.once('shutdown', () => { this.busy = false; this.scene.resume(); this.refreshHud(); this.syncFollowers(); });
   }
 

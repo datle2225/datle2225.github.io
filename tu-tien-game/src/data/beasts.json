@@ -1,0 +1,36 @@
+[
+ {
+  "id": "linh_lang",
+  "name": "Linh Lang",
+  "tex": "wolf",
+  "element": "none",
+  "ratio": {
+   "hp": 0.3,
+   "atk": 0.35,
+   "def": 0.3,
+   "mp": 0.5
+  },
+  "spd": 118,
+  "skills": [
+   "thu_cao",
+   "thu_gam"
+  ]
+ },
+ {
+  "id": "linh_quy",
+  "name": "Linh Quy",
+  "tex": "turtle",
+  "element": "tho",
+  "ratio": {
+   "hp": 0.5,
+   "atk": 0.25,
+   "def": 0.6,
+   "mp": 0.5
+  },
+  "spd": 80,
+  "skills": [
+   "thu_dap",
+   "thu_khien"
+  ]
+ }
+]

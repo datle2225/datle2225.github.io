@@ -122,5 +122,66 @@
    "linh_thach": 60,
    "exp": 80
   }
+ },
+ {
+  "id": "m2_1",
+  "type": "main",
+  "chapter": 6,
+  "title": "Huyết Nguyệt Bí Cảnh",
+  "desc": "Thiên Cơ Các tiết lộ Độc Thủ Tiên Sinh ẩn trong bí cảnh Huyết Nguyệt (phía nam Phường Thị). Tiến sâu vào bí cảnh.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "bi_canh_sau"
+   }
+  ],
+  "reward": {
+   "exp": 400
+  },
+  "unlocks": [
+   "m2_2"
+  ]
+ },
+ {
+  "id": "m2_2",
+  "type": "main",
+  "chapter": 6,
+  "title": "Kẻ thù thứ hai",
+  "desc": "Hạ Độc Thủ Tiên Sinh, kẻ thứ hai trong Huyết Thư.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "doc_thu_tien_sinh"
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 200
+  },
+  "unlocks": [
+   "m2_3"
+  ]
+ },
+ {
+  "id": "m2_3",
+  "type": "main",
+  "chapter": 7,
+  "title": "Mặc Gia Gia Chủ",
+  "desc": "Chứng cứ trên người Độc Thủ chỉ về Mặc Gia ở Hoang Mạc Xích Hỏa (phía đông Phường Thị). Đối chất với Gia Chủ.",
+  "steps": [
+   {
+    "kind": "reach",
+    "target": "mac_gia_trai"
+   },
+   {
+    "kind": "battle",
+    "target": "mac_gia_chu"
+   }
+  ],
+  "reward": {
+   "exp": 2500,
+   "linh_thach": 300
+  },
+  "unlocks": []
  }
 ]

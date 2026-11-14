@@ -6,6 +6,7 @@ export const TILESET: { tex: string; solid: boolean }[] = [
   { tex: 'sect_wall', solid: true }, { tex: 'pillar', solid: true }, { tex: 'dummy', solid: true }, { tex: 'lantern', solid: true },
   { tex: 'flower', solid: false }, { tex: 'fence', solid: true }, { tex: 'carpet', solid: false }, { tex: 'grass2', solid: false },
   { tex: 'bridge', solid: false }, { tex: 'sand', solid: false },
+  { tex: 'cactus', solid: true }, { tex: 'lava', solid: true }, { tex: 'bones', solid: false }, { tex: 'dungeon_wall', solid: true }, { tex: 'dungeon_floor', solid: false }, { tex: 'sand_rock', solid: true },
 ];
 
 

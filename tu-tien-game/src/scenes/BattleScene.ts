@@ -10,8 +10,8 @@ import { enemyMap, skillMap, materialMap, statusMap } from '../core/data';
 import { audio } from '../audio';
 import { gainExp, levelUpStages } from '../core/progression';
 
-interface Init { enemies: string[]; foeIndex: number }
-const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss' };
+interface Init { enemies: string[]; foeIndex: number; returnTo?: string }
+const TEX: Record<string, string> = { soi_hoang: 'wolf', yeu_xa: 'snake', huyet_anh_do_de: 'cultist', boss_huyet_anh_truong_lao: 'elder_boss', tam_ma: 'player', huyet_quai: 'cultist', doc_trung: 'snake', doc_thu_tien_sinh: 'elder_boss', xich_hoa_thu: 'wolf', sa_trung: 'snake', mac_gia_chu: 'npc_sage', cuop_duong: 'cultist', ma_tu_lang_thang: 'cultist' };
 
 export class BattleScene extends Phaser.Scene {
   private b!: Battle;
@@ -52,6 +52,7 @@ export class BattleScene extends Phaser.Scene {
       this.addUnit(this.b.units.find((u) => u.id === this.enemyIds[i])!, 480, 130 + i * 70 - (n - 1) * 25, TEX[eid] ?? 'wolf', 0xff6a6a, enemyMap.get(eid)?.boss ? 5 : 3);
     });
     const ps = this.sprites.get('player')!;
+    if (this.init0.enemies.includes('tam_ma')) this.enemyIds.forEach((id) => { const sp = this.sprites.get(id); sp?.setTint(0x9a5aff); });
     this.mp = bar(this, ps.x - 40, ps.y - 28, 80, 5, 0x4aa8ff);
 
     this.logText = label(this, 10, 232, '', { fontSize: '9px', wordWrap: { width: 300 }, lineSpacing: 1, color: '#c8d0ff' });
@@ -133,7 +134,7 @@ export class BattleScene extends Phaser.Scene {
     }
     const pill = p.inventory.hoi_huyet_dan ?? 0;
     add(button(this, 484, 322, 70, 28, `Đan (${pill})`, () => this.usePill(), { enabled: pill > 0 && !this.locked, color: 0x2a6a4a }));
-    const boss = enemyMap.get(this.init0.enemies[0])?.boss;
+    const boss = enemyMap.get(this.init0.enemies[0])?.boss || this.init0.enemies.includes('tam_ma');
     add(button(this, 558, 322, 74, 28, 'Bỏ chạy', () => this.end(false, true), { enabled: !boss && !this.locked, color: 0x6a2a2a }));
   }
 
@@ -170,6 +171,11 @@ export class BattleScene extends Phaser.Scene {
       if (e.type === 'hit') audio.sfx(e.crit ? 'crit' : 'hit');
       if (e.type === 'heal') audio.sfx('heal');
       if (e.type === 'combo') audio.sfx('combo');
+      if (e.type === 'summon' && e.target) {
+        const bu = this.b.units.find((u) => u.id === e.target);
+        if (bu) { this.addUnit(bu, 215, 175, bu.tex ?? 'wolf', 0x6affc8, 2); const sp = this.sprites.get(bu.id); if (sp) { sp.setAlpha(0); this.tweens.add({ targets: sp, alpha: 1, duration: 400 }); } audio.sfx('heal'); }
+      }
+      if (e.type === 'tempo') audio.sfx('combo');
       if (e.type === 'trap') { audio.sfx('crit'); if (e.target) this.floatText(e.target, `${e.value}`, '#ffb84a'); }
       if (e.type === 'phase') { audio.sfx('thunder'); this.cameras.main.shake(250, 0.01); this.cameras.main.flash(250, 255, 60, 60); const t = label(this, W / 2, 110, e.text, { fontSize: '13px', color: '#ff8a8a', backgroundColor: '#200a0acc', padding: { x: 6, y: 3 }, wordWrap: { width: 460 }, align: 'center' }).setOrigin(0.5); this.tweens.add({ targets: t, alpha: 0, y: 90, delay: 1500, duration: 600, onComplete: () => t.destroy() }); }
       if (e.type === 'hit' && e.target) {
@@ -225,6 +231,7 @@ export class BattleScene extends Phaser.Scene {
           msg += `\n+${n} ${(materialMap.get(id) as any)?.name ?? id}`;
         }
         questEvent(p, 'battle', eid, 1);
+        if (e.flagOnWin) p.flags[e.flagOnWin] = true;
       }
       const g = gainExp(p, exp);
       const ups = levelUpStages(p);
@@ -241,9 +248,10 @@ export class BattleScene extends Phaser.Scene {
     const bg = this.add.rectangle(W / 2, H / 2, 380, 150, 0x0b1020, 0.97).setStrokeStyle(2, 0xffe38a);
     this.add.text(W / 2, H / 2 - 20, msg, { fontFamily: 'monospace', fontSize: '12px', color: '#fff', align: 'center', wordWrap: { width: 350 } }).setOrigin(0.5);
     button(this, W / 2 - 50, H / 2 + 40, 100, 28, 'Tiếp tục', () => {
-      const ow = this.scene.get('Overworld');
+      const back = this.init0.returnTo ?? 'Overworld';
+      const ow = this.scene.get(back);
       this.scene.stop();
-      this.scene.resume('Overworld');
+      this.scene.resume(back);
       ow.events.emit('battle-end', { won, fled, lost: !won && !fled, foeIndex: this.init0.foeIndex });
     });
     bg.setDepth(0);

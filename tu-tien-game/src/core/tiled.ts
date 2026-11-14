@@ -10,6 +10,9 @@ export interface MapZone { id: string; x: number; y: number; r: number; if?: Con
 export interface MapPortal { x: number; y: number; w: number; h: number; target: string; arrive: string; if?: Cond; deny?: string }
 export interface MapDef {
   id: string; name: string; music: string; w: number; h: number;
+  aura: number; // linh khí nền của vùng (1.0 = bình thường)
+  respawn: number; // giây để quái hồi sinh
+  auras: { x: number; y: number; r: number; value: number; label: string }[]; // linh mạch
   tiles: number[]; // chỉ số trong TILESET, -1 = trống
   npcs: MapNpc[]; signs: { x: number; y: number; text: string }[]; foes: MapFoe[]; herbs: [number, number][];
   zones: MapZone[]; portals: MapPortal[]; spawns: Record<string, { x: number; y: number }>;
@@ -34,7 +37,7 @@ export function parseTiled(raw: TiledMap, id: string): MapDef {
     if (l.type !== 'tilelayer' || !l.data) continue;
     l.data.forEach((gid, i) => { if (gid > 0) { const idx = gid - firstgid; if (idx >= 0 && idx < TILESET.length) tiles[i] = idx; } });
   }
-  const def: MapDef = { id, name: String(mp.name ?? id), music: String(mp.music ?? 'overworld'), w, h, tiles, npcs: [], signs: [], foes: [], herbs: [], zones: [], portals: [], spawns: {} };
+  const def: MapDef = { id, name: String(mp.name ?? id), music: String(mp.music ?? 'overworld'), w, h, aura: Number(mp.aura ?? 1), respawn: Number(mp.respawn ?? 40), auras: [], tiles, npcs: [], signs: [], foes: [], herbs: [], zones: [], portals: [], spawns: {} };
   for (const l of raw.layers) {
     if (l.type !== 'objectgroup') continue;
     for (const o of l.objects ?? []) {
@@ -47,6 +50,7 @@ export function parseTiled(raw: TiledMap, id: string): MapDef {
         case 'signs': def.signs.push({ x, y, text: String(p.text ?? o.name) }); break;
         case 'zones': def.zones.push({ id: o.name, x, y, r: Number(p.r ?? 2), if: json<Cond>(p.if), deny: p.deny }); break;
         case 'portals': def.portals.push({ x, y, w: Math.max(1, T(o.width ?? TILE_PX)), h: Math.max(1, T(o.height ?? TILE_PX)), target: String(p.target), arrive: String(p.arrive ?? 'spawn'), if: json<Cond>(p.if), deny: p.deny }); break;
+        case 'auras': def.auras.push({ x, y, r: Number(p.r ?? 3), value: Number(p.value ?? 1.5), label: String(p.label ?? o.name) }); break;
         case 'spawns': def.spawns[o.name || 'spawn'] = { x, y }; break;
       }
     }

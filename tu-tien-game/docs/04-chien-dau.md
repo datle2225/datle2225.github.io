@@ -55,25 +55,33 @@ dmg    = max(1, base × ngũ_hành × random(0.95–1.05) × combo × (bạo kí
 | **Độc** (DoT %) | Gây sát thương theo % HP tối đa mỗi lượt của mục tiêu | Đan Tu |
 | **Hồi cho đồng đội** (`target: ally`) | Hồi người yếu nhất phe mình | Đan Tu, đồng hành |
 | **Boss nhiều pha** (`phases`) | Khi HP dưới ngưỡng: đổi bộ chiêu, tăng Công/Tốc, hồi một phần, hiện thông báo + rung màn hình | Huyết Ảnh Trưởng Lão (70% & 35%) |
+| **Triệu hồi** (`summon`) | Thêm một đơn vị phe mình giữa trận, mỗi lần một con | Ngự Thú Tu |
+| **Đảo nhịp** (`advance` / `delay`) | Kéo lượt đồng đội lên sớm / đẩy lượt đối thủ lùi; boss kháng 60% | Âm Tu |
+| **Hồi chiêu** (`cd`) | Chiêu hồi máu phải đợi N lần hành động mới dùng lại | Mọi chiêu hồi máu |
+| **DoT theo Công** (`dotAtk`) | Độc/Bỏng/Bẫy gây sát thương theo **Công của người gây**, không theo % HP mục tiêu (tránh phình theo HP boss) | Đan, Pháp, Phù Trận |
 | **Chiêu riêng của địch** (`branch: "enemy"`) | Địch dùng bản sao chiêu riêng, **chỉnh cân bằng người chơi không làm boss mạnh lên** | Boss, đệ tử Huyết Ảnh Môn |
 
 ## Cân bằng bằng mô phỏng tự động
 `npm run sim` cho mỗi nhánh tự đánh hàng trăm trận (AI chơi cả hai phe, không dùng đan/trang bị/combo thủ công) trước từng nhóm địch. Số liệu được chỉnh theo kết quả này, và **được khóa bằng unit test** (`tests/systems.test.ts`).
 
 ```
-Kịch bản             kiem_tu        the_tu         phap_tu        dan_tu         phu_tran_tu    ma_tu         
-LK1 vs 1 Sói         100% hp39      100% hp39      100% hp39      100% hp39      100% hp39      100% hp39     
-LK5 vs 2 Sói         100% hp46      100% hp46      100% hp46      100% hp46      100% hp46      100% hp46     
-LK9 vs Đệ tử HAM     100% hp17      100% hp17      100% hp17      100% hp17      100% hp17      100% hp17     
-TC5 vs Ma Tu         100% hp71      100% hp84      100% hp80      100% hp79      100% hp76      100% hp57     
-TC5 vs Boss          45% hp9        77% hp15       49% hp63       41% hp61       54% hp10       51% hp10      
-TC9 vs Boss          99% hp23       100% hp41      100% hp66      100% hp68      99% hp20       99% hp25
+Kịch bản             kiem_tu        the_tu         phap_tu        dan_tu         phu_tran_tu    ngu_thu_tu     ma_tu          am_tu         
+LK1 vs 1 Sói         100% hp39      100% hp39      100% hp39      100% hp39      100% hp39      100% hp39      100% hp39      100% hp39     
+LK5 vs 2 Sói         100% hp46      100% hp46      100% hp46      100% hp46      100% hp46      100% hp46      100% hp46      100% hp46     
+LK9 vs Đệ tử HAM     100% hp35      100% hp35      100% hp35      100% hp35      100% hp35      100% hp35      100% hp35      100% hp35     
+TC5 vs Ma Tu         100% hp68      100% hp82      100% hp76      100% hp77      100% hp74      100% hp75      100% hp57      100% hp78     
+TC5 vs Boss          47% hp9        81% hp15       63% hp37       82% hp32       57% hp10       88% hp31       88% hp11       87% hp14      
+TC9 vs Boss          100% hp24      100% hp42      100% hp46      100% hp68      99% hp22       100% hp52      100% hp26      100% hp43     
+KĐ3 vs 2 Quái        100% hp71      100% hp65      100% hp61      100% hp64      100% hp58      100% hp76      100% hp16      100% hp73     
+KĐ5 vs Độc Thủ       100% hp56      47% hp9        100% hp42      100% hp59      99% hp30       99% hp29       62% hp9        99% hp25      
+KĐ6 vs Mặc Gia       84% hp13       64% hp12       75% hp15       96% hp34       36% hp10       51% hp18       98% hp8        82% hp24
 ```
-(Ô: `tỉ lệ thắng` và `HP còn lại trung bình khi thắng`. Trước Trúc Cơ chưa có nhánh nên các cột giống nhau.)
+(Ô: `tỉ lệ thắng` và `HP còn lại trung bình khi thắng`. Trước Trúc Cơ chưa có nhánh nên các cột giống nhau. **8 nhánh**, 150 trận mỗi ô.)
 
 **Mục tiêu thiết kế đã kiểm tra bằng test**
 - Trước Trúc Cơ: thắng quái cùng tầng ≥ 90% nhưng **mất đáng kể HP** (không bao giờ "đi dạo").
-- **Boss Trúc Cơ 5: mọi nhánh thắng 25–90%**, chênh giữa nhánh mạnh nhất và yếu nhất < 45 điểm % → cần chuẩn bị (đan, trang bị, combo, đồng đội), không bất khả thi, không nhánh nào áp đảo.
+- **Boss Trúc Cơ 5: mọi nhánh thắng 25–95%**, chênh giữa nhánh mạnh nhất và yếu nhất < 50 điểm % → cần chuẩn bị (đan, trang bị, combo, đồng đội), không bất khả thi, không nhánh nào áp đảo.
+- **Hồi 2 (Kết Đan):** quái thường thắng ≥ 85%; hai boss (Độc Thủ, Mặc Gia) mọi nhánh thắng ≥ 25%, trung bình ≤ 95%.
 - Vượt tầng (Trúc Cơ 9) thắng boss **dễ hơn rõ rệt** → cày thật sự có ý nghĩa.
 - Lưu ý: AI mô phỏng thô nên Thể Tu (có khiên) nhỉnh hơn; người chơi dùng combo giỏi sẽ thay đổi bảng này.
 
@@ -100,3 +108,10 @@ TC9 vs Boss          99% hp23       100% hp41      100% hp66      100% hp68     
 ## Thắng / thua
 - Thắng: Tu vi (EXP), rơi đồ theo bảng `drops`, tiền Linh thạch, cập nhật nhiệm vụ.
 - Thua: mất 10% Linh thạch, tỉnh lại ở nơi an toàn. **Không mất cấp, không xóa save** (tránh ức chế).
+
+### Bài học cân bằng (đã gặp khi tinh chỉnh)
+- **Hồi máu theo % HP** tự nó phá cân bằng khi lên cảnh giới (HP tăng, sát thương boss cố định): thêm **hồi chiêu**.
+- **DoT theo % HP mục tiêu** làm boss nhiều máu chết quá nhanh: chuyển sang **theo Công người gây**.
+- Chiêu có `requires` vốn đã mạnh khi không có điều kiện thì "cộng hưởng" chỉ là phần thưởng thêm; chiêu quá mạnh ngay từ nền (Thú Tâm Cộng Hưởng, Phá Âm Chấn) làm AI spam, phải hạ sức mạnh nền.
+- Nhánh **thiếu chiêu Kết Đan** (Thể Tu lúc đầu) thua boss Hồi 2 gần như 100%: đã thêm *Kim Cương Bất Hoại Quyền*.
+- Kết quả rất **dốc** quanh ngưỡng: đổi 5% chỉ số boss có thể làm tỉ lệ thắng của một nhánh nhảy 30 điểm. Vì vậy test khóa theo *khoảng* thay vì số cụ thể.

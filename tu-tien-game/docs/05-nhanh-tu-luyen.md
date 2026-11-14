@@ -19,15 +19,25 @@
 | **Ma Tu** | Nguyên Anh | Hy sinh máu lấy sức | Công | Sát Khí | Rủi ro cao; ảnh hưởng đạo tâm |
 | **Âm Tu** | Nguyên Anh | Buff/debuff nhịp | MP | Âm Luật | Thao túng thứ tự hành động |
 
-`playable: true` trong `branches.json` cho các nhánh đã có chiêu: **hiện 6 nhánh** (Kiếm, Thể, Pháp, **Đan, Phù Trận, Ma**). Ngự Thú và Âm Tu chưa làm.
+`playable: true` trong `branches.json` cho các nhánh đã có chiêu: **cả 8 nhánh đều chơi được** (Kiếm, Thể, Pháp, Đan, Phù Trận, Ma, **Ngự Thú, Âm Tu**).
 
-> **Lưu ý:** theo thiết kế gốc Đan/Phù Trận mở ở Kết Đan và Ma Tu ở Nguyên Anh; **bản hiện tại mở cả 6 nhánh ở Trúc Cơ** để dễ thử. Khi có đủ nội dung sẽ khóa lại theo bảng trên.
+> **Lưu ý:** theo thiết kế gốc Đan/Phù Trận mở ở Kết Đan và Ma Tu/Ngự Thú/Âm Tu ở Nguyên Anh; **bản hiện tại mở cả 8 nhánh ở Trúc Cơ** để dễ thử. Khi có đủ nội dung sẽ khóa lại theo bảng trên.
 
 ### Đan Tu (đã làm)
 Đan Châm (cơ bản) → Độc Đan Phi Xạ (gieo **Trúng Độc**) → Thanh Liên Hộ Thể (hồi + khiên) → **Bạo Đan** (cộng hưởng với Độc) → Hồi Xuân Đan Vũ (hồi đồng đội) → Vạn Độc Quy Tông (Kết Đan).
 
 ### Phù Trận Tu (đã làm)
 Phù Kích → **Địa Lôi Phù** (đặt **bẫy**) → Định Thân Phù (làm chậm) → **Dẫn Lôi** (kích nổ bẫy sớm, cộng hưởng) → Vạn Phù Quy Nhất (Kết Đan). Chiến thuật: đặt bẫy trước, đối thủ ra tay là bị nổ và chậm lượt.
+
+### Ngự Thú Tu (đã làm)
+Roi Thú → **Triệu Hồi Linh Lang** (nhanh, gây Phá Giáp) / **Triệu Hồi Linh Quy** (trâu bò, dựng khiên) → **Hiệu Lệnh** (kéo lượt linh thú lên sớm) → **Thú Tâm Cộng Hưởng** (mạnh hơn khi linh thú còn sống) → Vạn Thú Bôn Đằng (Kết Đan).
+- Linh thú là **một đơn vị thật** trong trận: có HP, có lượt riêng trên thanh timeline, do AI điều khiển, chỉ số bằng **tỉ lệ so với chủ nhân** (Linh Lang HP×0.3 Công×0.35 · Linh Quy HP×0.5 Thủ×0.6).
+- **Mỗi lần chỉ một linh thú.** Khi nó gục, trạng thái **Thú Tâm** của chủ nhân biến mất (mất cộng hưởng) và có thể gọi con khác.
+
+### Âm Tu (đã làm)
+Cầm Âm → **Nhiễu Loạn Âm** (đẩy lượt đối thủ lùi lại, gây Loạn Nhịp) → **Cổ Vũ Khúc** (kéo lượt đồng đội/bản thân lên sớm, hồi nhẹ) → **Phá Âm Chấn** (cộng hưởng Loạn Nhịp) → Tán Khúc Chậm Nhịp → Thiên Âm Đoạt Mệnh (Kết Đan: đẩy lượt rất xa).
+- Đây là nhánh **thao túng thứ tự hành động** trên thanh timeline. **Boss kháng đảo nhịp** (chỉ nhận 40% độ trễ) nên không thể khóa chết.
+- Chỉ **kéo sớm**, không bao giờ làm chậm lượt đồng đội (đã có test).
 
 ### Ma Tu (đã làm)
 Huyết Trảm → **Hiến Tế** (hy sinh 15% HP, gieo **Huyết Nhiễm**) → Ma Công (cộng hưởng Huyết Nhiễm, hy sinh 10%) → Thôn Phệ (hút máu 60%) → Thiên Ma Giải Thể (hy sinh 25% HP, sát thương khủng khiếp, Kết Đan). Rủi ro cao, **mô phỏng cho thấy mất nhiều HP hơn** các nhánh khác khi chiến thắng.

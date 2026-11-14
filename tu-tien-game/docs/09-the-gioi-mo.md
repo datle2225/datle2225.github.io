@@ -3,12 +3,14 @@
 ## Dữ liệu bản đồ
 Bản đồ nằm ở `src/data/maps/*.json` (lưới ký tự + danh sách NPC, quái, thảo dược, vùng kích hoạt nhiệm vụ). Thêm khu mới = thêm một file JSON. *(Chưa nhập trực tiếp được file của Tiled; xem backlog ở 11.)*
 
-## Bản đồ hiện có (3 map nối nhau bằng cổng)
+## Bản đồ hiện có (5 map nối nhau bằng cổng)
 | Map | Nhạc | Nội dung | Cổng |
 |---|---|---|---|
 | **Thanh Hà Thôn & Hắc Lâm** (64×40) | overworld | Khởi đầu, tàn tích, giếng cổ, chợ Thanh Hà Tập (3 NPC dịch vụ + Nguyệt Nhi), quái, boss | → Thanh Vân Tông (sau `m1_3`), → Phường Thị (từ Chương 2) |
 | **Thanh Vân Tông** (48×34) | sect | Sân tông môn, chính điện, võ trường, Mặc Trần, Quản Sự (nhiệm vụ `s2_1`), Lục Vân Sinh, bảng tin. **Khu an toàn** (không quái) | → Thanh Hà |
-| **Phường Thị Vân Hải** (56×36) | market | Thiết Phong Lâu (thợ rèn tay nghề 6), Vạn Dược Đường (đan sư tay nghề 7), Thiên Cơ Các (tin đồn), thương gia, vệ binh, quái ngoại ô | → Thanh Hà |
+| **Huyết Nguyệt Bí Cảnh** (44×32) | tribulation | **Dungeon** Kết Đan: ba phòng quái, hầm dung nham, đại sảnh boss Độc Thủ Tiên Sinh. Linh khí ×2.0 (×2.8 ở linh mạch) nhưng quái hồi sinh sau 20 giây | → Phường Thị (cần Kết Đan) |
+| **Hoang Mạc Xích Hỏa** (60×36) | overworld | Sa mạc: xương cát, xương rồng, hồ dung nham, ốc đảo linh khí, doanh trại Mặc Gia (boss #3), lữ khách bán hàng, quái Xích Hỏa Thú / Sa Trùng | → Phường Thị (sau khi Thiên Cơ Các chỉ đường) |
+| **Phường Thị Vân Hải** (56×36) | market | Thiết Phong Lâu (thợ rèn tay nghề 6), Vạn Dược Đường (đan sư tay nghề 7), **Hội Đấu Giá**, Thiên Cơ Các (tin đồn, giao nhiệm vụ Hồi 2), thương gia, vệ binh, quái ngoại ô | → Thanh Hà, Huyết Nguyệt, Hoang Mạc |
 
 ## Ngày – đêm & lịch sinh hoạt NPC (đã làm)
 - **Một ngày game = 300 giây chơi**, bắt đầu 8:00; trùng chu kỳ nhập hàng của cửa hàng (nhập hàng lúc sáng).

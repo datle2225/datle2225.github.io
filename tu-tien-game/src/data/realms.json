@@ -1,10 +1,230 @@
 [
-  { "id": "luyen_khi", "name": "Luyện Khí", "stages": 9, "lifespan": 120, "expPerStage": [50, 80, 120, 170, 230, 300, 380, 470, 600], "statMul": 1.0, "tribulation": null, "unlocks": ["tu_luyen", "chien_dau_co_ban"] },
-  { "id": "truc_co", "name": "Trúc Cơ", "stages": 9, "lifespan": 250, "expPerStage": [900, 1200, 1600, 2100, 2700, 3400, 4200, 5200, 6500], "statMul": 2.2, "tribulation": { "waves": 3, "boltPower": 40, "recommendedPower": 220, "name": "Trúc Cơ Lôi Kiếp" }, "unlocks": ["chon_nhanh", "ngu_kiem", "ren_do"] },
-  { "id": "ket_dan", "name": "Kết Đan", "stages": 9, "lifespan": 500, "expPerStage": [9000, 12000, 16000, 21000, 27000, 34000, 42000, 52000, 65000], "statMul": 4.5, "tribulation": { "waves": 6, "boltPower": 110, "recommendedPower": 800, "name": "Kết Đan Lôi Kiếp" }, "unlocks": ["luyen_dan", "combo_day_du", "bi_canh"] },
-  { "id": "nguyen_anh", "name": "Nguyên Anh", "stages": 9, "lifespan": 1000, "expPerStage": [90000, 120000, 160000, 210000, 270000, 340000, 420000, 520000, 650000], "statMul": 9.0, "tribulation": { "waves": 9, "boltPower": 260, "recommendedPower": 2300, "name": "Nguyên Anh Lôi Kiếp" }, "unlocks": ["thoat_xac", "tran_phap", "the_luc"] },
-  { "id": "hoa_than", "name": "Hóa Thần", "stages": 9, "lifespan": 2000, "expPerStage": [900000, 1200000, 1600000, 2100000, 2700000, 3400000, 4200000, 5200000, 6500000], "statMul": 18, "tribulation": { "waves": 9, "boltPower": 600, "recommendedPower": 6500, "name": "Hóa Thần Thiên Kiếp" }, "unlocks": ["phap_tac"] },
-  { "id": "luyen_hu", "name": "Luyện Hư", "stages": 9, "lifespan": 4000, "expPerStage": [9000000, 12000000, 16000000, 21000000, 27000000, 34000000, 42000000, 52000000, 65000000], "statMul": 36, "tribulation": { "waves": 9, "boltPower": 1300, "recommendedPower": 20000, "name": "Luyện Hư Thiên Kiếp" }, "unlocks": [] },
-  { "id": "hop_the", "name": "Hợp Thể", "stages": 9, "lifespan": 8000, "expPerStage": [90000000, 120000000, 160000000, 210000000, 270000000, 340000000, 420000000, 520000000, 650000000], "statMul": 72, "tribulation": { "waves": 9, "boltPower": 2800, "recommendedPower": 65000, "name": "Hợp Thể Thiên Kiếp" }, "unlocks": [] },
-  { "id": "dai_thua", "name": "Đại Thừa", "stages": 9, "lifespan": 16000, "expPerStage": [900000000, 1200000000, 1600000000, 2100000000, 2700000000, 3400000000, 4200000000, 5200000000, 6500000000], "statMul": 144, "tribulation": { "waves": 9, "boltPower": 6000, "recommendedPower": 210000, "name": "Phi Thăng Thiên Kiếp" }, "unlocks": ["phi_thang"] }
+ {
+  "id": "luyen_khi",
+  "name": "Luyện Khí",
+  "stages": 9,
+  "lifespan": 120,
+  "expPerStage": [
+   50,
+   80,
+   120,
+   170,
+   230,
+   300,
+   380,
+   470,
+   600
+  ],
+  "statMul": 1.0,
+  "tribulation": null,
+  "unlocks": [
+   "tu_luyen",
+   "chien_dau_co_ban"
+  ],
+  "bottlenecks": [
+   6
+  ]
+ },
+ {
+  "id": "truc_co",
+  "name": "Trúc Cơ",
+  "stages": 9,
+  "lifespan": 250,
+  "expPerStage": [
+   900,
+   1200,
+   1600,
+   2100,
+   2700,
+   3400,
+   4200,
+   5200,
+   6500
+  ],
+  "statMul": 2.2,
+  "tribulation": {
+   "waves": 3,
+   "boltPower": 40,
+   "recommendedPower": 220,
+   "name": "Trúc Cơ Lôi Kiếp"
+  },
+  "unlocks": [
+   "chon_nhanh",
+   "ngu_kiem",
+   "ren_do"
+  ],
+  "bottlenecks": [
+   5
+  ]
+ },
+ {
+  "id": "ket_dan",
+  "name": "Kết Đan",
+  "stages": 9,
+  "lifespan": 500,
+  "expPerStage": [
+   9000,
+   12000,
+   16000,
+   21000,
+   27000,
+   34000,
+   42000,
+   52000,
+   65000
+  ],
+  "statMul": 4.5,
+  "tribulation": {
+   "waves": 6,
+   "boltPower": 110,
+   "recommendedPower": 800,
+   "name": "Kết Đan Lôi Kiếp"
+  },
+  "unlocks": [
+   "luyen_dan",
+   "combo_day_du",
+   "bi_canh"
+  ],
+  "bottlenecks": [
+   5
+  ]
+ },
+ {
+  "id": "nguyen_anh",
+  "name": "Nguyên Anh",
+  "stages": 9,
+  "lifespan": 1000,
+  "expPerStage": [
+   90000,
+   120000,
+   160000,
+   210000,
+   270000,
+   340000,
+   420000,
+   520000,
+   650000
+  ],
+  "statMul": 9.0,
+  "tribulation": {
+   "waves": 9,
+   "boltPower": 260,
+   "recommendedPower": 2300,
+   "name": "Nguyên Anh Lôi Kiếp"
+  },
+  "unlocks": [
+   "thoat_xac",
+   "tran_phap",
+   "the_luc"
+  ],
+  "bottlenecks": []
+ },
+ {
+  "id": "hoa_than",
+  "name": "Hóa Thần",
+  "stages": 9,
+  "lifespan": 2000,
+  "expPerStage": [
+   900000,
+   1200000,
+   1600000,
+   2100000,
+   2700000,
+   3400000,
+   4200000,
+   5200000,
+   6500000
+  ],
+  "statMul": 18,
+  "tribulation": {
+   "waves": 9,
+   "boltPower": 600,
+   "recommendedPower": 6500,
+   "name": "Hóa Thần Thiên Kiếp"
+  },
+  "unlocks": [
+   "phap_tac"
+  ],
+  "bottlenecks": []
+ },
+ {
+  "id": "luyen_hu",
+  "name": "Luyện Hư",
+  "stages": 9,
+  "lifespan": 4000,
+  "expPerStage": [
+   9000000,
+   12000000,
+   16000000,
+   21000000,
+   27000000,
+   34000000,
+   42000000,
+   52000000,
+   65000000
+  ],
+  "statMul": 36,
+  "tribulation": {
+   "waves": 9,
+   "boltPower": 1300,
+   "recommendedPower": 20000,
+   "name": "Luyện Hư Thiên Kiếp"
+  },
+  "unlocks": [],
+  "bottlenecks": []
+ },
+ {
+  "id": "hop_the",
+  "name": "Hợp Thể",
+  "stages": 9,
+  "lifespan": 8000,
+  "expPerStage": [
+   90000000,
+   120000000,
+   160000000,
+   210000000,
+   270000000,
+   340000000,
+   420000000,
+   520000000,
+   650000000
+  ],
+  "statMul": 72,
+  "tribulation": {
+   "waves": 9,
+   "boltPower": 2800,
+   "recommendedPower": 65000,
+   "name": "Hợp Thể Thiên Kiếp"
+  },
+  "unlocks": [],
+  "bottlenecks": []
+ },
+ {
+  "id": "dai_thua",
+  "name": "Đại Thừa",
+  "stages": 9,
+  "lifespan": 16000,
+  "expPerStage": [
+   900000000,
+   1200000000,
+   1600000000,
+   2100000000,
+   2700000000,
+   3400000000,
+   4200000000,
+   5200000000,
+   6500000000
+  ],
+  "statMul": 144,
+  "tribulation": {
+   "waves": 9,
+   "boltPower": 6000,
+   "recommendedPower": 210000,
+   "name": "Phi Thăng Thiên Kiếp"
+  },
+  "unlocks": [
+   "phi_thang"
+  ],
+  "bottlenecks": []
+ }
 ]

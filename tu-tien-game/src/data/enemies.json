@@ -127,7 +127,9 @@
     "spdMul": 1.2,
     "heal": 0.1
    }
-  ]
+  ],
+  "tempoResist": 0.4,
+  "flagOnWin": "enemy1_dead"
  },
  {
   "id": "ma_tu_lang_thang",
@@ -184,6 +186,251 @@
    {
     "id": "da_soi",
     "chance": 0.3
+   }
+  ]
+ },
+ {
+  "id": "tam_ma",
+  "name": "Tâm Ma",
+  "realm": "ket_dan",
+  "element": "none",
+  "stats": {
+   "hp": 100,
+   "mp": 30,
+   "atk": 10,
+   "def": 5,
+   "spd": 100,
+   "crit": 0.05
+  },
+  "skills": [],
+  "exp": 0,
+  "drops": []
+ },
+ {
+  "id": "huyet_quai",
+  "name": "Huyết Quái",
+  "realm": "ket_dan",
+  "element": "hoa",
+  "stats": {
+   "hp": 800,
+   "mp": 60,
+   "atk": 100,
+   "def": 35,
+   "spd": 105,
+   "crit": 0.08
+  },
+  "skills": [
+   "yeu_hoa_cau",
+   "yeu_chan_dia"
+  ],
+  "exp": 420,
+  "drops": [
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   },
+   {
+    "id": "huyet_tham",
+    "chance": 0.3
+   }
+  ]
+ },
+ {
+  "id": "doc_trung",
+  "name": "Độc Trùng",
+  "realm": "ket_dan",
+  "element": "moc",
+  "stats": {
+   "hp": 560,
+   "mp": 50,
+   "atk": 90,
+   "def": 28,
+   "spd": 130,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_doc_phun",
+   "yeu_doc_bao"
+  ],
+  "exp": 380,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 0.4
+   },
+   {
+    "id": "linh_thao",
+    "chance": 0.5
+   }
+  ]
+ },
+ {
+  "id": "doc_thu_tien_sinh",
+  "name": "Độc Thủ Tiên Sinh",
+  "realm": "ket_dan",
+  "element": "moc",
+  "boss": true,
+  "stats": {
+   "hp": 2200,
+   "mp": 200,
+   "atk": 140,
+   "def": 70,
+   "spd": 118,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_doc_phun",
+   "yeu_doc_bao"
+  ],
+  "phases": [
+   {
+    "at": 0.65,
+    "text": "Độc Thủ Tiên Sinh cười lạnh, rút ra một bình độc đen kịt!",
+    "skills": [
+     "yeu_doc_phun",
+     "yeu_doc_bao",
+     "yeu_huyet_nhan"
+    ],
+    "atkMul": 1.1
+   },
+   {
+    "at": 0.3,
+    "text": "Hắn nuốt trọn bình độc, thân thể phình to, độc khí tràn ngập!",
+    "skills": [
+     "yeu_doc_bao",
+     "yeu_huyet_nhan",
+     "yeu_doc_phun"
+    ],
+    "atkMul": 1.25,
+    "spdMul": 1.15,
+    "heal": 0.08
+   }
+  ],
+  "tempoResist": 0.4,
+  "flagOnWin": "enemy2_dead",
+  "exp": 1800,
+  "drops": [
+   {
+    "id": "mac_gia_chung_cu",
+    "chance": 1
+   },
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "xich_hoa_thu",
+  "name": "Xích Hỏa Thú",
+  "realm": "ket_dan",
+  "element": "hoa",
+  "stats": {
+   "hp": 820,
+   "mp": 60,
+   "atk": 95,
+   "def": 40,
+   "spd": 112,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_hoa_cau",
+   "yeu_hoa_long"
+  ],
+  "exp": 460,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.5
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
+   }
+  ]
+ },
+ {
+  "id": "sa_trung",
+  "name": "Sa Trùng",
+  "realm": "ket_dan",
+  "element": "tho",
+  "stats": {
+   "hp": 900,
+   "mp": 40,
+   "atk": 80,
+   "def": 60,
+   "spd": 92,
+   "crit": 0.05
+  },
+  "skills": [
+   "yeu_cat_cuon",
+   "yeu_chan_dia"
+  ],
+  "exp": 440,
+  "drops": [
+   {
+    "id": "huyen_thiet",
+    "chance": 0.6
+   }
+  ]
+ },
+ {
+  "id": "mac_gia_chu",
+  "name": "Mặc Gia Gia Chủ",
+  "realm": "ket_dan",
+  "element": "kim",
+  "boss": true,
+  "stats": {
+   "hp": 2500,
+   "mp": 220,
+   "atk": 165,
+   "def": 85,
+   "spd": 112,
+   "crit": 0.1
+  },
+  "skills": [
+   "yeu_kiem_nhat",
+   "yeu_kim_cuong",
+   "yeu_tao_giap"
+  ],
+  "phases": [
+   {
+    "at": 0.6,
+    "text": "Mặc Gia Gia Chủ rút bảo kiếm gia truyền, quát: Ngươi biết quá nhiều rồi!",
+    "skills": [
+     "yeu_kiem_nhat",
+     "yeu_kim_cuong",
+     "yeu_kiem_cuong"
+    ],
+    "atkMul": 1.15
+   },
+   {
+    "at": 0.3,
+    "text": "Hắn xé rách y phục, kim quang bao phủ toàn thân!",
+    "skills": [
+     "yeu_kim_cuong",
+     "yeu_kiem_tam",
+     "yeu_kiem_cuong"
+    ],
+    "atkMul": 1.25,
+    "spdMul": 1.2
+   }
+  ],
+  "tempoResist": 0.4,
+  "flagOnWin": "enemy3_dead",
+  "exp": 2400,
+  "drops": [
+   {
+    "id": "huyet_tham",
+    "chance": 1
+   },
+   {
+    "id": "linh_thach_ha",
+    "chance": 1
    }
   ]
  }

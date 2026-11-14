@@ -35,6 +35,12 @@
    "name": "Huyết Ảnh Lệnh",
    "kind": "quest",
    "price": 0
+  },
+  {
+   "id": "mac_gia_chung_cu",
+   "name": "Chứng Cứ Mặc Gia",
+   "kind": "quest",
+   "price": 0
   }
  ],
  "bases": [
@@ -166,6 +172,52 @@
     "def": 3,
     "hp": 40,
     "atk": 3
+   },
+   "ore": 2
+  },
+  {
+   "id": "thu_boi_so",
+   "name": "Thú Bội Răng Sói",
+   "slot": "weapon",
+   "branch": "ngu_thu_tu",
+   "base": {
+    "atk": 5,
+    "hp": 20
+   },
+   "ore": 3
+  },
+  {
+   "id": "linh_thu_hoan_so",
+   "name": "Linh Thú Hoàn Đồng",
+   "slot": "armor",
+   "branch": "ngu_thu_tu",
+   "base": {
+    "def": 3,
+    "hp": 30
+   },
+   "ore": 2
+  },
+  {
+   "id": "co_cam_so",
+   "name": "Cổ Cầm Gỗ Đào",
+   "slot": "weapon",
+   "branch": "am_tu",
+   "base": {
+    "atk": 5,
+    "mp": 20,
+    "spd": 2
+   },
+   "ore": 3
+  },
+  {
+   "id": "tieu_sao_so",
+   "name": "Tiêu Sáo Trúc",
+   "slot": "armor",
+   "branch": "am_tu",
+   "base": {
+    "def": 3,
+    "mp": 18,
+    "spd": 3
    },
    "ore": 2
   }

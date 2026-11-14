@@ -25,7 +25,11 @@
     "phap_truong_so",
     "kiem_y_so",
     "chien_giap_so",
-    "dao_bao_so"
+    "dao_bao_so",
+    "thu_boi_so",
+    "linh_thu_hoan_so",
+    "co_cam_so",
+    "tieu_sao_so"
    ],
    "readyCount": 3,
    "greeting": "Đồ của lão thiết không bán rẻ, nhưng không bán dở."
@@ -62,7 +66,8 @@
     "truc_co_dan",
     "thanh_tam_dan",
     "kiem_y_dan",
-    "huyet_khi_dan"
+    "huyet_khi_dan",
+    "pha_canh_dan"
    ],
    "greeting": "Dược liệu tốt là một nửa của đan dược."
   },
@@ -131,7 +136,11 @@
     "phu_but_so",
     "tran_ky_so",
     "ma_dao_so",
-    "huyet_y_so"
+    "huyet_y_so",
+    "thu_boi_so",
+    "linh_thu_hoan_so",
+    "co_cam_so",
+    "tieu_sao_so"
    ],
    "readyCount": 4,
    "greeting": "Tay nghề của Thiết Phong Lâu nổi tiếng khắp Vân Hải."
@@ -160,7 +169,8 @@
     "hoi_linh_dan",
     "tu_khi_dan",
     "thanh_tam_dan",
-    "truc_co_dan"
+    "truc_co_dan",
+    "pha_canh_dan"
    ],
    "pillStock": 4,
    "recipes": [
@@ -170,7 +180,8 @@
     "truc_co_dan",
     "thanh_tam_dan",
     "kiem_y_dan",
-    "huyet_khi_dan"
+    "huyet_khi_dan",
+    "pha_canh_dan"
    ],
    "greeting": "Đan đường của Vạn Dược Cốc, phẩm chất bảo đảm."
   },
@@ -202,6 +213,16 @@
     "ao_huyet_nguyet"
    ],
    "greeting": "Hàng hiếm, giá hời, chỉ hôm nay thôi."
+  },
+  {
+   "id": "dau_gia",
+   "name": "Chủ Trì Đấu Giá",
+   "title": "Hội Đấu Giá Vân Hải",
+   "type": "auction",
+   "skill": 0,
+   "labor": 0,
+   "lots": 4,
+   "greeting": "Mỗi ngày một phiên. Đặt giá tối đa của ngươi, kết thúc lúc rạng sáng ta sẽ xét: ai trả cao hơn các thương nhân thì thắng."
   }
  ],
  "priceDrift": 0.15,

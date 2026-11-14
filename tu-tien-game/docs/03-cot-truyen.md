@@ -62,6 +62,16 @@ Mỗi nhiệm vụ lớn có **ít nhất một lựa chọn có hậu quả nh�
 - **Lục Vân Sinh** (phản diện chính) xuất hiện **hiền từ**. Người chơi có thể chọn *"Quan sát ánh mắt ông ta kỹ hơn"* → đặt cờ `luc_suspect` (lời nhắc ngầm cho Hồi 2). Đây là **mầm foreshadowing** cho cú twist.
 - **Quản Sự Tạp Dịch** giao nhiệm vụ phụ `s2_1` *"Tạp dịch Thanh Vân"* (hái 5 Linh Thảo).
 
+## Hồi 2 đã có trong game (Kết Đan)
+| Nhiệm vụ | Nội dung | Kết quả |
+|---|---|---|
+| `m2_1` Huyết Nguyệt Bí Cảnh | Thiên Cơ Các (Phường Thị) tiết lộ nơi ẩn náu của Độc Thủ Tiên Sinh; đi sâu vào bí cảnh | Mở `m2_2` |
+| `m2_2` Kẻ thù thứ hai | Hạ **Độc Thủ Tiên Sinh** (boss 3 pha, độc) | Rơi **Chứng Cứ Mặc Gia**, mở `m2_3`, cờ `enemy2_dead` |
+| `m2_3` Mặc Gia Gia Chủ | Đến Hoang Mạc Xích Hỏa, đối chất với Gia Chủ (cha của Mặc Trần) | **Hai tuyến**: *đánh* (boss 3 pha) hoặc *vạch trần bằng chứng cứ* (không đánh; +4 đạo tâm, +5 danh vọng chính đạo) |
+
+Hoàn thành `m2_3` kích hoạt: **gỡ phong ấn** (Tàn Căn → **Hỗn Độn Căn**: tu luyện ×1.6, mọi chỉ số +15%, không bị khắc chế), thưởng tu vi, và **đoạn kết Hồi 2 theo đạo tâm** (chính đạo / ma đạo / tán tu). Huyết Thư (Menu) liệt kê 5 kẻ thù; kẻ 4–5 mở manh mối dần (nếu chọn "Ai là kẻ cầm cán?" sẽ đặt cờ `luc_hint` hé lộ Lục Vân Sinh).
+**Chưa làm:** Hồi 3 (kẻ thù #4 Huyết Ảnh Môn Chủ, #5 Lục Vân Sinh), Nguyên Anh trở lên.
+
 ## Nhiệm vụ phụ (nguyên tắc)
 - Mỗi nhiệm vụ phụ phải có **câu chuyện nhỏ + một quyết định**, không chỉ "giết N con".
 - 5 loại: **Giải cứu** · **Điều tra** · **Thu thập có câu chuyện** · **Giao hàng/cạnh tranh buôn bán** · **Cơ duyên ẩn** (kích hoạt bởi hành vi, không có dấu chấm than).
