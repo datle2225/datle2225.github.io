@@ -97,6 +97,9 @@ export interface PlayerState {
   chapter: number;
   playtime: number;
   difficulty: 'normal' | 'hard' | 'nightmare'; // độ khó
+  /** Sinh lực/linh lực hiện tại giữa các trận; undefined = đầy. */
+  hp?: number;
+  mp?: number;
   ngPlus: number; // chu kỳ chơi lại (0 = lần đầu)
   counters: Record<string, number>; // thống kê: kills, boss_kills, deaths, crafted, quests_done, pills_used, tower_floors
   achievements: string[]; // thành tựu đã mở

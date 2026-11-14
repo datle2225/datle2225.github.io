@@ -7,6 +7,9 @@ import { ELITE } from '../core/difficulty';
 import { EVENTS, REALMS, enemyMap, vendorMap } from '../core/data';
 import { expNeeded } from '../core/progression';
 import { DIALOGUES, DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
+import { objectiveMarkers, type Marker } from '../core/objectives';
+import { curHp, curMp, regen } from '../core/vitals';
+import { computeStats } from '../core/stats';
 import { checkAchievements } from '../core/achievements';
 import { clearFloor, floorEnemies, floorMult, towerBossName } from '../core/tower';
 import { loadMap } from '../core/maps';
@@ -51,6 +54,11 @@ export class OverworldScene extends Phaser.Scene {
   private fps?: Phaser.GameObjects.Text;
   private initData: { arrive?: string } = {};
   private towerFloor = 0;
+  // minimap
+  private mmSprite?: Phaser.GameObjects.Image;
+  private mmGfx?: Phaser.GameObjects.Graphics;
+  private mmBig = false;
+  private mmMarkers: Marker[] = [];
 
   // hội thoại
   private runner: DialogueRunner | null = null;
@@ -113,6 +121,7 @@ export class OverworldScene extends Phaser.Scene {
     this.nightOverlay = this.add.rectangle(0, 0, W, H, 0x0a1040, 0).setOrigin(0).setScrollFactor(0).setDepth(90);
     this.hud = label(this, 6, 4, '', { fontSize: '10px', backgroundColor: '#0b1020cc', padding: { x: 4, y: 2 } }).setDepth(100);
     this.questText = label(this, 6, 24, '', { fontSize: '9px', color: '#ffe38a', backgroundColor: '#0b1020cc', padding: { x: 4, y: 2 }, wordWrap: { width: 320 } }).setDepth(100);
+    this.buildMinimap();
     button(this, W - 70, 6, 64, 24, 'Menu (M)', () => this.openMenu(), { depth: 100 });
     this.setupJoystick();
     this.tick();
@@ -121,9 +130,10 @@ export class OverworldScene extends Phaser.Scene {
 
     const onBattleEnd = (r: { won: boolean; fled?: boolean; lost?: boolean; foeIndex: number; completed?: string[] }) => {
       this.busy = false;
-      this.immuneUntil = this.time.now + 3000;
+      this.immuneUntil = Date.now() + (r.fled ? 5000 : 3000); // đồng hồ thật: this.time.now của scene đứng yên lúc tạm dừng nên không dùng được
       if (r.foeIndex === -2) { this.onTowerResult(r.won); audio.music(this.map.music); return; }
       const f = this.foes[r.foeIndex];
+      if (r.fled && f) this.fleeFrom(f);
       if (r.won && f) { respawnAt.set(f.key, game.p.playtime + this.map.respawn); f.elite = this.rollElite(f.def); this.markElite(f); this.refreshFoeVisibility(); }
       if (r.lost && r.foeIndex !== -2) { const sp = this.map.spawns.spawn; this.player.setPosition(sp.x * TS + HALF, sp.y * TS + HALF); this.trail = []; }
       this.refreshHud();
@@ -207,6 +217,8 @@ export class OverworldScene extends Phaser.Scene {
     const col = checkCollect(game.p);
     if (col.length) this.progress(col);
     if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
+    regen(game.p, 0.5, this.foes.length === 0);
+    this.mmMarkers = objectiveMarkers(game.p, this.map.id);
     this.refreshHud();
     this.syncFollowers();
     this.applySchedules(false);
@@ -261,6 +273,49 @@ export class OverworldScene extends Phaser.Scene {
     return this.solid.has(`${Math.floor(px / TS)},${Math.floor(py / TS)}`);
   }
 
+  /* ───────────── Minimap ───────────── */
+  private buildMinimap() {
+    this.mmSprite?.destroy(); this.mmGfx?.destroy();
+    const key = `mm_${this.map.id}`;
+    if (!this.textures.exists(key)) {
+      const tex = this.textures.createCanvas(key, this.map.w, this.map.h)!;
+      const ctx = tex.getContext();
+      for (let y = 0; y < this.map.h; y++) for (let x = 0; x < this.map.w; x++) {
+        ctx.fillStyle = this.solid.has(`${x},${y}`) ? '#233326' : '#4f8a46';
+        ctx.fillRect(x, y, 1, 1);
+      }
+      for (const pt of this.map.portals) { ctx.fillStyle = '#7ad8ff'; ctx.fillRect(pt.x, pt.y, Math.max(1, pt.w), Math.max(1, pt.h)); }
+      tex.refresh();
+    }
+    this.mmSprite = this.add.image(0, 0, key).setOrigin(0).setScrollFactor(0).setDepth(98).setAlpha(0.88).setInteractive();
+    this.mmSprite.on('pointerdown', () => { this.mmBig = !this.mmBig; this.layoutMinimap(); });
+    this.mmGfx = this.add.graphics().setScrollFactor(0).setDepth(99);
+    this.layoutMinimap();
+  }
+
+  private mmScale() { const maxW = this.mmBig ? 300 : 110, maxH = this.mmBig ? 220 : 80; return Math.min(maxW / this.map.w, maxH / this.map.h); }
+
+  private layoutMinimap() {
+    const s = this.mmScale();
+    this.mmSprite!.setScale(s).setPosition(W - 6 - this.map.w * s, 36);
+  }
+
+  private drawMinimap() {
+    const g = this.mmGfx!, s = this.mmScale();
+    const ox = W - 6 - this.map.w * s, oy = 36;
+    g.clear();
+    g.lineStyle(1, 0xffffff, 0.8).strokeRect(ox - 0.5, oy - 0.5, this.map.w * s + 1, this.map.h * s + 1);
+    const pulse = 0.6 + 0.4 * Math.sin(this.time.now / 250);
+    for (const m of this.mmMarkers) {
+      const x = ox + m.x * s, y = oy + m.y * s;
+      const col = m.kind === 'portal' ? 0x7affc8 : m.main ? 0xffd84a : 0xff9a4a;
+      g.fillStyle(col, pulse).fillCircle(x, y, m.kind === 'portal' ? 4 : 3);
+      g.lineStyle(1, 0x000000, 1).strokeCircle(x, y, m.kind === 'portal' ? 4 : 3);
+    }
+    g.fillStyle(0xffffff, 1).fillCircle(ox + (this.player.x / TS) * s, oy + (this.player.y / TS) * s, 2.5);
+    g.lineStyle(1, 0x000000, 1).strokeCircle(ox + (this.player.x / TS) * s, oy + (this.player.y / TS) * s, 2.5);
+  }
+
   /** Camera tự theo người chơi (zoom Z, gốc 0,0): giữ trong biên bản đồ, nhỏ hơn màn hình thì căn giữa. */
   private camFollow(snap = false) {
     const cam = this.cameras.main;
@@ -274,6 +329,7 @@ export class OverworldScene extends Phaser.Scene {
 
   update(_t: number, dt: number) {
     this.camFollow();
+    this.drawMinimap();
     if (this.busy || this.runner) { this.player.anims.stop(); this.player.setTexture('player'); return; }
     const k = this.keys;
     let vx = (k.D.isDown || k.RIGHT.isDown ? 1 : 0) - (k.A.isDown || k.LEFT.isDown ? 1 : 0);
@@ -342,14 +398,14 @@ export class OverworldScene extends Phaser.Scene {
       }
     }
 
-    if (this.time.now > this.immuneUntil) {
+    if (Date.now() > this.immuneUntil) {
       this.foes.forEach((f, i) => {
         if (this.foeAlive(f) && Math.hypot(f.spr.x - this.player.x, f.spr.y - this.player.y) < 26) this.startBattle(i);
       });
     }
 
     // cơ duyên ngẫu nhiên: đi đủ xa thì thử bốc một sự kiện
-    if (this.walked > 420 && !this.runner && this.time.now > this.immuneUntil) {
+    if (this.walked > 420 && !this.runner && Date.now() > this.immuneUntil) {
       this.walked = 0;
       const ev = rollEvent(p, EVENTS, Math.random);
       if (ev) this.startDialogue(ev.dialogue);
@@ -408,6 +464,17 @@ export class OverworldScene extends Phaser.Scene {
     this.refreshHud();
   }
 
+  /** Bỏ chạy thành công: bị đẩy lùi khỏi kẻ địch để không bị đánh lại ngay. */
+  private fleeFrom(f: FoeView) {
+    let dx = this.player.x - f.spr.x, dy = this.player.y - f.spr.y;
+    const len = Math.hypot(dx, dy) || 1;
+    dx /= len; dy /= len;
+    for (const tiles of [4, 3, 2, 1]) {
+      const nx = this.player.x + dx * tiles * TS, ny = this.player.y + dy * tiles * TS;
+      if (nx > TS && ny > TS && nx < this.map.w * TS - TS && ny < this.map.h * TS - TS && !this.blocked(nx, ny)) { this.player.setPosition(nx, ny); this.trail = []; this.camFollow(true); return; }
+    }
+  }
+
   private startBattle(i: number) {
     this.launchBattle(this.foes[i].def.group, i, this.foes[i].elite);
   }
@@ -443,10 +510,10 @@ export class OverworldScene extends Phaser.Scene {
   private refreshHud() {
     const p = game.p;
     const r = REALMS[p.realmIndex];
-    this.hud.setText(`${p.name} · ${r.name} tầng ${p.stage} · ${p.exp}/${expNeeded(p)} · ${p.gold} LT${p.party.length ? ` · +${p.party.length}` : ''}\n${this.map.name} · ${formatHour(gameHour(p))}`);
+    this.hud.setText(`${p.name} · ${r.name} tầng ${p.stage} · ${p.exp}/${expNeeded(p)} · ${p.gold} LT\nHP ${curHp(p)}/${computeStats(p).hp} · MP ${curMp(p)}/${computeStats(p).mp}${p.party.length ? ` · +${p.party.length}` : ''}\n${this.map.name} · ${formatHour(gameHour(p))}`);
     const mq = p.quests.active.map((id) => getQuest(p, id)).filter(Boolean);
     this.questText.setY(this.hud.y + this.hud.height + 2);
-    this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}: ${q.desc}`).join('\n') : '(Hết nhiệm vụ trong chương này)');
+    this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}: ${q.desc}${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal') ? ` → đi sang ${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal')!.mapName ?? 'vùng khác'}` : ''}`).join('\n') : '(Hết nhiệm vụ trong chương này)');
   }
 
   private toast(msg: string) {

@@ -1,6 +1,7 @@
 import { REALMS } from './data';
 import { DAY_SECONDS } from './time';
 import { atStageCap, expNeeded, gainExp, isBottlenecked, levelUpStages } from './progression';
+import { heal, restoreFull } from './vitals';
 import type { MapDef } from './tiled';
 import type { PlayerState } from './types';
 
@@ -70,6 +71,7 @@ export function meditate(p: PlayerState, aura: number, calm: boolean): MedResult
   p.playtime += (MED.hours / 24) * DAY_SECONDS; // thời gian trôi
   p.med = { energy: e, at: p.playtime }; // thời gian thiền không hồi tâm lực
   const ups = levelUpStages(p);
+  heal(p, 0.4, 0.4); // vận công điều tức: hồi 40% sinh lực và linh lực
   return { ok: true, gain: g.gained, ups, msg: `Thiền một canh giờ: +${g.gained} tu vi${ups ? ` · lên ${ups} tầng!` : ''}${isBottlenecked(p) ? ' · BÌNH CẢNH!' : ''}` };
 }
 
@@ -99,6 +101,7 @@ export function claimSeclusion(p: PlayerState, now: number): MedResult {
     total += gainExp(p, baseGain(p, aura) * MED.seclusionEff).gained;
     ups += levelUpStages(p);
   }
+  restoreFull(p); // bế quan dài: thương thế lành hẳn
   const minutes = Math.round(units * (MED.seclusionUnitSec / 60));
   return { ok: true, gain: total, ups, msg: `Xuất quan sau ${minutes} phút tu luyện: +${total} tu vi${ups ? ` · lên ${ups} tầng` : ''}${blocked || isBottlenecked(p) ? ' · đã chạm giới hạn (bình cảnh / đầy tầng).' : '.'}` };
 }

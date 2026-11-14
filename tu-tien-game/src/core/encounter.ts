@@ -6,13 +6,15 @@ import { computeStats } from './stats';
 import { tamMaFactor } from './progression';
 import { formationFx, lawPerks } from './advanced';
 import { effectiveDifficulty, scaleEnemyStats } from './difficulty';
+import { curHp, curMp } from './vitals';
 import type { PlayerState } from './types';
 
 /** Dựng trận đấu từ trạng thái người chơi (dùng chung cho game và mô phỏng cân bằng). */
-export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true, opts: { elite?: boolean; mult?: number } = {}): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
+export function buildBattle(p: PlayerState, enemyIds: string[], rng: Rng, withParty = true, opts: { elite?: boolean; mult?: number; persist?: boolean } = {}): { battle: Battle; player: Unit; enemyUnitIds: string[] } {
   const stats = computeStats(p);
   const player = makeUnit('player', p.name, 'player', stats, availableSkills(p).map((s) => s.id), 'none');
   if (p.unlockedSystems.includes('thoat_xac')) player.reviveFrac = 0.3; // Nguyên Anh: thoát xác, mạng thứ hai
+  if (opts.persist) { player.hp = curHp(p); player.mp = curMp(p); }
   const units: Unit[] = [player];
   if (withParty) {
     for (const cid of p.party) {
