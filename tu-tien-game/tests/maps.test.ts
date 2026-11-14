@@ -7,8 +7,8 @@ import { enemyMap, vendorMap, questMap } from '../src/core/data';
 import { newPlayer } from '../src/core/save';
 
 describe('bản đồ Tiled', () => {
-  it('9 bản đồ được nạp và có spawn hợp lệ', () => {
-    expect(allMapIds().sort()).toEqual(['bang_nguyen', 'hoang_mac', 'huyet_anh_dan', 'huyet_nguyet', 'phuong_thi', 'thanh_ha', 'thanh_van_tong', 'thien_kiep_dai', 'thien_phong']);
+  it('12 bản đồ được nạp và có spawn hợp lệ', () => {
+    expect(allMapIds().sort()).toEqual(['bang_nguyen', 'co_chien_truong', 'hoang_mac', 'hu_khong', 'huyet_anh_dan', 'huyet_nguyet', 'phuong_thi', 'thanh_ha', 'thanh_van_tong', 'thien_kiep_dai', 'thien_mon', 'thien_phong']);
     for (const id of allMapIds()) {
       const m = loadMap(id);
       expect(m.w * m.h).toBe(m.tiles.length);
@@ -30,7 +30,7 @@ describe('bản đồ Tiled', () => {
       for (const n of m.npcs) {
         if (n.vendor) expect(vendorMap.has(n.vendor), `${id}:${n.id} vendor`).toBe(true);
         expect(n.talk.length, `${id}:${n.id} thiếu talk`).toBeGreaterThan(0);
-        for (const t of n.talk) if (t.id !== '@rumor') expect(DIALOGUES[t.id], `${id}:${n.id} -> ${t.id}`).toBeTruthy();
+        for (const t of n.talk) if (t.id !== '@rumor' && t.id !== '@board') expect(DIALOGUES[t.id], `${id}:${n.id} -> ${t.id}`).toBeTruthy();
         expect(isSolidTile(m.tiles[n.y * m.w + n.x]), `${id}:${n.id} đứng trong vật cản`).toBe(false);
         for (const s of n.schedule ?? []) expect(isSolidTile(m.tiles[s.y * m.w + s.x]), `${id}:${n.id} lịch ${s.from}`).toBe(false);
       }

@@ -12,6 +12,9 @@ import {
 } from '../core/services';
 import { ownsSystem } from '../core/session';
 import { audio } from '../audio';
+import { abandonBounty, acceptBounty, activeBounties, bountiesForDay, MAX_ACTIVE_BOUNTIES } from '../core/bounty';
+import { getQuest } from '../core/session';
+import { checkCollect } from '../core/session';
 import { cancelBid, currentLots, minRaise, myBid, placeBid, settleAuctions } from '../core/auction';
 import { formatHour, gameHour } from '../core/time';
 
@@ -32,9 +35,10 @@ export class ShopScene extends Phaser.Scene {
   create() {
     const v = vendorMap.get(this.vendorId) as any;
     const isAuction = v.type === 'auction';
-    if (isAuction) { const n = settleAuctions(game.p); if (n.length) this.pendingNews = n.join(' '); } else ensureStock(game.p, this.vendorId);
+    const isBoard = v.type === 'board';
+    if (isAuction) { const n = settleAuctions(game.p); if (n.length) this.pendingNews = n.join(' '); } else if (!isBoard) ensureStock(game.p, this.vendorId);
     this.panel = new ListPanel(this, {
-      tabs: () => isAuction ? [{ id: 'lots', name: 'Phiên hôm nay', on: true }, { id: 'news', name: 'Kết quả', on: true }] : [
+      tabs: () => isBoard ? [{ id: 'board', name: 'Nhiệm vụ hôm nay', on: true }, { id: 'mine', name: 'Đang làm', on: true }] : isAuction ? [{ id: 'lots', name: 'Phiên hôm nay', on: true }, { id: 'news', name: 'Kết quả', on: true }] : [
         { id: 'buy', name: 'Mua', on: true },
         { id: 'sell', name: 'Bán', on: true },
         { id: 'hire', name: v.type === 'smith' ? 'Thuê rèn' : 'Thuê luyện', on: v.type !== 'general' },
@@ -46,6 +50,7 @@ export class ShopScene extends Phaser.Scene {
       perPage: 6,
     });
     if (isAuction) this.panel.tab = 'lots';
+    if (isBoard) this.panel.tab = 'board';
     if (this.initTab) this.panel.tab = this.initTab;
     this.panel.note = this.pendingNews ?? `"${v.greeting}"`;
     this.panel.render();
@@ -60,12 +65,43 @@ export class ShopScene extends Phaser.Scene {
   }
 
   private rows(tab: string): Row[] {
+    if (tab === 'board') return this.rowsBoard();
+    if (tab === 'mine') return this.rowsMine();
     if (tab === 'lots') return this.rowsAuction();
     if (tab === 'news') return this.rowsNews();
     if (tab === 'buy') return this.rowsBuy();
     if (tab === 'sell') return this.rowsSell();
     if (tab === 'hire') return this.rowsHire();
     return this.rowsCraft();
+  }
+
+  private rowsBoard(): Row[] {
+    const p = game.p;
+    const act = activeBounties(p).length;
+    const rows: Row[] = [{ text: `Đang nhận ${act}/${MAX_ACTIVE_BOUNTIES} nhiệm vụ bảng. Nhiệm vụ mới mỗi ngày game, theo cảnh giới của bạn.`, sub: 'Thưởng linh thạch, tu vi và danh vọng tán tu; xong còn được cộng điểm cống hiến thế lực.' }];
+    for (const b of bountiesForDay(p)) {
+      const taken = !!p.bountyAccepted[b.id];
+      rows.push({ text: `${'★'.repeat(b.danger)} ${b.title}`, sub: `${b.desc} Thưởng ${b.reward.linh_thach} LT + ${b.reward.exp} tu vi`, btns: [{ label: taken ? 'Đã nhận' : 'Nhận', enabled: !taken && act < MAX_ACTIVE_BOUNTIES, fn: () => { const r = acceptBounty(p, b); this.say({ ok: r.ok, msg: r.msg }); this.afterCollect(); } }] });
+    }
+    return rows;
+  }
+
+  private rowsMine(): Row[] {
+    const p = game.p;
+    const ids = activeBounties(p);
+    if (!ids.length) return [{ text: 'Bạn chưa nhận nhiệm vụ bảng nào.' }];
+    return ids.map((id) => {
+      const q = getQuest(p, id);
+      const st = q.steps[0];
+      const have = st.kind === 'collect' ? Math.min(st.n, p.inventory[st.target] ?? 0) : (p.quests.progress[`${id}:0`] ?? 0);
+      return { text: `${q.title}: ${have}/${st.n}`, sub: q.desc, btns: [{ label: 'Bỏ', color: 0x6a2a2a, fn: () => this.say(abandonBounty(p, id)) }] };
+    });
+  }
+
+  /** Nhận nhiệm vụ thu thập khi đã đủ đồ trong túi thì nộp ngay. */
+  private afterCollect() {
+    const done = checkCollect(game.p);
+    if (done.length) this.panel.note = `Hoàn thành ${done.length} nhiệm vụ!`;
   }
 
   private rowsAuction(): Row[] {

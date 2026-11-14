@@ -2,7 +2,10 @@ import Phaser from 'phaser';
 import { game, persist } from '../state';
 import { ListPanel, type Row } from '../ui/ListPanel';
 import { fmtAffixes, fmtItem } from '../ui/format';
-import { RECIPES, REALMS, branchMap, companionMap, materialMap, questMap, recipeMap, rootMap, skillMap } from '../core/data';
+import { RECIPES, REALMS, branchMap, companionMap, materialMap, recipeMap, rootMap, skillMap } from '../core/data';
+import { getQuest } from '../core/session';
+import { difficultyOf } from '../core/difficulty';
+import { loadMap } from '../core/maps';
 import { computeStats, power } from '../core/stats';
 import { atStageCap, clearBottleneck, expNeeded, gainExp, isBottlenecked, levelUpStages, needsTamMa, tamMaFactor, tamMaFlag, tribulationFor, tribulationReadiness } from '../core/progression';
 import { MED, canMeditate, cancelSeclusion, claimSeclusion, energyNow, meditate, seclusionUnits, startSeclusion } from '../core/meditation';
@@ -51,7 +54,7 @@ export class MenuScene extends Phaser.Scene {
           { id: 'tribulation', name: 'Độ kiếp', on: ownsSystem(p, 'tu_luyen') && !!tribulationFor(p) },
           { id: 'combo', name: 'Chiêu/Combo', on: true },
           { id: 'bag', name: 'Kho đồ', on: true },
-          { id: 'inner', name: 'Nội tình', on: ownsSystem(p, 'tran_phap') || ownsSystem(p, 'the_luc') || ownsSystem(p, 'phap_tac') },
+          { id: 'inner', name: 'Nội tình', on: ownsSystem(p, 'tran_phap') || ownsSystem(p, 'the_luc') || ownsSystem(p, 'phap_tac') || ownsSystem(p, 'dich_chuyen') },
           { id: 'journal', name: 'Huyết Thư', on: true },
           { id: 'settings', name: 'Cài đặt', on: true },
         ];
@@ -234,11 +237,25 @@ export class MenuScene extends Phaser.Scene {
         rows.push({ text: `${f.name}${has ? '' : ` (${f.price} LT)`}`, sub: f.desc, btns: has ? [{ label: on ? 'Thu trận' : 'Bày trận', fn: () => this.note(setFormation(p, on ? null : f.id).msg) }] : [{ label: 'Học', enabled: p.gold >= f.price, fn: () => this.note(learnFormation(p, f.id).msg) }] });
       }
     }
+    if (ownsSystem(p, 'dich_chuyen')) {
+      rows.push({ text: '— TRUYỀN TỐNG (100 LT mỗi lần, đến điểm xuất hiện của bản đồ đã từng tới) —' });
+      for (const id of p.visited) {
+        const m = loadMap(id);
+        rows.push({ text: m.name + (id === p.mapId ? '  (đang ở đây)' : ''), btns: [{ label: 'Đi', enabled: id !== p.mapId && p.gold >= 100, fn: () => this.travel(id) }] });
+      }
+    }
     if (ownsSystem(p, 'phap_tac')) {
       rows.push({ text: `— PHÁP TẮC — ${p.law ? (LAWS.find((x) => x.id === p.law) as any).name : 'chưa lĩnh ngộ'}  (đổi tốn ${LAW_CHANGE_COST} LT)` });
       for (const l of LAWS) rows.push({ text: l.name, sub: l.desc, btns: [{ label: p.law === l.id ? 'Đang tu' : 'Lĩnh ngộ', enabled: p.law !== l.id && p.gold >= (p.law ? LAW_CHANGE_COST : 0), fn: () => this.note(chooseLaw(p, l.id).msg) }] });
     }
     return rows;
+  }
+
+  private travel(id: string) {
+    const p = game.p;
+    p.gold -= 100; p.mapId = id; p.pos = null;
+    persist();
+    this.scene.stop(); this.scene.stop('Overworld'); this.scene.start('Overworld');
   }
 
   private rowsJournal(): Row[] {
@@ -247,6 +264,13 @@ export class MenuScene extends Phaser.Scene {
     rows.push({ text: p.party.length ? `Đồng hành: ${p.party.map((id) => companionMap.get(id)?.name).join(', ')}` : 'Đồng hành: (chưa có)' });
     const rel = Object.entries(p.relations).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}`).join(' · ');
     rows.push({ text: `Quan hệ: ${rel || '(chưa ai)'}` });
+    rows.push({ text: `Độ khó: ${difficultyOf(p).name}`, sub: difficultyOf(p).desc });
+    if (p.flags.game_won) rows.push({ text: '★★ ĐÃ PHI THĂNG, HẾT GAME', sub: 'Bạn đã đi trọn hành trình từ Tàn Căn đến Tiên Giới. Có thể tiếp tục chơi tự do.' });
+    if (p.flags.game_complete) {
+      const names: Record<string, string> = { ending_end_chinh: 'Chính đạo chân nhân', ending_end_ma: 'Ma đạo chi chủ', ending_end_tan: 'Tán tu tiêu dao', ending_end_expose: 'Sự thật phơi bày', ending_end_dark: 'Hai kẻ cùng phi thăng' };
+      const e = Object.keys(names).find((k) => p.flags[k]);
+      rows.push({ text: `★ Đã hoàn thành PHẦN 1. Kết cục: ${e ? names[e] : '—'}`, sub: 'Có thể tiếp tục chơi tự do: tu luyện, đấu giá, khám phá.' });
+    }
     rows.push({ text: `Con đường hiện tại: ${pathTitle(p)}`, sub: 'Dựa trên đạo tâm và danh vọng. Quyết định kết cục khi Hồi 2 khép lại.' });
     rows.push({ text: '— HUYẾT THƯ: danh sách báo thù —' });
     for (const t of REVENGE) {
@@ -255,7 +279,7 @@ export class MenuScene extends Phaser.Scene {
       rows.push({ text: `${t.n}. ${known ? t.name : '???'}${dead ? '  ✔ đã báo thù' : ''}`, sub: known ? t.note : 'Chưa có manh mối.' });
     }
     rows.push({ text: '— Nhiệm vụ đang làm —' });
-    for (const id of p.quests.active) { const q = questMap.get(id) as any; if (q) rows.push({ text: `${q.type === 'main' ? '★' : '·'} ${q.title}`, sub: q.desc }); }
+    for (const id of p.quests.active) { const q = getQuest(p, id) as any; if (q) rows.push({ text: `${q.type === 'main' ? '★' : '·'} ${q.title}`, sub: q.desc }); }
     rows.push({ text: `— Đã hoàn thành: ${p.quests.done.length} —` });
     const choices = Object.keys(p.flags).filter((k) => ['wolf_spared', 'wolf_killed', 'swore_to_gate', 'nguyet_secret'].includes(k));
     if (choices.length) rows.push({ text: `Lựa chọn đã nhớ: ${choices.join(', ')}` });

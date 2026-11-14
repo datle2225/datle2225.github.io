@@ -82,6 +82,12 @@ NA5 vs Môn Chủ       93% hp24       97% hp21       99% hp20       99% hp36   
 NA7 vs Lục Vân Sinh  94% hp15       69% hp19       99% hp27       51% hp23       74% hp16       43% hp16       99% hp8        73% hp15      
 HT3 vs 2 Kiếm Hồn    100% hp23      100% hp20      100% hp42      100% hp56      100% hp20      98% hp27       100% hp35      100% hp39     
 HT5 vs Kiếm Chủ      91% hp23       59% hp11       95% hp22       35% hp18       65% hp10       35% hp12       99% hp9        79% hp14      
+LH3 vs 2 Quái        100% hp21      77% hp13       91% hp21       97% hp42       79% hp14       78% hp24       34% hp9        100% hp25     
+LH5 vs Thủ Hộ        97% hp18       45% hp9        89% hp19       59% hp23       51% hp7        64% hp16       49% hp10       77% hp11      
+HTh3 vs 2 Quái       100% hp16      100% hp23      98% hp22       100% hp53      100% hp20      100% hp29      91% hp11       100% hp17     
+HTh5 vs Tàn Hồn      37% hp27       45% hp25       82% hp21       89% hp26       59% hp21       77% hp26       38% hp10       97% hp28      
+ĐT3 vs 2 Thiên Binh  100% hp39      100% hp37      100% hp61      100% hp65      100% hp37      100% hp35      100% hp31      100% hp37     
+ĐT7 vs Sứ Giả        97% hp24       21% hp29       77% hp27       95% hp35       23% hp29       54% hp32       97% hp9        15% hp29      
 KĐ6 vs Mặc Gia       84% hp13       64% hp12       100% hp42      96% hp34       62% hp11       51% hp18       98% hp8        82% hp24
 ```
 (Ô: `tỉ lệ thắng` và `HP còn lại trung bình khi thắng`. Trước Trúc Cơ chưa có nhánh nên các cột giống nhau. **8 nhánh**, 150 trận mỗi ô.)

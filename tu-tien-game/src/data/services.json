@@ -303,6 +303,15 @@
     "pha_canh_dan"
    ],
    "greeting": "Đan của Linh Đan Các, phẩm cao nhất vùng."
+  },
+  {
+   "id": "bang_nv",
+   "name": "Bảng Nhiệm Vụ",
+   "title": "Bảng nhiệm vụ lặp lại",
+   "type": "board",
+   "skill": 0,
+   "labor": 0,
+   "greeting": "Mỗi ngày game có nhiệm vụ mới, độ khó theo cảnh giới của ngươi. Nhận tối đa 3 nhiệm vụ cùng lúc."
   }
  ],
  "priceDrift": 0.15,

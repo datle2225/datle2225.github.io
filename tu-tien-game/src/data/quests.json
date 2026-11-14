@@ -290,5 +290,400 @@
    "linh_thach": 3000
   },
   "unlocks": []
+ },
+ {
+  "id": "m5_1",
+  "type": "main",
+  "chapter": 10,
+  "title": "Hư Không Giới",
+  "desc": "Lữ Giả Hư Không nói chỉ người Luyện Hư mới thấy đường vào Hư Không Giới. Hãy nói chuyện với ông ta rồi tiến sâu.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "hu_khong_lu_gia"
+   },
+   {
+    "kind": "reach",
+    "target": "hu_khong_sau"
+   }
+  ],
+  "reward": {
+   "exp": 150000
+  },
+  "unlockChapter": 10,
+  "unlocks": [
+   "m5_2"
+  ]
+ },
+ {
+  "id": "m5_2",
+  "type": "main",
+  "chapter": 10,
+  "title": "Thủ Hộ Hư Không",
+  "desc": "Hạ Hư Không Thủ Hộ để được phép tiếp tục tiến về Cổ Chiến Trường.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "hu_khong_thu_ho"
+   }
+  ],
+  "reward": {
+   "exp": 600000,
+   "linh_thach": 8000
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m6_1",
+  "type": "main",
+  "chapter": 11,
+  "title": "Cổ Chiến Trường",
+  "desc": "Tìm Chiến Sĩ Vong Linh ở Cổ Chiến Trường và đi sâu vào nơi các đại năng từng tử chiến.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "chien_su_vong"
+   },
+   {
+    "kind": "reach",
+    "target": "co_chien_sau"
+   }
+  ],
+  "reward": {
+   "exp": 500000
+  },
+  "unlockChapter": 11,
+  "unlocks": [
+   "m6_2"
+  ]
+ },
+ {
+  "id": "m6_2",
+  "type": "main",
+  "chapter": 11,
+  "title": "Chiến Thần Tàn Hồn",
+  "desc": "Hạ Chiến Thần Tàn Hồn, người đã canh giữ lối đến Thiên Môn.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "chien_than_tan_hon"
+   }
+  ],
+  "reward": {
+   "exp": 2000000,
+   "linh_thach": 20000
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m7_1",
+  "type": "main",
+  "chapter": 12,
+  "title": "Thiên Môn",
+  "desc": "Nói chuyện với Thiên Môn Chi Linh.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "thien_mon_chi_linh"
+   }
+  ],
+  "reward": {
+   "exp": 1500000
+  },
+  "unlockChapter": 12,
+  "unlocks": [
+   "m7_2"
+  ]
+ },
+ {
+  "id": "m7_2",
+  "type": "main",
+  "chapter": 12,
+  "title": "Thiên Đạo Sứ Giả",
+  "desc": "Hạ Thiên Đạo Sứ Giả. Sau đó mở Menu → Độ kiếp để vượt Phi Thăng Thiên Kiếp.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "thien_dao_su_gia"
+   }
+  ],
+  "reward": {
+   "exp": 6000000,
+   "linh_thach": 60000
+  },
+  "unlocks": []
+ },
+ {
+  "id": "sq_thon_truong",
+  "type": "side",
+  "chapter": 1,
+  "title": "Con trai thôn trưởng",
+  "desc": "Thôn Trưởng nói con trai ông đi hái thuốc bị xà yêu dọa, không dám ra khỏi nhà. Hãy hạ 3 xà yêu quanh rừng.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "yeu_xa",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 100,
+   "linh_thach": 40
+  }
+ },
+ {
+  "id": "sq_ruou",
+  "type": "side",
+  "chapter": 1,
+  "title": "Da sói cho thùng rượu",
+  "desc": "Ông Bạch cần 4 miếng Da Sói để bọc thùng rượu ủ. Nộp vật phẩm cho ông (có sẵn trong túi là tự nộp).",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "da_soi",
+    "n": 4
+   }
+  ],
+  "reward": {
+   "exp": 100,
+   "linh_thach": 40
+  }
+ },
+ {
+  "id": "sq_bia_mo",
+  "type": "side",
+  "chapter": 1,
+  "title": "Hoa cúng Diệp gia",
+  "desc": "Bà Cụ Thủy muốn dựng bia mộ cho Diệp gia nhưng thiếu 3 cây Linh Thảo làm hoa cúng.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "linh_thao",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 100,
+   "linh_thach": 40
+  }
+ },
+ {
+  "id": "sq_de_tu_yeu",
+  "type": "side",
+  "chapter": 1,
+  "title": "Sư đệ bị thương",
+  "desc": "Một sư đệ ngoại môn bị bắt nạt đến bị thương, cần 2 viên Hồi Huyết Đan.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "hoi_huyet_dan",
+    "n": 2
+   }
+  ],
+  "reward": {
+   "exp": 400,
+   "linh_thach": 150
+  }
+ },
+ {
+  "id": "sq_duoc_vien",
+  "type": "side",
+  "chapter": 1,
+  "title": "Dược viên bị phá",
+  "desc": "Dược viên ngoại môn bị thú rừng giẫm nát, cần 8 Linh Thảo để trồng lại. Đổi lại được học phương Thanh Tâm Đan.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "linh_thao",
+    "n": 8
+   }
+  ],
+  "reward": {
+   "exp": 400,
+   "linh_thach": 150,
+   "recipe": "thanh_tam_dan"
+  }
+ },
+ {
+  "id": "sq_no_tien",
+  "type": "side",
+  "chapter": 1,
+  "title": "Món nợ bị cướp",
+  "desc": "Chủ một tiệm nhỏ bị cướp đường lấy mất tiền hàng. Hãy hạ 3 tên cướp đường ở ngoại ô.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "cuop_duong",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 400
+  }
+ },
+ {
+  "id": "sq_bit_mat",
+  "type": "side",
+  "chapter": 1,
+  "title": "Lá thư của kẻ lạ",
+  "desc": "Một người bịt mặt nhờ hạ Ma Tu lang thang đang truy sát hắn, đổi lại sẽ đưa một lá thư.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "ma_tu_lang_thang",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 400
+  }
+ },
+ {
+  "id": "sq_quang_ren",
+  "type": "side",
+  "chapter": 1,
+  "title": "Thợ rèn thiếu quặng",
+  "desc": "Thiết Phong Lâu cần 8 Huyền Thiết cho một đơn hàng gấp. Nộp cho học trò để lấy lòng chủ tiệm.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "huyen_thiet",
+    "n": 8
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 400
+  }
+ },
+ {
+  "id": "sq_lac_da",
+  "type": "side",
+  "chapter": 1,
+  "title": "Đoàn lạc đà",
+  "desc": "Một lữ khách bị Sa Trùng chặn đường, cần hạ 2 con.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "sa_trung",
+    "n": 2
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 400
+  }
+ },
+ {
+  "id": "sq_bang_ho_ly",
+  "type": "side",
+  "chapter": 1,
+  "title": "Ngọn lửa trong băng",
+  "desc": "Thợ săn nhờ hạ hai Băng Yêu đang hại đàn trâu băng của làng.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "bang_yeu",
+    "n": 2
+   }
+  ],
+  "reward": {
+   "exp": 8000,
+   "linh_thach": 900
+  }
+ },
+ {
+  "id": "sq_thu_kiem",
+  "type": "side",
+  "chapter": 1,
+  "title": "Thử kiếm Thiên Phong",
+  "desc": "Kiếm Đồng thách thức: hạ 3 Kiếm Hồn ở Kiếm Trủng để chứng minh kiếm đạo.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "kiem_hon",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 40000,
+   "linh_thach": 2500
+  }
+ },
+ {
+  "id": "sq_huyet_tham",
+  "type": "side",
+  "chapter": 1,
+  "title": "Đan các thiếu Huyết Sâm",
+  "desc": "Linh Đan Các cần 8 Huyết Sâm gấp để luyện một mẻ đan hộ kiếp.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "huyet_tham",
+    "n": 8
+   }
+  ],
+  "reward": {
+   "exp": 40000,
+   "linh_thach": 2500,
+   "item": "pha_canh_dan",
+   "n": 1
+  }
+ },
+ {
+  "id": "sq_hu_anh",
+  "type": "side",
+  "chapter": 1,
+  "title": "Bóng ảnh quấy nhiễu",
+  "desc": "Hư Ảnh quấy nhiễu lối đi. Hạ 4 con để mở đường.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "hu_anh",
+    "n": 4
+   }
+  ],
+  "reward": {
+   "exp": 150000,
+   "linh_thach": 6000
+  }
+ },
+ {
+  "id": "sq_di_vat",
+  "type": "side",
+  "chapter": 1,
+  "title": "Di vật chiến sĩ",
+  "desc": "Hồn Binh muốn 12 Huyền Thiết để rèn lại một tấm bia cho đồng đội đã ngã.",
+  "steps": [
+   {
+    "kind": "collect",
+    "target": "huyen_thiet",
+    "n": 12
+   }
+  ],
+  "reward": {
+   "exp": 600000,
+   "linh_thach": 15000
+  }
+ },
+ {
+  "id": "sq_ke_xin_len",
+  "type": "side",
+  "chapter": 1,
+  "title": "Kẻ xin lên Tiên Giới",
+  "desc": "Một tu sĩ bị Thiên Binh chặn lại không cho lên Thiên Môn, nhờ hạ 3 Thiên Binh.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "thien_binh",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 2500000,
+   "linh_thach": 40000
+  }
  }
 ]

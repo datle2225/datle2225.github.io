@@ -68,14 +68,15 @@ export interface TribulationResult {
 /** Lôi kiếp cần vượt để *bước lên* cảnh giới kế (cảnh giới cuối thì là kiếp phi thăng). */
 export function tribulationFor(p: PlayerState) {
   const next = REALMS[p.realmIndex + 1];
-  return next ? next.tribulation : REALMS[p.realmIndex].tribulation;
+  return next ? next.tribulation : (REALMS[p.realmIndex].ascension ?? REALMS[p.realmIndex].tribulation);
 }
 
 /** Tâm ma kiếp: từ Kết Đan trở lên phải vượt qua trước lôi kiếp. */
-export const tamMaFlag = (p: PlayerState) => `tam_ma_${REALMS[p.realmIndex + 1]?.id ?? 'x'}`;
+export const tamMaFlag = (p: PlayerState) => `tam_ma_${REALMS[p.realmIndex + 1]?.id ?? 'phi_thang'}`;
 export function needsTamMa(p: PlayerState): boolean {
   const next = REALMS[p.realmIndex + 1];
-  return !!next && p.realmIndex + 1 >= 2 && !p.flags[tamMaFlag(p)];
+  if (!next) return !p.flags[tamMaFlag(p)]; // Phi Thăng: cũng phải qua tâm ma
+  return p.realmIndex + 1 >= 2 && !p.flags[tamMaFlag(p)];
 }
 /** Tâm ma là bản sao của chính bạn: đạo tâm càng thấp càng mạnh (đạo tâm 50 = ngang bạn). */
 export function tamMaFactor(p: PlayerState): number {
@@ -137,7 +138,8 @@ export class TribulationRun {
   /** Áp kết quả lên người chơi. */
   finish(success: boolean): { lost: number } {
     if (success) {
-      if (this.p.realmIndex < REALMS.length - 1) this.p.realmIndex++;
+      if (this.p.realmIndex >= REALMS.length - 1) { this.p.flags.ascended = true; this.p.exp = 0; return { lost: 0 }; } // Phi Thăng
+      this.p.realmIndex++;
       this.p.stage = 1;
       this.p.exp = 0;
       return { lost: 0 };

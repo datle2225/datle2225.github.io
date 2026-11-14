@@ -18,5 +18,6 @@
 | 12 | [NPC dịch vụ](12-npc-dich-vu.md) | Thợ rèn / Đan sư / Tạp hóa trên bản đồ: mua, bán, thuê, tự làm |
 | 13 | [Art, bản đồ Tiled, công cụ](13-art-guide.md) | Thay art thật, chỉnh map bằng Tiled, mô phỏng cân bằng |
 | 14 | [Trận pháp, Thế lực, Pháp tắc](14-he-thong-nguyen-anh-hoa-than.md) | Hệ thống mở ở Nguyên Anh / Hóa Thần (Phần 2) |
+| 15 | [Phần 2 hoàn chỉnh, nhiệm vụ phụ, độ khó](15-phan2-nhiem-vu-do-kho.md) | Đường lên Phi Thăng, 15 nhiệm vụ phụ + bảng nhiệm vụ, độ khó, tinh anh |
 
 Dữ liệu cân bằng thật nằm trong `src/data/*.json`; GDD mô tả ý định, JSON là nguồn sự thật khi chạy.

@@ -70,12 +70,13 @@ Triển khai: GitHub Pages phục vụ nhánh này, game ở `/tu-tien-game/play
 - Tự lưu mỗi 30 giây, khi thoát menu, sau trận, sau nhiệm vụ.
 - Kế hoạch: xuất/nhập file save (JSON) + đồng bộ cloud.
 
-## Kiểm thử đã có (147 test, `npm test`)
+## Kiểm thử đã có (165 test, `npm test`)
 - **Chiến đấu**: Tốc Độ, giới hạn 3 hành động liền, softcap, khắc hệ, combo tag, đồng đội, **hy sinh máu, bẫy, độc, boss nhiều pha, linh thú (triệu hồi, một con/lần, Thú Tâm, Hiệu Lệnh), đảo nhịp (kháng của boss, chỉ kéo sớm)**.
 - **Rèn / đan / cửa hàng / thuê NPC / mini-game / hội thoại / lôi kiếp**: xem 12.
 - **Thiền**: tốn tâm lực & thời gian, ~8 lần liên tiếp rồi cạn, thời gian thiền không hồi tâm lực, cần yên tĩnh, linh khí nhân hiệu quả, Tàn Căn ×0.3; **bình cảnh** chặn lên tầng và không tích tu vi vượt trần, phá bằng ngộ đạo / Phá Cảnh Đan; **bế quan** (10 phút = 1 đơn vị, 50%, trần 8 giờ, không vượt bình cảnh).
 - **Hồi 2**: chuỗi nhiệm vụ Thiên Cơ → bí cảnh → Độc Thủ → Mặc Gia (cả hai tuyến), gỡ phong ấn đổi linh căn, kết cục theo đạo tâm, dữ liệu boss/map hợp lệ.
 - **Hồi 3**: chuỗi nhiệm vụ 3 bước, khóa/mở cổng đúng điều kiện, ba tuyến trận cuối (đánh / vạch trần cần Thư Tay / hợp tác), 5 kết cục đặt cờ `game_complete`, boss đủ pha; **thoát xác** hồi sinh đúng một lần, chỉ người đã mở hệ, và làm tăng tỉ lệ thắng trùm cuối.
+- **Phần 2 hoàn chỉnh / nhiệm vụ phụ / độ khó**: 18 test mới (xem 15).
 - **Trận pháp / thế lực / pháp tắc / Phần 2**: học-bày-rời-gia nhập, phúc lợi, bổng lộc, hiệu ứng thật trong `Battle`, cổng và chuỗi nhiệm vụ Thiên Phong, cân bằng Hóa Thần, và "đủ hệ thống thì dễ hơn".
 - **Nhánh chính + phụ**: chỉ Kiếm/Thể/Pháp làm nhánh chính, nhánh phụ đúng cảnh giới/giá/số lượng, kỹ năng gộp.
 - **Tâm ma**: chỉ từ Kết Đan, hệ số theo đạo tâm, mô phỏng đạo tâm cao thắng dễ hơn.
@@ -120,11 +121,17 @@ Test/smoke phát hiện lỗi thật khi làm: **quest hoàn thành ngay trong t
 **Đã xong thêm (Phần 2, bản thử)**
 - [x] **Trận pháp, Thế lực, Pháp tắc** (xem 14) và bản đồ **Thiên Phong Thành & Kiếm Trủng** với boss Thiên Phong Kiếm Chủ.
 
+**Đã xong thêm (đợt này)**
+- [x] **Luyện Hư → Đại Thừa → Phi Thăng**: 3 bản đồ, 3 boss nhiều pha, truyền tống, chiêu chung Hợp Thể/Đại Thừa, tâm ma + lôi kiếp 12 đợt, 5 đoạn kết phi thăng, HẾT GAME (xem 15).
+- [x] **15 nhiệm vụ phụ viết tay** (có lựa chọn đạo đức) + **bảng nhiệm vụ lặp lại hằng ngày** ở 9 vùng.
+- [x] **Độ khó** (Thường / Khó / Ác mộng), giới hạn uống đan, quái tinh anh ★, phạt tu vi khi thua.
+- [x] Sửa: lực chiến đề xuất độ kiếp từ Luyện Hư trở lên cao hơn mức đạt được (người chơi sẽ kẹt); bước "thu thập" đếm theo túi đồ.
+
 **Chưa làm — và lý do**
 - [ ] **Art pixel do họa sĩ vẽ**: cần người vẽ (cơ chế thay art sẵn sàng).
 - [ ] **Nhạc/SFX do nhà soạn nhạc làm** (hiện chiptune tổng hợp, 9 bài ngắn).
 - [ ] **Đồng bộ save lên cloud, đấu giá giữa người chơi thật**: cần máy chủ & tài khoản. Đã có xuất/nhập save và đấu giá NPC.
 - [ ] **Thử trên điện thoại thật** và đo hiệu năng thiết bị thật: chỉ giả lập được trong trình duyệt headless.
-- [ ] **Luyện Hư, Hợp Thể, Đại Thừa và Phi Thăng**: chưa có nội dung (map, boss, lôi kiếp riêng, kết cục phi thăng); game hiện dừng ở *HẾT PHẦN 2 (BẢN THỬ)*.
+- [ ] **Cân bằng với người chơi thật**: số liệu hiện chỉnh bằng AI mô phỏng thô (không dùng đan/trang bị/combo thủ công).
 - [ ] Nhiệm vụ riêng cho từng thế lực, xung đột giữa các thế lực; pháp tắc cho đồng hành.
-- [ ] Cân bằng thêm với **người chơi thật** (AI mô phỏng thô, không dùng đan/trang bị/combo thủ công).
+- [ ] Thêm nội dung sau Phi Thăng (Tiên Giới), thành tựu, chế độ chơi lại với New Game+.

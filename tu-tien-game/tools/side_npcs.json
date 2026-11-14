@@ -1,0 +1,559 @@
+{
+ "thanh_ha": [
+  {
+   "id": "n_sq_thon_truong",
+   "label": "Thôn Trưởng",
+   "tex": "npc_elder",
+   "x": 20,
+   "y": 10,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_thon_truong",
+      "notFlag": "sq_thon_truong_res"
+     },
+     "id": "sq_thon_truong_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_thon_truong"
+     },
+     "id": "sq_thon_truong_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_thon_truong"
+     },
+     "id": "sq_thon_truong_wait"
+    },
+    {
+     "if": {
+      "noQuest": "sq_thon_truong"
+     },
+     "id": "sq_thon_truong_offer"
+    },
+    {
+     "id": "sq_thon_truong_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_ruou",
+   "label": "Ông Bạch nấu rượu",
+   "tex": "npc_smith",
+   "x": 12,
+   "y": 16,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_ruou",
+      "notFlag": "sq_ruou_res"
+     },
+     "id": "sq_ruou_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_ruou"
+     },
+     "id": "sq_ruou_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_ruou"
+     },
+     "id": "sq_ruou_wait"
+    },
+    {
+     "if": {
+      "noQuest": "sq_ruou"
+     },
+     "id": "sq_ruou_offer"
+    },
+    {
+     "id": "sq_ruou_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_bia_mo",
+   "label": "Bà Cụ Thủy",
+   "tex": "npc_girl",
+   "x": 8,
+   "y": 12,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_bia_mo",
+      "notFlag": "sq_bia_mo_res"
+     },
+     "id": "sq_bia_mo_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_bia_mo"
+     },
+     "id": "sq_bia_mo_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_bia_mo"
+     },
+     "id": "sq_bia_mo_wait"
+    },
+    {
+     "if": {
+      "noQuest": "sq_bia_mo"
+     },
+     "id": "sq_bia_mo_offer"
+    },
+    {
+     "id": "sq_bia_mo_idle"
+    }
+   ]
+  }
+ ],
+ "thanh_van_tong": [
+  {
+   "id": "n_sq_de_tu_yeu",
+   "label": "Tiểu Sư Đệ",
+   "tex": "npc_disciple",
+   "x": 16,
+   "y": 16,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_de_tu_yeu",
+      "notFlag": "sq_de_tu_yeu_res"
+     },
+     "id": "sq_de_tu_yeu_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_de_tu_yeu"
+     },
+     "id": "sq_de_tu_yeu_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_de_tu_yeu"
+     },
+     "id": "sq_de_tu_yeu_wait"
+    },
+    {
+     "if": {
+      "minChapter": 2,
+      "noQuest": "sq_de_tu_yeu"
+     },
+     "id": "sq_de_tu_yeu_offer"
+    },
+    {
+     "id": "sq_de_tu_yeu_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_duoc_vien",
+   "label": "Dược Đồng Ngoại Môn",
+   "tex": "npc_alch",
+   "x": 32,
+   "y": 26,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_duoc_vien"
+     },
+     "id": "sq_duoc_vien_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_duoc_vien"
+     },
+     "id": "sq_duoc_vien_wait"
+    },
+    {
+     "if": {
+      "minChapter": 2,
+      "noQuest": "sq_duoc_vien"
+     },
+     "id": "sq_duoc_vien_offer"
+    },
+    {
+     "id": "sq_duoc_vien_idle"
+    }
+   ]
+  }
+ ],
+ "phuong_thi": [
+  {
+   "id": "n_sq_no_tien",
+   "label": "Chủ Tiệm Nhỏ",
+   "tex": "npc_shop",
+   "x": 16,
+   "y": 18,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_no_tien",
+      "notFlag": "sq_no_tien_res"
+     },
+     "id": "sq_no_tien_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_no_tien"
+     },
+     "id": "sq_no_tien_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_no_tien"
+     },
+     "id": "sq_no_tien_wait"
+    },
+    {
+     "if": {
+      "minChapter": 2,
+      "noQuest": "sq_no_tien"
+     },
+     "id": "sq_no_tien_offer"
+    },
+    {
+     "id": "sq_no_tien_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_bit_mat",
+   "label": "Người Đàn Ông Bịt Mặt",
+   "tex": "npc_merchant",
+   "x": 33,
+   "y": 17,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_bit_mat",
+      "notFlag": "sq_bit_mat_res"
+     },
+     "id": "sq_bit_mat_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_bit_mat"
+     },
+     "id": "sq_bit_mat_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_bit_mat"
+     },
+     "id": "sq_bit_mat_wait"
+    },
+    {
+     "if": {
+      "minRealm": 1,
+      "noQuest": "sq_bit_mat"
+     },
+     "id": "sq_bit_mat_offer"
+    },
+    {
+     "id": "sq_bit_mat_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_quang_ren",
+   "label": "Học Trò Thiết Phong",
+   "tex": "npc_smith",
+   "x": 14,
+   "y": 16,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_quang_ren"
+     },
+     "id": "sq_quang_ren_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_quang_ren"
+     },
+     "id": "sq_quang_ren_wait"
+    },
+    {
+     "if": {
+      "minChapter": 2,
+      "noQuest": "sq_quang_ren"
+     },
+     "id": "sq_quang_ren_offer"
+    },
+    {
+     "id": "sq_quang_ren_idle"
+    }
+   ]
+  }
+ ],
+ "hoang_mac": [
+  {
+   "id": "n_sq_lac_da",
+   "label": "Lữ Khách Lạc Đoàn",
+   "tex": "npc_merchant",
+   "x": 12,
+   "y": 20,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_lac_da",
+      "notFlag": "sq_lac_da_res"
+     },
+     "id": "sq_lac_da_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_lac_da"
+     },
+     "id": "sq_lac_da_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_lac_da"
+     },
+     "id": "sq_lac_da_wait"
+    },
+    {
+     "if": {
+      "minRealm": 2,
+      "noQuest": "sq_lac_da"
+     },
+     "id": "sq_lac_da_offer"
+    },
+    {
+     "id": "sq_lac_da_idle"
+    }
+   ]
+  }
+ ],
+ "bang_nguyen": [
+  {
+   "id": "n_sq_bang_ho_ly",
+   "label": "Thợ Săn Băng",
+   "tex": "npc_guard",
+   "x": 33,
+   "y": 31,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_bang_ho_ly",
+      "notFlag": "sq_bang_ho_ly_res"
+     },
+     "id": "sq_bang_ho_ly_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_bang_ho_ly"
+     },
+     "id": "sq_bang_ho_ly_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_bang_ho_ly"
+     },
+     "id": "sq_bang_ho_ly_wait"
+    },
+    {
+     "if": {
+      "minRealm": 3,
+      "noQuest": "sq_bang_ho_ly"
+     },
+     "id": "sq_bang_ho_ly_offer"
+    },
+    {
+     "id": "sq_bang_ho_ly_idle"
+    }
+   ]
+  }
+ ],
+ "thien_phong": [
+  {
+   "id": "n_sq_thu_kiem",
+   "label": "Kiếm Đồng",
+   "tex": "npc_disciple",
+   "x": 24,
+   "y": 31,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_thu_kiem"
+     },
+     "id": "sq_thu_kiem_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_thu_kiem"
+     },
+     "id": "sq_thu_kiem_wait"
+    },
+    {
+     "if": {
+      "minRealm": 4,
+      "noQuest": "sq_thu_kiem"
+     },
+     "id": "sq_thu_kiem_offer"
+    },
+    {
+     "id": "sq_thu_kiem_idle"
+    }
+   ]
+  },
+  {
+   "id": "n_sq_huyet_tham",
+   "label": "Học Đồ Linh Đan Các",
+   "tex": "npc_alch",
+   "x": 38,
+   "y": 31,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_huyet_tham"
+     },
+     "id": "sq_huyet_tham_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_huyet_tham"
+     },
+     "id": "sq_huyet_tham_wait"
+    },
+    {
+     "if": {
+      "minRealm": 4,
+      "noQuest": "sq_huyet_tham"
+     },
+     "id": "sq_huyet_tham_offer"
+    },
+    {
+     "id": "sq_huyet_tham_idle"
+    }
+   ]
+  }
+ ],
+ "hu_khong": [
+  {
+   "id": "n_sq_hu_anh",
+   "label": "Lữ Giả Trẻ",
+   "tex": "npc_rival",
+   "x": 20,
+   "y": 29,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_hu_anh",
+      "notFlag": "sq_hu_anh_res"
+     },
+     "id": "sq_hu_anh_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_hu_anh"
+     },
+     "id": "sq_hu_anh_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_hu_anh"
+     },
+     "id": "sq_hu_anh_wait"
+    },
+    {
+     "if": {
+      "minRealm": 5,
+      "noQuest": "sq_hu_anh"
+     },
+     "id": "sq_hu_anh_offer"
+    },
+    {
+     "id": "sq_hu_anh_idle"
+    }
+   ]
+  }
+ ],
+ "co_chien_truong": [
+  {
+   "id": "n_sq_di_vat",
+   "label": "Hồn Binh Lạc Lối",
+   "tex": "npc_guard",
+   "x": 10,
+   "y": 21,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_di_vat",
+      "notFlag": "sq_di_vat_res"
+     },
+     "id": "sq_di_vat_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_di_vat"
+     },
+     "id": "sq_di_vat_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_di_vat"
+     },
+     "id": "sq_di_vat_wait"
+    },
+    {
+     "if": {
+      "minRealm": 6,
+      "noQuest": "sq_di_vat"
+     },
+     "id": "sq_di_vat_offer"
+    },
+    {
+     "id": "sq_di_vat_idle"
+    }
+   ]
+  }
+ ],
+ "thien_mon": [
+  {
+   "id": "n_sq_ke_xin_len",
+   "label": "Tu Sĩ Lạc Lối",
+   "tex": "npc_merchant",
+   "x": 30,
+   "y": 29,
+   "talk": [
+    {
+     "if": {
+      "questDone": "sq_ke_xin_len",
+      "notFlag": "sq_ke_xin_len_res"
+     },
+     "id": "sq_ke_xin_len_res"
+    },
+    {
+     "if": {
+      "questDone": "sq_ke_xin_len"
+     },
+     "id": "sq_ke_xin_len_after"
+    },
+    {
+     "if": {
+      "questActive": "sq_ke_xin_len"
+     },
+     "id": "sq_ke_xin_len_wait"
+    },
+    {
+     "if": {
+      "minRealm": 7,
+      "noQuest": "sq_ke_xin_len"
+     },
+     "id": "sq_ke_xin_len_offer"
+    },
+    {
+     "id": "sq_ke_xin_len_idle"
+    }
+   ]
+  }
+ ]
+}

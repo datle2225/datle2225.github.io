@@ -76,5 +76,23 @@
   "title": "Thiên Phong Đại Lục",
   "realm": "hoa_than",
   "unlock": []
+ },
+ {
+  "n": 10,
+  "title": "Hư Không Giới",
+  "realm": "luyen_hu",
+  "unlock": []
+ },
+ {
+  "n": 11,
+  "title": "Cổ Chiến Trường",
+  "realm": "hop_the",
+  "unlock": []
+ },
+ {
+  "n": 12,
+  "title": "Thiên Môn",
+  "realm": "dai_thua",
+  "unlock": []
  }
 ]
