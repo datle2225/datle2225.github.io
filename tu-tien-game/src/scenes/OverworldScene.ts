@@ -7,7 +7,7 @@ import { ELITE } from '../core/difficulty';
 import { EVENTS, REALMS, enemyMap, vendorMap } from '../core/data';
 import { expNeeded } from '../core/progression';
 import { DIALOGUES, DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
-import { objectiveMarkers, stepProgress, type Marker } from '../core/objectives';
+import { objectiveMarkers, stepText, trackedQuests, type Marker } from '../core/objectives';
 import { curHp, curMp, regen } from '../core/vitals';
 import { computeStats } from '../core/stats';
 import { checkAchievements } from '../core/achievements';
@@ -58,6 +58,7 @@ export class OverworldScene extends Phaser.Scene {
   private mmSprite?: Phaser.GameObjects.Image;
   private mmGfx?: Phaser.GameObjects.Graphics;
   private mmBig = false;
+  private questOpen = false;
   private mmMarkers: Marker[] = [];
 
   // hội thoại
@@ -120,7 +121,8 @@ export class OverworldScene extends Phaser.Scene {
 
     this.nightOverlay = this.add.rectangle(0, 0, W, H, 0x0a1040, 0).setOrigin(0).setScrollFactor(0).setDepth(90);
     this.hud = label(this, 6, 4, '', { fontSize: '10px', backgroundColor: '#0b1020cc', padding: { x: 4, y: 2 } }).setDepth(100);
-    this.questText = label(this, 6, 24, '', { fontSize: '9px', color: '#ffe38a', backgroundColor: '#0b1020cc', padding: { x: 4, y: 2 }, wordWrap: { width: 320 } }).setDepth(100);
+    this.questText = label(this, 6, 24, '', { fontSize: '9px', color: '#ffe38a', backgroundColor: '#0b1020cc', padding: { x: 4, y: 2 }, wordWrap: { width: 300 } }).setDepth(100).setInteractive();
+    this.questText.on('pointerdown', () => { this.questOpen = !this.questOpen; this.refreshHud(); });
     this.buildMinimap();
     button(this, W - 70, 6, 64, 24, 'Menu (M)', () => this.openMenu(), { depth: 100 });
     this.setupJoystick();
@@ -218,7 +220,8 @@ export class OverworldScene extends Phaser.Scene {
     if (col.length) this.progress(col);
     if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
     regen(game.p, 0.5, this.foes.length === 0);
-    this.mmMarkers = objectiveMarkers(game.p, this.map.id);
+    const shownTitles = new Set(trackedQuests(game.p, this.questOpen).map((q) => q.title));
+    this.mmMarkers = objectiveMarkers(game.p, this.map.id).filter((m) => shownTitles.has(m.label));
     this.refreshHud();
     this.syncFollowers();
     this.applySchedules(false);
@@ -336,7 +339,7 @@ export class OverworldScene extends Phaser.Scene {
     let vy = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
     if (!vx && !vy && this.joyPtr) { vx = this.joyVec.x; vy = this.joyVec.y; }
     const ptr = this.input.activePointer;
-    if (!vx && !vy && !this.joyOn && ptr.isDown && ptr.y / Z > 40) {
+    if (!vx && !vy && !this.joyOn && ptr.isDown && ptr.y / Z > 40 && !this.questText.getBounds().contains(ptr.x / Z, ptr.y / Z)) {
       const wp = this.cameras.main.getWorldPoint(ptr.x, ptr.y);
       const dx = wp.x - this.player.x, dy = wp.y - this.player.y;
       if (Math.hypot(dx, dy) > 8) { vx = dx; vy = dy; }
@@ -513,9 +516,20 @@ export class OverworldScene extends Phaser.Scene {
     const p = game.p;
     const r = REALMS[p.realmIndex];
     this.hud.setText(`${p.name} · ${r.name} tầng ${p.stage} · ${p.exp}/${expNeeded(p)} · ${p.gold} LT\nHP ${curHp(p)}/${computeStats(p).hp} · MP ${curMp(p)}/${computeStats(p).mp}${p.party.length ? ` · +${p.party.length}` : ''}\n${this.map.name} · ${formatHour(gameHour(p))}`);
-    const mq = p.quests.active.map((id) => getQuest(p, id)).filter(Boolean);
+    const shown = trackedQuests(p, this.questOpen);
+    const total = p.quests.active.length;
+    const lines: string[] = [];
+    for (const q of shown) {
+      const main = q.type === 'main';
+      const portal = this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal');
+      const hint = stepText(p, q) + (portal ? ` → qua ${portal.mapName ?? 'vùng khác'}` : '');
+      lines.push(main || this.questOpen === false ? `${main ? '★' : '·'} ${q.title}${main ? `\n   ▸ ${hint}` : ` — ${hint}`}` : `· ${q.title} — ${hint}`);
+    }
+    if (!lines.length) lines.push('Chưa có nhiệm vụ chính: hãy tu luyện (M), làm nhiệm vụ phụ ở Bảng Nhiệm Vụ hoặc nói chuyện với người trong vùng.');
+    else if (total > shown.length) lines.push(`+${total - shown.length} nhiệm vụ khác (chạm để mở rộng)`);
+    else if (this.questOpen && total > 1) lines.push('(chạm để thu gọn)');
     this.questText.setY(this.hud.y + this.hud.height + 2);
-    this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}${stepProgress(game.p, q)}: ${q.desc}${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal') ? ` → đi sang ${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal')!.mapName ?? 'vùng khác'}` : ''}`).join('\n') : 'Chưa có nhiệm vụ chính: hãy tu luyện (M), làm nhiệm vụ phụ ở Bảng Nhiệm Vụ hoặc nói chuyện với người trong vùng.');
+    this.questText.setText(lines.join('\n'));
   }
 
   private toast(msg: string) {

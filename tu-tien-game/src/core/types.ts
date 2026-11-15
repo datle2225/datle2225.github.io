@@ -98,6 +98,8 @@ export interface PlayerState {
   playtime: number;
   difficulty: 'normal' | 'hard' | 'nightmare'; // độ khó
   /** Sinh lực/linh lực hiện tại giữa các trận; undefined = đầy. */
+  /** Nhiệm vụ phụ được ghim hiển thị trên HUD (tối đa MAX_TRACKED); nhiệm vụ chính luôn hiện. */
+  tracked?: string[];
   hp?: number;
   mp?: number;
   ngPlus: number; // chu kỳ chơi lại (0 = lần đầu)

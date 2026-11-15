@@ -48,3 +48,18 @@ describe('chuỗi nhiệm vụ chính liên tục', () => {
     expect(objectiveMarkers(p, 'thanh_ha').some((m) => m.kind === 'portal')).toBe(true);
   });
 });
+
+import { trackedQuests, stepText, MAX_TRACKED } from '../src/core/objectives';
+describe('theo dõi nhiệm vụ trên HUD', () => {
+  it('chính luôn hiện, phụ chỉ hiện cái ghim hoặc 2 cái đầu; mở rộng hiện hết', () => {
+    const p = newPlayer('kiem' as any);
+    p.quests.active = ['s1_1', 'm1_6', 'sq_thon_truong', 'sq_ruou', 'sq_bia_mo'];
+    const ids = (e: boolean) => trackedQuests(p, e).map((q) => q.id);
+    expect(ids(false)).toEqual(['m1_6', 's1_1', 'sq_thon_truong']);
+    expect(ids(true)).toHaveLength(5);
+    p.tracked = ['sq_bia_mo'];
+    expect(ids(false)).toEqual(['m1_6', 'sq_bia_mo']);
+    expect(MAX_TRACKED).toBeGreaterThan(0);
+    expect(stepText(p, (QUESTS as any[]).find((q) => q.id === 'm1_4'))).toContain('Mặc Trần');
+  });
+});

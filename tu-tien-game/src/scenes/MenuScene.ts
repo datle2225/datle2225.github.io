@@ -15,6 +15,7 @@ import { getSettings, setSettings } from '../settings';
 import { exportSave, importSave, writeSave } from '../core/save';
 import { check, type Cond } from '../core/story';
 import { FACTIONS, FORMATIONS, LAWS, factionMap } from '../core/data';
+import { MAX_TRACKED, stepProgress, stepText } from '../core/objectives';
 import { curHp, curMp, heal } from '../core/vitals';
 import { ACHIEVEMENTS } from '../core/data';
 import { progressOf } from '../core/achievements';
@@ -310,7 +311,7 @@ export class MenuScene extends Phaser.Scene {
       rows.push({ text: `${t.n}. ${known ? t.name : '???'}${dead ? '  ✔ đã báo thù' : ''}`, sub: known ? t.note : 'Chưa có manh mối.' });
     }
     rows.push({ text: '— Nhiệm vụ đang làm —' });
-    for (const id of p.quests.active) { const q = getQuest(p, id) as any; if (q) rows.push({ text: `${q.type === 'main' ? '★' : '·'} ${q.title}`, sub: q.desc }); }
+    for (const id of p.quests.active) { const q = getQuest(p, id) as any; if (q) { const pinned = (p.tracked ?? []).includes(id); rows.push({ text: `${q.type === 'main' ? '★' : '·'} ${q.title}${stepProgress(p, q)}`, sub: `${q.desc}\n▸ ${stepText(p, q)}`, btns: q.type === 'main' ? undefined : [{ label: pinned ? 'Bỏ ghim' : 'Ghim HUD', fn: () => { const t = (p.tracked ?? []).filter((x) => p.quests.active.includes(x)); if (pinned) p.tracked = t.filter((x) => x !== id); else if (t.length >= MAX_TRACKED) this.note(`Chỉ ghim tối đa ${MAX_TRACKED} nhiệm vụ phụ.`); else p.tracked = [...t, id]; } }] }); } }
     rows.push({ text: `— Đã hoàn thành: ${p.quests.done.length} —` });
     const choices = Object.keys(p.flags).filter((k) => ['wolf_spared', 'wolf_killed', 'swore_to_gate', 'nguyet_secret'].includes(k));
     if (choices.length) rows.push({ text: `Lựa chọn đã nhớ: ${choices.join(', ')}` });

@@ -1,5 +1,5 @@
 import { allMapIds, loadMap } from './maps';
-import { enemyMap } from './data';
+import { enemyMap, materialMap, REALMS } from './data';
 import { getQuest } from './session';
 import type { MapDef } from './tiled';
 import type { PlayerState } from './types';
@@ -85,4 +85,40 @@ export function stepProgress(p: PlayerState, q: { id: string; steps: Step[] }): 
   if ((st.n ?? 1) <= 1 || st.kind === 'realm') return '';
   const have = p.quests.progress[`${q.id}:${idx}`] ?? 0;
   return ` (${have}/${st.n})`;
+}
+
+export const MAX_TRACKED = 3;
+
+/** Nhiệm vụ hiển thị trên HUD: chính luôn hiện; phụ chỉ hiện cái được ghim (chưa ghim thì lấy 2 cái đầu); expanded = hiện hết. */
+export function trackedQuests(p: PlayerState, expanded = false): any[] {
+  const all = p.quests.active.map((id) => getQuest(p, id)).filter(Boolean) as any[];
+  if (expanded) return [...all.filter((q) => q.type === 'main'), ...all.filter((q) => q.type !== 'main')];
+  const main = all.filter((q) => q.type === 'main');
+  const others = all.filter((q) => q.type !== 'main');
+  const pins = (p.tracked ?? []).filter((id) => others.some((q) => q.id === id));
+  const shown = pins.length ? others.filter((q) => pins.includes(q.id)) : others.slice(0, 2);
+  return [...main, ...shown.slice(0, MAX_TRACKED)];
+}
+
+/** Việc cần làm kế tiếp, một câu ngắn gọn. */
+export function stepText(p: PlayerState, q: any): string {
+  const idx = q.steps.findIndex((s: Step, i: number) => (p.quests.progress[`${q.id}:${i}`] ?? 0) < (s.n ?? 1));
+  if (idx < 0) return '';
+  const st: Step = q.steps[idx];
+  const have = p.quests.progress[`${q.id}:${idx}`] ?? 0;
+  const cnt = (st.n ?? 1) > 1 ? ` (${have}/${st.n})` : '';
+  switch (st.kind) {
+    case 'talk': {
+      let name = st.target;
+      for (const id of allMapIds()) { const n = loadMap(id).npcs.find((x) => x.id === st.target); if (n) { name = n.name; break; } }
+      return `Nói chuyện với ${name}`;
+    }
+    case 'reach': return 'Đến địa điểm đánh dấu trên minimap';
+    case 'battle': return `Hạ ${enemyMap.get(st.target)?.name ?? st.target}${cnt}`;
+    case 'collect': return `Thu thập ${materialMap.get(st.target)?.name ?? st.target}${cnt}`;
+    case 'realm': return `Đạt ${REALMS.find((r) => r.id === st.target)?.name ?? st.target}${(st.n ?? 1) > 1 ? ` tầng ${st.n}` : ''}`;
+    case 'branch': return 'Chọn nhánh tu (Menu → Trạng thái)';
+    case 'flag': return 'Hoàn thành mục tiêu cuối (Menu → Độ kiếp)';
+    default: return q.desc;
+  }
 }
