@@ -27,7 +27,7 @@ export class ListPanel {
     this.destroy();
     const s = this.scene;
     const keep = <T extends Phaser.GameObjects.GameObject>(o: T) => { this.objs.push(o); return o; };
-    keep(s.add.rectangle(0, 0, W, H, 0x0b1020, 0.97).setOrigin(0).setInteractive());
+    keep(s.add.rectangle(0, 0, W, H, 0x0b1020, 1).setOrigin(0).setInteractive());
     const tabs = this.cfg.tabs();
     const tw = Math.min(86, Math.floor((W - 56) / tabs.length) - 3);
     tabs.forEach((t, i) => {
@@ -40,13 +40,28 @@ export class ListPanel {
     if (this.cfg.header) { keep(label(s, 10, top, this.cfg.header(), { fontSize: '10px', color: '#ffe38a', wordWrap: { width: 620 } })); top += 16; }
 
     const rows = this.cfg.rows(this.tab);
-    const per = this.cfg.perPage ?? 7;
-    const maxPage = Math.max(0, Math.ceil(rows.length / per) - 1);
+    // đo chiều cao từng dòng (chữ tự xuống dòng) rồi chia trang theo chiều cao thật — tránh chữ đè lên nhau
+    const heights = rows.map((r) => {
+      const wrap = r.btns?.length ? 340 : 620;
+      const t = label(s, 0, 0, r.text, { fontSize: '10px', wordWrap: { width: wrap } });
+      let h = t.height; t.destroy();
+      if (r.sub) { const u = label(s, 0, 0, r.sub, { fontSize: '9px', wordWrap: { width: wrap } }); h += u.height + 2; u.destroy(); }
+      return Math.max(r.btns?.length ? 26 : 0, h) + 8;
+    });
+    const avail = H - 40 - (top + 2);
+    const pages: number[][] = [[]];
+    let used = 0;
+    rows.forEach((_, i) => {
+      if (used + heights[i] > avail && pages[pages.length - 1].length) { pages.push([]); used = 0; }
+      pages[pages.length - 1].push(i); used += heights[i];
+    });
+    const maxPage = pages.length - 1;
     this.page = Math.min(this.page, maxPage);
     let y = top + 2;
-    for (const r of rows.slice(this.page * per, this.page * per + per)) {
-      keep(label(s, 10, y + (r.sub ? 0 : 5), r.text, { fontSize: '10px', wordWrap: { width: r.btns?.length ? 340 : 620 } }));
-      if (r.sub) keep(label(s, 10, y + 13, r.sub, { fontSize: '9px', color: '#8f9bd0', wordWrap: { width: 340 } }));
+    for (const i of pages[this.page]) {
+      const r = rows[i];
+      const t = keep(label(s, 10, y, r.text, { fontSize: '10px', wordWrap: { width: r.btns?.length ? 340 : 620 } }));
+      if (r.sub) keep(label(s, 10, y + t.height + 2, r.sub, { fontSize: '9px', color: '#8f9bd0', wordWrap: { width: r.btns?.length ? 340 : 620 } }));
       let bx = W - 8;
       for (const bt of [...(r.btns ?? [])].reverse()) {
         const w = Math.max(50, bt.label.length * 6 + 14);
@@ -54,7 +69,7 @@ export class ListPanel {
         const b = button(s, bx, y, w, 26, bt.label, () => { bt.fn(); this.render(); }, { enabled: bt.enabled ?? true, color: bt.color });
         this.objs.push(b.bg, b.t);
       }
-      y += 36;
+      y += heights[i];
     }
     if (maxPage > 0) {
       const a = button(s, 10, H - 34, 40, 24, '◀', () => { this.page = Math.max(0, this.page - 1); this.render(); });

@@ -76,3 +76,13 @@ export function objectiveMarkers(p: PlayerState, mapId: string): Marker[] {
   }
   return markers;
 }
+
+/** Hậu tố tiến độ của bước đang làm, vd " (1/3)" cho 'hạ 3 Yêu Xà'. */
+export function stepProgress(p: PlayerState, q: { id: string; steps: Step[] }): string {
+  const idx = q.steps.findIndex((s, i) => (p.quests.progress[`${q.id}:${i}`] ?? 0) < (s.n ?? 1));
+  if (idx < 0) return '';
+  const st = q.steps[idx];
+  if ((st.n ?? 1) <= 1 || st.kind === 'realm') return '';
+  const have = p.quests.progress[`${q.id}:${idx}`] ?? 0;
+  return ` (${have}/${st.n})`;
+}

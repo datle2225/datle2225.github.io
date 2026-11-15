@@ -4,7 +4,7 @@
   "type": "main",
   "chapter": 1,
   "title": "Tro tàn",
-  "desc": "Tìm manh mối trong đống đổ nát của Diệp gia.",
+  "desc": "Nói chuyện với Lão Ngư ở bờ sông, rồi đến đống đổ nát Diệp gia (phía tây bắc thôn) tìm manh mối.",
   "steps": [
    {
     "kind": "talk",
@@ -27,7 +27,7 @@
   "type": "main",
   "chapter": 1,
   "title": "Cổ Đỉnh",
-  "desc": "Mở phong ấn Cổ Đỉnh dưới giếng cũ.",
+  "desc": "Lão Ngư bảo giếng cổ ở phía tây nam thôn có thứ đang gọi ngươi. Đến đó, rồi hạ 2 Sói Hoang đang rình quanh đường mòn để Cổ Đỉnh thức tỉnh (nhớ mang vũ khí).",
   "steps": [
    {
     "kind": "reach",
@@ -54,7 +54,7 @@
   "type": "main",
   "chapter": 1,
   "title": "Nhập môn",
-  "desc": "Đến Thanh Vân Tông, bắt đầu hành trình.",
+  "desc": "Đến cổng Thanh Vân Tông ở rìa phía đông thôn (đã mở sau khi có Cổ Đỉnh) và bước vào.",
   "steps": [
    {
     "kind": "reach",
@@ -64,7 +64,9 @@
   "reward": {
    "exp": 150
   },
-  "unlocks": []
+  "unlocks": [
+   "m1_4"
+  ]
  },
  {
   "id": "s1_1",
@@ -182,7 +184,9 @@
    "exp": 2500,
    "linh_thach": 300
   },
-  "unlocks": []
+  "unlocks": [
+   "m2_4"
+  ]
  },
  {
   "id": "m3_1",
@@ -248,7 +252,9 @@
    "exp": 15000,
    "linh_thach": 1000
   },
-  "unlocks": []
+  "unlocks": [
+   "m3_4"
+  ]
  },
  {
   "id": "m4_1",
@@ -289,7 +295,9 @@
    "exp": 80000,
    "linh_thach": 3000
   },
-  "unlocks": []
+  "unlocks": [
+   "m4_3"
+  ]
  },
  {
   "id": "m5_1",
@@ -331,7 +339,9 @@
    "exp": 600000,
    "linh_thach": 8000
   },
-  "unlocks": []
+  "unlocks": [
+   "m5_3"
+  ]
  },
  {
   "id": "m6_1",
@@ -373,7 +383,9 @@
    "exp": 2000000,
    "linh_thach": 20000
   },
-  "unlocks": []
+  "unlocks": [
+   "m6_3"
+  ]
  },
  {
   "id": "m7_1",
@@ -411,7 +423,9 @@
    "exp": 6000000,
    "linh_thach": 60000
   },
-  "unlocks": []
+  "unlocks": [
+   "m7_3"
+  ]
  },
  {
   "id": "sq_thon_truong",
@@ -685,5 +699,341 @@
    "exp": 2500000,
    "linh_thach": 40000
   }
+ },
+ {
+  "id": "m1_4",
+  "type": "main",
+  "chapter": 2,
+  "title": "Bái kiến sư huynh",
+  "desc": "Vào Thanh Vân Tông, tìm Mặc Trần sư huynh ở khu Võ Trường để báo danh.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "mac_tran"
+   }
+  ],
+  "reward": {
+   "exp": 60
+  },
+  "unlocks": [
+   "m1_5"
+  ]
+ },
+ {
+  "id": "m1_5",
+  "type": "main",
+  "chapter": 2,
+  "title": "Người che chở",
+  "desc": "Gặp Trưởng lão Lục Vân Sinh ở Chính Điện, người nói sẽ lo chuyện báo thù cho ngươi.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "luc_van_sinh"
+   }
+  ],
+  "reward": {
+   "exp": 60
+  },
+  "unlocks": [
+   "m1_6"
+  ]
+ },
+ {
+  "id": "m1_6",
+  "type": "main",
+  "chapter": 3,
+  "title": "Phế vật thí luyện",
+  "desc": "Chứng tỏ bản thân: ra rừng quanh Thanh Hà, hạ 3 Yêu Xà (phía đông thôn). Chú ý: mua đan và trang bị trước, đừng liều.",
+  "steps": [
+   {
+    "kind": "battle",
+    "target": "yeu_xa",
+    "n": 3
+   }
+  ],
+  "reward": {
+   "exp": 120,
+   "linh_thach": 60
+  },
+  "unlocks": [
+   "m1_7"
+  ],
+  "unlockChapter": 3
+ },
+ {
+  "id": "m1_7",
+  "type": "main",
+  "chapter": 3,
+  "title": "Tích lũy đạo hạnh",
+  "desc": "Tu luyện (Menu → Tu luyện, thiền, săn quái) cho tới Luyện Khí tầng 9. Gặp bình cảnh thì dùng Phá Cảnh Đan hoặc đi lại ngoài thế giới tìm cơ duyên.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "luyen_khi",
+    "n": 9
+   }
+  ],
+  "reward": {
+   "exp": 100
+  },
+  "unlocks": [
+   "m1_8"
+  ]
+ },
+ {
+  "id": "m1_8",
+  "type": "main",
+  "chapter": 3,
+  "title": "Lôi kiếp đầu tiên",
+  "desc": "Đầy tu vi rồi, hãy độ kiếp (Menu → Độ kiếp) để Trúc Cơ. Chuẩn bị Hồi Huyết Đan và nghỉ cho đầy máu.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "truc_co",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 200,
+   "linh_thach": 100
+  },
+  "unlocks": [
+   "m1_9"
+  ]
+ },
+ {
+  "id": "m1_9",
+  "type": "main",
+  "chapter": 4,
+  "title": "Chọn con đường",
+  "desc": "Đã Trúc Cơ! Mở Menu → Trạng thái, chọn nhánh tu chính (Kiếm tu, Thể tu, ...). Mỗi nhánh có kiểu chiến đấu và combo riêng.",
+  "steps": [
+   {
+    "kind": "branch",
+    "target": "any"
+   }
+  ],
+  "reward": {
+   "exp": 100
+  },
+  "unlocks": [
+   "m1_10"
+  ]
+ },
+ {
+  "id": "m1_10",
+  "type": "main",
+  "chapter": 5,
+  "title": "Phường Thị Vân Hải",
+  "desc": "Đến Phường Thị Vân Hải (cổng ở rìa đông Thanh Hà), tìm Thiên Cơ Các để hỏi thăm tin tức kẻ thù.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "thien_co"
+   }
+  ],
+  "reward": {
+   "exp": 150,
+   "linh_thach": 100
+  },
+  "unlocks": [
+   "m1_11"
+  ],
+  "unlockChapter": 5
+ },
+ {
+  "id": "m1_11",
+  "type": "main",
+  "chapter": 5,
+  "title": "Ngưng kết Kim Đan",
+  "desc": "Tu luyện tới Trúc Cơ tầng 9 và độ kiếp để Kết Đan. Phường Thị có Lò Rèn, Đan Phòng và Bảng Nhiệm Vụ giúp ngươi mạnh lên.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "ket_dan",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 300,
+   "linh_thach": 200
+  },
+  "unlocks": [
+   "m1_12"
+  ]
+ },
+ {
+  "id": "m1_12",
+  "type": "main",
+  "chapter": 5,
+  "title": "Tin của Thiên Cơ Các",
+  "desc": "Kết Đan rồi, quay lại Phường Thị gặp Thiên Cơ Các để nhận tin về kẻ thứ hai trong danh sách báo thù.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "thien_co"
+   }
+  ],
+  "reward": {
+   "exp": 100
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m2_4",
+  "type": "main",
+  "chapter": 7,
+  "title": "Nguyên Anh xuất khiếu",
+  "desc": "Gia Chủ đã ngã. Tu luyện tới Kết Đan tầng 9 và độ kiếp để Nguyên Anh; sau đó đến Phường Thị gặp Thiên Cơ Các.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "nguyen_anh",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 600,
+   "linh_thach": 300
+  },
+  "unlocks": [
+   "m2_5"
+  ]
+ },
+ {
+  "id": "m2_5",
+  "type": "main",
+  "chapter": 7,
+  "title": "Tin cuối của Thiên Cơ",
+  "desc": "Gặp Thiên Cơ Các ở Phường Thị để biết nơi ẩn náu của Huyết Ảnh Môn Chủ.",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "thien_co"
+   }
+  ],
+  "reward": {
+   "exp": 200
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m3_4",
+  "type": "main",
+  "chapter": 8,
+  "title": "Vượt qua tro tàn",
+  "desc": "Báo thù đã xong một chặng. Tu luyện tới Nguyên Anh tầng 9 và độ kiếp để Hóa Thần — con đường phía trước còn dài hơn ngươi tưởng.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "hoa_than",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 1500,
+   "linh_thach": 600
+  },
+  "unlocks": [
+   "m3_5"
+  ]
+ },
+ {
+  "id": "m3_5",
+  "type": "main",
+  "chapter": 9,
+  "title": "Thiên Phong Đại Lục",
+  "desc": "Đến Thiên Phong Thành và gặp Kiếm Sư (xem minimap để biết cổng cần đi qua; ai đã có Dịch chuyển thì dùng ở Menu → Nội tình).",
+  "steps": [
+   {
+    "kind": "talk",
+    "target": "kiem_su"
+   }
+  ],
+  "reward": {
+   "exp": 300
+  },
+  "unlocks": []
+ },
+ {
+  "id": "m4_3",
+  "type": "main",
+  "chapter": 9,
+  "title": "Đạp phá hư không",
+  "desc": "Tu luyện tới Hóa Thần tầng 9 và độ kiếp để Luyện Hư. Hư Không Giới đang chờ ở phía sau.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "luyen_hu",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 3000,
+   "linh_thach": 1000
+  },
+  "unlocks": [
+   "m5_1"
+  ]
+ },
+ {
+  "id": "m5_3",
+  "type": "main",
+  "chapter": 10,
+  "title": "Hợp đạo",
+  "desc": "Tu luyện tới Luyện Hư tầng 9 và độ kiếp để Hợp Thể. Cổ Chiến Trường chờ phía trước.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "hop_the",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 6000,
+   "linh_thach": 2000
+  },
+  "unlocks": [
+   "m6_1"
+  ]
+ },
+ {
+  "id": "m6_3",
+  "type": "main",
+  "chapter": 11,
+  "title": "Đại thừa viên mãn",
+  "desc": "Tu luyện tới Hợp Thể tầng 9 và độ kiếp để Đại Thừa. Sau đó Thiên Môn mới mở ra với ngươi.",
+  "steps": [
+   {
+    "kind": "realm",
+    "target": "dai_thua",
+    "n": 1
+   }
+  ],
+  "reward": {
+   "exp": 12000,
+   "linh_thach": 4000
+  },
+  "unlocks": [
+   "m7_1"
+  ]
+ },
+ {
+  "id": "m7_3",
+  "type": "main",
+  "chapter": 12,
+  "title": "Phi Thăng",
+  "desc": "Tu luyện tới Đại Thừa tầng 9 rồi độ Phi Thăng Thiên Kiếp (Menu → Độ kiếp) — mười hai đợt sét và tâm ma. Chuẩn bị đan, trận pháp, pháp tắc.",
+  "steps": [
+   {
+    "kind": "flag",
+    "target": "ascended"
+   }
+  ],
+  "reward": {
+   "exp": 20000,
+   "linh_thach": 10000
+  },
+  "unlocks": []
  }
 ]

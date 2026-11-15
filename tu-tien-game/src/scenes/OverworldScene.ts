@@ -2,12 +2,12 @@ import Phaser from 'phaser';
 import { W, H, Z } from '../main';
 import { game, persist } from '../state';
 import { button, label } from '../ui/widgets';
-import { checkCollect, getQuest, questEvent } from '../core/session';
+import { checkCollect, checkStateSteps, getQuest, questEvent } from '../core/session';
 import { ELITE } from '../core/difficulty';
 import { EVENTS, REALMS, enemyMap, vendorMap } from '../core/data';
 import { expNeeded } from '../core/progression';
 import { DIALOGUES, DialogueRunner, check, pickDialogue, rollEvent, rumorDialogue } from '../core/story';
-import { objectiveMarkers, type Marker } from '../core/objectives';
+import { objectiveMarkers, stepProgress, type Marker } from '../core/objectives';
 import { curHp, curMp, regen } from '../core/vitals';
 import { computeStats } from '../core/stats';
 import { checkAchievements } from '../core/achievements';
@@ -214,7 +214,7 @@ export class OverworldScene extends Phaser.Scene {
 
   private tick() {
     for (const a of checkAchievements(game.p)) { this.toast(`★ Thành tựu: ${a.name} (+${a.reward?.gold ?? 0} LT)`); audio.sfx('levelup'); persist(); }
-    const col = checkCollect(game.p);
+    const col = [...checkCollect(game.p), ...checkStateSteps(game.p)];
     if (col.length) this.progress(col);
     if (Object.keys(game.p.auction.bids).length) { const n = settleAuctions(game.p); if (n.length) { this.toast(n[0]); persist(); } }
     regen(game.p, 0.5, this.foes.length === 0);
@@ -448,6 +448,8 @@ export class OverworldScene extends Phaser.Scene {
     if (id === '@rumor') id = rumorDialogue(game.p);
     if (id === '@board') { this.openShop('bang_nv'); return; }
     if (id) this.startDialogue(id);
+    const talked = questEvent(game.p, 'talk', n.id); // nói chuyện với NPC mục tiêu → tiến độ nhiệm vụ
+    if (talked.length) this.time.delayedCall(400, () => this.progress(talked));
   }
 
   private progress(done: string[]) {
@@ -513,7 +515,7 @@ export class OverworldScene extends Phaser.Scene {
     this.hud.setText(`${p.name} · ${r.name} tầng ${p.stage} · ${p.exp}/${expNeeded(p)} · ${p.gold} LT\nHP ${curHp(p)}/${computeStats(p).hp} · MP ${curMp(p)}/${computeStats(p).mp}${p.party.length ? ` · +${p.party.length}` : ''}\n${this.map.name} · ${formatHour(gameHour(p))}`);
     const mq = p.quests.active.map((id) => getQuest(p, id)).filter(Boolean);
     this.questText.setY(this.hud.y + this.hud.height + 2);
-    this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}: ${q.desc}${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal') ? ` → đi sang ${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal')!.mapName ?? 'vùng khác'}` : ''}`).join('\n') : '(Hết nhiệm vụ trong chương này)');
+    this.questText.setText(mq.length ? mq.map((q: any) => `${q.type === 'main' ? '★' : '·'} ${q.title}${stepProgress(game.p, q)}: ${q.desc}${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal') ? ` → đi sang ${this.mmMarkers.find((m) => m.label === q.title && m.kind === 'portal')!.mapName ?? 'vùng khác'}` : ''}`).join('\n') : 'Chưa có nhiệm vụ chính: hãy tu luyện (M), làm nhiệm vụ phụ ở Bảng Nhiệm Vụ hoặc nói chuyện với người trong vùng.');
   }
 
   private toast(msg: string) {
