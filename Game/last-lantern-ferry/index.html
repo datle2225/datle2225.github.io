@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1030">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The Last Lantern Ferry – Chuyến Phà Ngọn Đèn Cuối</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar" hidden>
+    <button class="chip hero" id="chipT" data-who="T"></button>
+    <button class="chip hero" id="chipW" data-who="W"></button>
+    <button class="icon-btn" id="btnBag" aria-label="Túi đồ">🎒</button>
+    <button class="icon-btn" id="btnMenu" aria-label="Menu">☰</button>
+  </header>
+  <div id="modbar" hidden></div>
+  <div id="stage"><canvas id="art" width="240" height="108"></canvas><div id="stageTitle"></div></div>
+  <main id="feed"></main>
+</div>
+<div id="overlay" hidden></div>
+<div id="modal" hidden></div>
+<div id="toast" hidden></div>
+<script src="art.js"></script>
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
