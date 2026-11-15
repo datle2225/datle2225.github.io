@@ -1992,7 +1992,7 @@
    },
    "b": {
     "who": "Lão Đỉnh",
-    "text": "Ngươi đã đi hết con đường Hóa Thần. Phía trước là Luyện Hư, Hợp Thể, Đại Thừa... rồi cổng Phi Thăng. Nhưng đoạn đường đó ta sẽ kể ngươi nghe sau.",
+    "text": "Ngươi đã đi hết con đường Hóa Thần. Phía trước là Luyện Hư, Hợp Thể, Đại Thừa... rồi cổng Phi Thăng. Hãy tu luyện, độ kiếp, rồi mở lối vào Hư Không Giới.",
     "do": [
      {
       "flag": "phan2_demo_done"
@@ -2001,7 +2001,7 @@
     "next": "c"
    },
    "c": {
-    "text": "=== HẾT PHẦN 2 (BẢN THỬ): THIÊN PHONG KIẾM TRỦNG ===\nPhi thăng và các cảnh giới từ Luyện Hư trở lên sẽ ở phần tiếp theo.",
+    "text": "=== KẾT THÚC PHẦN 2: THIÊN PHONG KIẾM TRỦNG ===\nCon đường tới Phi Thăng vẫn còn tiếp diễn — xem nhiệm vụ chính ở góc trái màn hình.",
     "next": null
    }
   }

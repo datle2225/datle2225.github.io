@@ -127,6 +127,30 @@ export function learnSubBranch(p: PlayerState, id: string): { ok: boolean; msg: 
  * Bước "thu thập": nộp vật phẩm trong túi. Gọi sau mọi thay đổi túi đồ (nhặt, rơi, mua).
  * Khi đủ số lượng thì trừ vật phẩm và hoàn thành bước đó.
  */
+/** Bước nhiệm vụ tự hoàn thành theo trạng thái nhân vật: đạt cảnh giới ('realm'), đã chọn nhánh ('branch'), cờ ('flag'). */
+export function checkStateSteps(p: PlayerState): string[] {
+  const done: string[] = [];
+  for (const id of [...p.quests.active]) {
+    const q = getQuest(p, id);
+    if (!q) continue;
+    q.steps.forEach((st: any, i: number) => {
+      const key = `${id}:${i}`;
+      const need = st.n ?? 1;
+      if ((p.quests.progress[key] ?? 0) >= need) return;
+      let ok = false;
+      if (st.kind === 'realm') {
+        const ri = REALMS.findIndex((r) => r.id === st.target);
+        ok = ri >= 0 && (p.realmIndex > ri || (p.realmIndex === ri && p.stage >= need));
+      } else if (st.kind === 'branch') ok = !!p.branchId;
+      else if (st.kind === 'flag') ok = !!p.flags[st.target];
+      if (ok) p.quests.progress[key] = need;
+    });
+    const isState = q.steps.some((st: any) => ['realm', 'branch', 'flag'].includes(st.kind));
+    if (isState && q.steps.every((s: any, i: number) => (p.quests.progress[`${id}:${i}`] ?? 0) >= (s.n ?? 1))) { completeQuest(p, id); done.push(id); }
+  }
+  return done;
+}
+
 export function checkCollect(p: PlayerState): string[] {
   const done: string[] = [];
   for (const id of [...p.quests.active]) {

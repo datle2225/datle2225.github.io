@@ -29,10 +29,14 @@ export class TitleScene extends Phaser.Scene {
     label(this, W - 200, 126, 'Ván mới:', { fontSize: '9px', color: '#6b7391' });
     drawDiff();
     const hasSave = !!load();
+    const DEV = new URLSearchParams(location.search).has('dev'); // nút thử nhanh chỉ hiện khi thêm ?dev vào địa chỉ
     const bx = W / 2 - 90;
-    button(this, bx, 112, 180, 28, 'Bắt đầu mới', () => { startNew(); this.scene.start('Overworld'); });
+    button(this, bx, 112, 180, 28, 'Bắt đầu mới', () => {
+      if (hasSave && !window.confirm('Bắt đầu mới sẽ GHI ĐÈ tiến trình đã lưu. Bạn chắc chắn chứ?')) return;
+      startNew(); this.scene.start('Overworld');
+    });
     button(this, bx, 144, 180, 28, hasSave ? 'Tiếp tục' : 'Tiếp tục (chưa có save)', () => { if (continueGame()) this.scene.start('Overworld'); }, { enabled: hasSave });
-    button(this, bx, 176, 180, 28, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
+    if (DEV) button(this, bx, 176, 180, 28, 'Thử nhanh: Trúc Cơ + Kiếm Tu', () => {
       startNew();
       const p = game.p;
       p.rootId = 'kim'; p.realmIndex = 1; p.stage = 5; p.branchId = 'kiem_tu'; p.gold = 800;
@@ -44,7 +48,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 208, 180, 28, 'Thử nhanh: Kết Đan (Hồi 2)', () => {
+    if (DEV) button(this, bx, 208, 180, 28, 'Thử nhanh: Kết Đan (Hồi 2)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'kim'; p.realmIndex = 2; p.stage = 3; p.branchId = 'kiem_tu'; p.gold = 1500; p.daoHeart = 60;
@@ -59,7 +63,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 240, 180, 28, 'Thử nhanh: Nguyên Anh (Hồi 3)', () => {
+    if (DEV) button(this, bx, 240, 180, 28, 'Thử nhanh: Nguyên Anh (Hồi 3)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'hon_don'; p.realmIndex = 3; p.stage = 5; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 4000; p.daoHeart = 60;
@@ -74,7 +78,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 272, 180, 28, 'Thử nhanh: Hóa Thần (Phần 2)', () => {
+    if (DEV) button(this, bx, 272, 180, 28, 'Thử nhanh: Hóa Thần (Phần 2)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'hon_don'; p.realmIndex = 4; p.stage = 4; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 12000; p.daoHeart = 60;
@@ -90,7 +94,7 @@ export class TitleScene extends Phaser.Scene {
       persist();
       this.scene.start('Overworld');
     });
-    button(this, bx, 304, 180, 28, 'Thử nhanh: Đại Thừa (Phi Thăng)', () => {
+    if (DEV) button(this, bx, 304, 180, 28, 'Thử nhanh: Đại Thừa (Phi Thăng)', () => {
       startNew();
       const p = game.p;
       p.rootId = 'hon_don'; p.realmIndex = 7; p.stage = 9; p.exp = 7e9; p.branchId = 'kiem_tu'; p.subBranchId = 'dan_tu'; p.gold = 100000; p.daoHeart = 70;
